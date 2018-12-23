@@ -5,7 +5,8 @@ const mongoose = require ("mongoose");
 const helmet = require('helmet');
 
 const app = express();
-const uristring = process.env.MONGODB_URI || 'mongodb://test:abcd1234@ds125684.mlab.com:25684/freecodecamp';
+const uristring = process.env.MONGODB_URI;
+// 'mongodb://test:abcd1234@ds125684.mlab.com:25684/freecodecamp';
 let feedbackSchema = new mongoose.Schema({
     name: String,
     email: String,
