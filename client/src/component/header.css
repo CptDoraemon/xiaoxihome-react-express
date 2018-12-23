@@ -1,0 +1,332 @@
+/*       */
+.mobile-menu-icon {
+    display: none;
+}
+.header-cover{
+    list-style: none;
+    text-transform: uppercase;
+    position: absolute;
+    top: 35px; /* ul has padding for better accessibility */
+    left: 50px;
+    z-index: 99;
+}
+.header-cover ul{
+    margin: 0;
+    padding: 0;
+    color: rgba(255, 255, 255, 0.5);
+}
+.header-cover ul:hover {
+    color: rgba(255, 255, 255, 1);
+}
+.header-cover li{
+    display: inline-block;
+    margin: 0 40px;
+    font-size: 18px;
+    line-height: 36px;
+    transition: 0.3s;
+}
+.header-cover li:hover{
+    font-weight: bold;
+    letter-spacing: 5px;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+/* DORP DOWN LIST */
+.work-drop-down-cover-active {
+    position: absolute;
+    color: white;
+    margin: 10px 0 0 150px;
+    width: fit-content;
+    text-align: left;
+    z-index: 99;
+    padding-bottom: 28px; /* add some safe zone at bottom */
+}
+.work-drop-down-cover-active h5{
+    text-transform: capitalize;
+    background-color: rgba(37, 41, 45, 1);
+    font-size: 18px;
+    line-height: 2em;
+    padding: 0 20px;
+}
+.work-drop-down-cover-active p{
+    text-transform: capitalize;
+    background-color: rgba(37, 41, 45, 0.8);
+    font-size: 14px;
+    line-height: 2em;
+    padding: 0 30px;
+}
+.work-drop-down-cover-active p:hover{
+    background-color: rgba(37, 41, 45, 1);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 1);
+    cursor: pointer;
+}
+.work-drop-down-cover-inactive{
+    display: none;
+}
+
+
+.work-drop-down-active {
+    position: absolute;
+    color: white;
+    margin: 10px 0 0 150px;
+    width: fit-content;
+    text-align: left;
+    z-index: 99;
+    padding-bottom: 28px; /* add some safe zone at bottom */
+}
+.work-drop-down-active h5{
+    text-transform: capitalize;
+    background-color: rgba(37, 41, 45, 1);
+    font-size: 18px;
+    line-height: 2em;
+    padding: 0 20px;
+}
+.work-drop-down-active p{
+    text-transform: capitalize;
+    background-color: rgba(37, 41, 45, 0.8);
+    font-size: 14px;
+    line-height: 2em;
+    padding: 0 30px;
+}
+.work-drop-down-active p:hover{
+    background-color: rgba(37, 41, 45, 1);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 1);
+    cursor: pointer;
+}
+.work-drop-down-inactive{
+    display: none;
+}
+
+
+
+
+
+/*        */
+.header-fixed{
+    list-style: none;
+    text-transform: uppercase;
+    height: 100px;
+    width: 100%;
+    background-color: rgb(37, 41, 45);
+    z-index: 99;
+    position: relative;
+}
+.header-fixed h1{
+    background-color: rgb(37, 41, 45);
+    color: white;
+    height: 50px;
+    width: 100%;
+    text-align: center;
+    font-size: 35px;
+}
+.header-fixed ul{
+    margin: 0;
+    padding: 0 50px;
+    height: 50px;
+}
+.header-fixed li{
+    display: inline-block;
+    margin: 0 50px;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+    transition: 0.3s;
+    line-height: 50px;
+}
+.header-fixed li:hover{
+    font-weight: bold;
+    letter-spacing: 5px;
+    color: rgba(255, 255, 255, 1);
+    transition: 0.3s;
+    cursor: pointer;
+}
+/* FOR STICKY IN EFFECT */
+.fixed {
+    position: fixed !important;
+    top: -50px;
+}
+.fixed li {
+   margin: 0 25px !important;
+}
+.header-fixed-placeholder{
+    display: none;
+}
+.header-fixed-placeholder-scrolled{
+    display: block;
+    height: 100px;
+    position: relative;
+    background-color: rgb(37, 41, 45);
+}
+
+
+
+@media only screen and (max-width: 800px) {
+    /*       */
+    .header-cover {
+        list-style: none;
+        text-transform: uppercase;
+        position: absolute;
+        top: 35px; /* ul has padding for better accessibility */
+        left: 35px;
+        padding: 0;
+    }
+    .mobile-menu-icon {
+        display: block;
+        color: white;
+    }
+    .header-cover ul {
+        display: none;
+        height: 0;
+    }
+    .header-cover-mobile {
+        list-style: none;
+        text-transform: uppercase;
+        position: absolute;
+        width: calc(100vw - 70px); /* 35px padding each side */
+        background-color: rgba(0, 0, 0, 0.9);
+        padding: 35px 35px;
+        transition: padding-top 0.3s; /* the menu pulled down animation */
+        z-index: 99;
+    }
+    .header-cover-mobile ul{
+        margin: 0;
+        padding: 0;
+        color: rgba(255, 255, 255, 1);
+    }
+    .header-cover-mobile li{
+        display: block;
+        margin: 0;
+        font-size: 14px;
+        line-height: 28px;
+    }
+
+    /* DORP DOWN LIST */
+    .work-drop-down-cover-active {
+        position: relative;
+        color: white;
+        margin: 0;
+        width: fit-content;
+        text-align: left;
+        z-index: 99;
+        padding-bottom: 0; /* add some safe zone at bottom */
+        background-color: inherit;
+    }
+    .work-drop-down-cover-active h5{
+        text-transform: capitalize;
+        background-color: inherit;
+        font-size: 14px;
+        line-height: 2em;
+        padding: 0 20px;
+    }
+    .work-drop-down-cover-active p{
+        text-transform: capitalize;
+        background-color: inherit;
+        font-size: 12px;
+        line-height: 2em;
+        padding: 0 30px;
+    }
+    .work-drop-down-cover-active p:hover{
+        background-color: inherit;
+        box-shadow: inset 0 0 0 0 rgba(255, 255, 255, 1);
+        cursor: pointer;
+    }
+    .work-drop-down-cover-inactive{
+        display: none;
+    }
+
+
+    .work-drop-down-active {
+        position: absolute;
+        color: white;
+        margin: 0;
+        width: fit-content;
+        text-align: left;
+        z-index: 99;
+        padding-bottom: 0; /* add some safe zone at bottom */
+        background-color: inherit;
+    }
+    .work-drop-down-active h5{
+        text-transform: capitalize;
+        background-color: inherit;
+        font-size: 14px;
+        line-height: 2em;
+        padding: 0 20px;
+    }
+    .work-drop-down-active p{
+        text-transform: capitalize;
+        background-color: inherit;
+        font-size: 12px;
+        line-height: 2em;
+        padding: 0 30px;
+    }
+    .work-drop-down-active p:hover{
+        background-color: inherit;
+        box-shadow: inset 0 0 0 0 rgba(255, 255, 255, 1);
+        cursor: pointer;
+    }
+    .work-drop-down-inactive{
+        display: none;
+    }
+
+
+
+
+
+    /*        */
+    .header-fixed{
+        list-style: none;
+        text-transform: uppercase;
+        height: 100px;
+        width: 100%;
+        background-color: rgb(37, 41, 45);
+        z-index: 99;
+        position: relative;
+    }
+    .header-fixed h1{
+        background-color: rgb(37, 41, 45);
+        color: white;
+        height: 50px;
+        width: 100%;
+        text-align: center;
+        font-size: 24px;
+        line-height: 50px;
+    }
+    .header-fixed ul{
+        background-color: rgb(37, 41, 45);
+        margin: 0;
+        padding: 0 10px;
+        height: 50px;
+    }
+    .header-fixed li{
+        display: inline;
+        margin: 0 15px;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 12px;
+        transition: 0.3s;
+        line-height: 50px;
+    }
+    .header-fixed li:hover{
+        font-weight: bold;
+        letter-spacing: initial;
+        color: rgba(255, 255, 255, 1);
+        transition: 0.3s;
+        cursor: pointer;
+    }
+    /* FOR STICKY IN EFFECT */
+    .fixed {
+        position: fixed !important;
+        top: -50px;
+    }
+    .fixed li {
+        margin: 0 5px !important;
+    }
+    .header-fixed-placeholder{
+        display: none;
+    }
+    .header-fixed-placeholder-scrolled{
+        display: block;
+        height: 100px;
+        position: relative;
+        background-color: rgb(37, 41, 45);
+    }
+}

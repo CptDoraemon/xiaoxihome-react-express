@@ -1,0 +1,267 @@
+.frontpage-main{
+    width: 100vw;
+    max-width: 100%; /* offset scrollbar width */
+}
+.cover-wrapper{
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+.cover-bg {
+    position: absolute;
+    background-image: linear-gradient(to bottom, rgb(70, 100, 130), rgb(180, 140, 125), rgb(70, 100, 130));
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100% 100%;
+    background-attachment: fixed;
+    height: 100vh;
+    width: 100%;
+    max-width: 100%;
+    filter: blur(20px);
+    transform: scale(1.1);
+    z-index: -99;
+}
+.cover-bg-loaded {
+    position: absolute;
+    background-image: url(https://s3.us-east-2.amazonaws.com/xiaoxihome/cover-5k.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+    height: 100vh;
+    width: 100%;
+    max-width: 100%;
+    z-index: -99;
+    filter: none; /* blur too lag on safari webkit */
+    transform: none;
+    transition: 1s filter ease, 1s transform ease;
+}
+.cover {
+    height: 100vh;
+    width: 100%;
+}
+.cover-intro {
+    position: absolute;
+    top: 50%;
+    color: white;
+    font-size: 72px;
+    line-height: 144px;
+    font-weight: bold;
+    overflow: hidden;
+    width: 100%;
+    text-align: center;
+    margin: 0;
+}
+.mouse-icon {
+    position: absolute;
+    bottom: 5%;
+    left: 49%;
+    opacity: 0.5;
+    transition: 0.3s;
+}
+.mouse-icon:hover {
+    cursor: pointer;
+    opacity: 1;
+    transition: 0.3s;
+}
+.color1{
+    background-image: linear-gradient(to bottom, #13547a, #80d0c7);
+}
+.color2{
+    background-image: linear-gradient(to bottom, #537895, #09203f);
+}
+.color3{
+    background-image: linear-gradient(to bottom, #48c6ef, #6f86d6);
+}
+.color-dark{
+    background-image: linear-gradient(to bottom, #29323c, #485563);
+}
+
+
+.academic-and-web {
+    padding: 20px 0;
+    background-image: linear-gradient(to bottom, #13547a, #80d0c7);
+}
+.gallery {
+    padding: 20px 0;
+    background-image: linear-gradient(to bottom, #29323c, #485563);
+}
+.project-container {
+    width: 100%;
+    padding: 100px 0;
+}
+.project-container h2 {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 50px;
+    color: white;
+    font-size: 32px;
+    word-spacing: 5px;
+    letter-spacing: 1px;
+}
+.flexbox-wrapper-800 {
+    width: 800px;
+    margin: 0 auto; /* centering wrapper */
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+.tile-big, .tile-sm {
+    height: 192px;
+    background-color: rgba(255,255,255,0.2);;
+    margin: 5px;
+    display: table;
+    transition: 0.3s;
+    text-transform: capitalize;
+}
+.tile-big {
+    width: 385px;
+}
+.tile-sm {
+    width: 192px;
+}
+.tile-big:hover, .tile-sm:hover {
+    background-color: rgba(0,0,0,0.1);
+    transition: 0.3s;
+    cursor: pointer;
+}
+.tile-big h3, .tile-sm h3 {
+    word-spacing: 100vw;
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+    color: white;
+}
+.tile-gallery {
+    width: 390px;
+    height: 243px;
+    margin: 5px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-image: radial-gradient(#434343, #000000);
+    transition: 0s;
+}
+.tile-gallery:hover {
+    box-shadow:inset 0px 0px 0px 2px rgba(255, 255, 255, 0.8);
+    transition: 0.2s;
+}
+.tile-gallery h5{
+    color: rgba(255, 255, 255, 0.5);
+    position: relative;
+    width: 100%;
+    height: 100%;
+    margin: 5px;
+}
+.tile-gallery h5:hover{
+    color: rgba(255, 255, 255, 1);
+    transition: 0.5s;
+    cursor: pointer;
+}
+
+
+@media only screen and (max-width: 800px) {
+    .cover-bg-loaded {
+        position: absolute;
+        background-image: url("https://s3.us-east-2.amazonaws.com/xiaoxihome/cover-mobile.jpg");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        background-attachment: scroll;
+        height: 100vh;
+        width: 100vw;
+        z-index: -99;
+    }
+    .cover-intro {
+        position: absolute;
+        top: 60%;
+        color: white;
+        font-size: 36px;
+        line-height: 42px;
+        font-weight: bold;
+        overflow: hidden;
+        width: 100%;
+        text-align: center;
+        margin: 0;
+        word-spacing: 100vw;
+        letter-spacing: 3px;
+    }
+    .mouse-icon {
+        display: none;
+    }
+    .project-container {
+        width: 100%;
+        padding: 20px 0;
+    }
+    .project-container h2 {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 20px;
+        color: white;
+        font-size: 24px;
+        word-spacing: 5px;
+        letter-spacing: 1px;
+    }
+    .flexbox-wrapper-800 { /* NOT 800 ANYMORE */
+        width: 100%;
+        margin: 0;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+    }
+    .flexbox-wrapper-800 a { /* TILES ARE IN THE LINK */
+        width: calc(100% - 20px);
+    }
+    .tile-big, .tile-sm {
+        height: auto;
+        background-color: rgba(255,255,255,0.2);;
+        margin: 5px 0;
+        padding: 15px 0;
+        display: table;
+        transition: 0s;
+        text-transform: capitalize;
+        width: 100%; /* inherit flexbox-wrapper-800 */
+    }
+    .tile-big:hover, .tile-sm:hover {
+        background-color: rgba(0,0,0,0.1);
+        transition: 0s;
+        cursor: pointer;
+    }
+    .tile-big h3, .tile-sm h3 {
+        font-size: 16px;
+        word-spacing: 100vw;
+        display: table-cell;
+        text-align: center;
+        vertical-align: middle;
+        color: white;
+    }
+    .tile-gallery {
+        width: 100%; /* inherit flexbox-wrapper-800 */
+        height: calc((100vw - 10px) * 0.5625); /* 16:9 */
+        margin: 5px 0;
+        background-size: 100%;
+        transition: 0s;
+    }
+    .tile-gallery:hover {
+        box-shadow:inset 0px 0px 0px 2px rgba(255, 255, 255, 0.8);
+        transition: 0s;
+    }
+    .tile-gallery h5{
+        color: rgba(255, 255, 255, 0.5);
+        position: relative;
+        top: 5px;
+        left: 5px;
+        margin: 0;
+    }
+    .tile-gallery h5:hover{
+        color: rgba(255, 255, 255, 1);
+        transition: 0;
+        cursor: pointer;
+    }
+}

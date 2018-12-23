@@ -1,0 +1,75 @@
+.academic-project-template-wrapper {
+    padding: 150px 0;
+    position: relative;
+    min-height: 1000px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    color: white;
+}
+.AcademicProjectBox{
+    width: 800px;
+    height: 500px;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.2);
+    margin: 40px 0;
+    padding: 20px 80px;
+    transition: 0.3s;
+}
+.AcademicProjectBox:hover {
+    cursor: pointer;
+    box-shadow:inset 0px 0px 0px 2px rgba(255, 255, 255, 0.8);
+    background-color: rgba(0, 0, 0, 0.4);
+    transition: 0.3s;
+}
+.AcademicProjectBox h2 {
+    margin: 40px;
+    text-transform: capitalize;
+}
+.AcademicProjectBox p {
+    text-align: left;
+    font-size: 14px;
+    line-height: 1.5em;
+}
+
+@media only screen and (max-width: 800px) {
+    .academic-project-template-wrapper {
+        padding: 100px 0;
+        position: relative;
+        min-height: 1000px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-direction: column;
+        color: white;
+    }
+    .academic-project-template-wrapper h1 {
+        font-size: 22px;
+    }
+    .AcademicProjectBox{
+        width: calc(100vw - 180px); /* padding width is 160px */
+        height: auto;
+        text-align: center;
+        background-color: rgba(0, 0, 0, 0.2);
+        margin: 40px 0;
+        padding: 20px 80px 100px 80px;
+        transition: 0.3s;
+    }
+    .AcademicProjectBox:hover {
+        cursor: pointer;
+        box-shadow:inset 0px 0px 0px 2px rgba(255, 255, 255, 0.8);
+        background-color: rgba(0, 0, 0, 0.4);
+        transition: 0.3s;
+    }
+    .AcademicProjectBox h2 {
+        margin: 40px;
+        text-transform: capitalize;
+        font-size: 20px;
+    }
+    .AcademicProjectBox p {
+        text-align: left;
+        font-size: 14px;
+        line-height: 1.5em;
+    }
+}

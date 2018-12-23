@@ -1,0 +1,181 @@
+.contact-wrapper {
+    position: relative;
+    background-image: linear-gradient(to bottom right, rgb(47,86,233),rgb(51,171,249),rgb(92,219,255));
+    width: 100vw;
+    height: 100vh;
+}
+.contact-close-icon{
+    position: absolute;
+    top: 5%;
+    right: 5%;
+    color: white;
+    transition: 0.3s;
+    z-index: 99;
+}
+.contact-close-icon:hover {
+    color: #F05408;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.contact-form {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    z-index: 98;
+}
+.contact-form p {
+    font-size: 18px;
+    color: white;
+    width: 300px;
+    text-align: center;
+    padding: 9px;
+}
+.contact-form-icon {
+    color: white;
+    margin: 9px 0;
+}
+.contact-form-name, .contact-form-email, .contact-form-message {
+    font-size: 18px;
+    margin: 9px 0;
+    border: 0;
+    border-radius: 10px;
+    padding: 9px;
+    text-align: center;
+    font-family: inherit;
+    min-width: 300px;
+    transition: min-width 0.3s;
+}
+.contact-form-message {
+    resize: none;
+    min-height: 100px;
+    transition: min-width 0.3s, min-height 0.3s ease 0.3s;
+}
+.contact-form-name:focus, .contact-form-email:focus, .contact-form-message:focus {
+    min-width: 400px;
+    transition: min-width 0.3s
+}
+.contact-form-message:focus {
+    min-height: 200px;
+    transition: min-width 0.3s ease 0.3s, min-height 0.3s;
+}
+.contact-form-error {
+    color: #F05408 !important;
+}
+
+
+.contact-form button{
+    height: 36px;
+    width: 318px;
+    background-color: white;
+    font-size: 18px;
+    border: 0;
+    border-radius: 10px;
+    margin: 9px 0;
+    transition: 0.3s;
+    font-family: inherit;
+}
+.contact-form button:hover{
+    cursor: pointer;
+    color: white;
+    background-color: #F05408;
+    transition: 0.3s;
+}
+
+#display {
+    position: fixed;
+    z-index: 1;
+}
+
+@media only screen and (max-width: 800px) {
+    .contact-wrapper {
+        position: relative;
+        background-image: linear-gradient(to bottom right, rgb(47,86,233),rgb(51,171,249),rgb(92,219,255));
+        width: 100vw;
+        height: 100vh;
+    }
+    .contact-close-icon{
+        position: absolute;
+        top: 5%;
+        right: 5%;
+        color: white;
+        transition: 0s;
+        z-index: 99;
+    }
+    .contact-close-icon:hover {
+        color: #F05408;
+        cursor: pointer;
+        transition: 0s;
+    }
+    .contact-form {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        width: 100%;
+        z-index: 98;
+    }
+    .contact-form p {
+        font-size: 14px;
+        width: calc(100vw - 100px);
+    }
+    .contact-form-icon {
+        color: white;
+        margin: 9px 0;
+    }
+    .contact-form-name, .contact-form-email, .contact-form-message {
+        font-size: 16px;
+        margin: 9px 0;
+        border: 0;
+        border-radius: 10px;
+        padding: 9px;
+        text-align: center;
+        font-family: inherit;
+        min-width: calc(100vw - 100px);
+        transition: 0.3s;
+    }
+    .contact-form-message {
+        resize: none;
+        min-height: 150px;
+    }
+    .contact-form-name:focus, .contact-form-email:focus, .contact-form-message:focus {
+        min-width: calc(100vw - 100px);
+        transition: 0s;
+    }
+    .contact-form-message:focus {
+        min-height: 150px;
+    }
+    .contact-form-error {
+        color: #F05408 !important;
+    }
+
+
+    .contact-form button{
+        height: 36px;
+        min-width: calc(100vw - 80px);
+        width: calc(100vw - 80px);;
+        background-color: white;
+        font-size: 16px;
+        border: 0;
+        border-radius: 10px;
+        margin: 9px 0;
+        transition: 0s;
+        font-family: inherit;
+    }
+    .contact-form button:hover{
+        cursor: pointer;
+        color: white;
+        background-color: #F05408;
+        transition: 0s;
+    }
+
+    #display {
+        position: fixed;
+        z-index: 1;
+    }
+}

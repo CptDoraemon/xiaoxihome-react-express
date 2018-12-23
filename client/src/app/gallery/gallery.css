@@ -1,0 +1,224 @@
+
+/* SHOW */
+.showcase {
+    background-color: black;
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+}
+
+.show {
+    position: fixed;
+    background-size: auto 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
+}
+.show-blur-bg {
+    position: fixed;
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
+    filter: blur(10px);
+    transform: scale(1.1);
+    opacity: 0.2;
+}
+
+
+/* HUD */
+.hud-on {
+    opacity: 1;
+    transition: 0.3s
+}
+.hud-off {
+    opacity: 0.1;
+    transition: 3s
+}
+.nav-buttons {
+    position: fixed;
+    width: 100vw;
+    top: 50px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    z-index: 99;
+}
+.tooltip{
+    position: relative;
+    padding: 0 16px;
+    color: white;
+    transition: 0.3s;
+    width: 32px;
+}
+.tooltip-text{
+    position: absolute;
+    font-size: 12px;
+    background-color: #F05408;
+    border: 0;
+    border-radius: 8px;
+    width: 48px;
+    padding: 5px 10px;
+    top: 110%;
+    left: 0;
+    text-align: center;
+    visibility: hidden;
+    color: white !important;
+}
+.tooltip:hover .tooltip-text{
+    visibility: visible;
+}
+.tooltip:hover {
+    cursor: pointer;
+    color: #F05408;
+    transition: 0.3s;
+}
+
+.menu {
+    color: white;
+    position: fixed;
+    top: 20px;
+    width: 100vw;
+    text-align: center;
+    z-index: 99;
+}
+.menu ul {
+    margin: 0;
+    padding: 0;
+    z-index: 99;
+}
+.menu li {
+    display: inline;
+    z-index: 99;
+    transition: 0.3s;
+}
+.menu li:hover {
+    cursor: pointer;
+    color: #F05408;
+    transition: 0.3s;
+}
+.thumbnail-active-text {
+    position: fixed;
+    color: white;
+    font-size: 12px;
+    background-color: #F05408;
+    border: 0;
+    border-radius: 8px;
+    padding: 5px 10px;
+    width: fit-content;
+}
+.thumbnail-active-image {
+    position: fixed;
+    width: 200px;
+    height: 100px;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+.thumbnail-inactive {
+    display: none;
+}
+
+.text {
+    position: fixed;
+    bottom: 50px;
+    width: 100%;
+    text-align: center;
+    color: white;
+    left: 0;
+}
+
+@media only screen and (max-width: 800px) {
+
+    /* SHOW */
+    .showcase {
+        background-color: black;
+        width: 100vw;
+        height: 100vh;
+        position: relative;
+    }
+
+    .show {
+        position: fixed;
+        background-size: auto 100%;
+        background-position: center;
+        background-repeat: no-repeat;
+        width: 100%;
+        height: 100%;
+    }
+    .show-blur-bg {
+        display: none;
+    }
+
+
+    /* HUD */
+    .hud-on {
+        opacity: 1;
+        transition: 0.3s
+    }
+    .hud-off {
+        opacity: 0.1;
+        transition: 3s
+    }
+    .nav-buttons {
+        position: fixed;
+        width: 100vw;
+        top: 85%;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: center;
+        z-index: 99;
+    }
+    .tooltip{
+        position: relative;
+        padding: 0 16px;
+        color: white;
+        transition: 0.3s;
+        width: 32px;
+    }
+    .tooltip-text{
+        display: none;
+    }
+
+    .tooltip:hover {
+        cursor: pointer;
+        color: #F05408;
+        transition: 0.3s;
+    }
+
+    .menu {
+        color: white;
+        position: fixed;
+        left: 25px;
+        top: 20px;
+        width: calc(100vw - 50px);
+        text-align: center;
+        z-index: 99;
+    }
+    .menu ul {
+        display: none;
+    }
+    .thumbnail-active-text {
+        display: none;
+    }
+    .thumbnail-active-image {
+        display: none;
+    }
+    .thumbnail-inactive {
+        display: none;
+    }
+
+    .text {
+        position: fixed;
+        top: 10%;
+        left: 0;
+        width: 100%;
+        height: 100px;
+        text-align: center;
+        color: white;
+    }
+}
