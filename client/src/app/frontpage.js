@@ -129,10 +129,7 @@ class Frontpage extends React.Component {
         ];
     }
     scrollToWorkRef = () => {
-        window.scrollTo({
-            top: this.workRef.current.offsetTop,
-            behavior: 'smooth'
-        })
+        window.scrollTo(0, this.workRef.current.offsetTop)
     };
     loadImage(src) {
         return new Promise((resolve, reject) => {
