@@ -7,6 +7,8 @@ import { MouseIcon } from "../component/mouseIcon";
 import { Link } from 'react-router-dom';
 import './frontpage.css';
 
+const myScrollTo = require('../tools/myScrollTo');
+
 function Cover(props) {
     // It receives a prop onClickMouseIcon={this.scrollToWorkRef}, bgIsLoaded
     return (
@@ -129,7 +131,7 @@ class Frontpage extends React.Component {
         ];
     }
     scrollToWorkRef = () => {
-        window.scrollTo(0, this.workRef.current.offsetTop)
+        myScrollTo(this.workRef.current.offsetTop);
     };
     loadImage(src) {
         return new Promise((resolve, reject) => {
