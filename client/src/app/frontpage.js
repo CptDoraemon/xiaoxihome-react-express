@@ -210,6 +210,7 @@ class Frontpage extends React.Component {
         this.academicTiles.map((el) => {
             const value = this.translateX * -1;
             el.style.transform = 'translateX('+value+'px)';
+            el.style.transition = '1s';
         });
 
         // web
@@ -222,6 +223,7 @@ class Frontpage extends React.Component {
         }
         this.webTiles.map((el) => {
             el.style.transform = 'translateX('+this.translateX+'px)';
+            el.style.transition = '1s';
         });
 
         // gallery
@@ -233,7 +235,8 @@ class Frontpage extends React.Component {
             this.galleryTilesStatus.push(false);
         }
         this.galleryTiles.map((el) => {
-            el.style.opacity = 0
+            el.style.opacity = 0;
+            el.style.transition = '1s';
         });
     }
     animation() {
@@ -251,72 +254,48 @@ class Frontpage extends React.Component {
             return whichTileAnimate;
         }
         // academic
-        function academicAnimation(tile) {
-            let currentTranslateX = - this.translateX;
-            const interval = this.translateX / (0.5 * 60);
-            function loop() {
-                tile.style.transform = 'translateX('+currentTranslateX+'px)';
-                if (currentTranslateX < 0) {
-                    currentTranslateX += interval;
-                    requestAnimationFrame(loop);
-                }
-            }
-            requestAnimationFrame(loop);
-        }
-        academicAnimation = academicAnimation.bind(this);
+
+        // function academicAnimation(tile) {
+        //     let currentTranslateX = - this.translateX;
+        //     const interval = this.translateX / (0.5 * 60);
+        //     function loop() {
+        //         tile.style.transform = 'translateX('+currentTranslateX+'px)';
+        //         if (currentTranslateX < 0) {
+        //             currentTranslateX += interval;
+        //             requestAnimationFrame(loop);
+        //         }
+        //     }
+        //     requestAnimationFrame(loop);
+        // }
+        // academicAnimation = academicAnimation.bind(this);
+        // use css animation instead
+
         if (scrolledBottom >= this.academicTop && scrolledBottom <= this.academicBottom && !this.academicAnimationDone) {
             this.academicTitle.style.opacity = (scrolledBottom - this.academicTop) / (this.academicBottom - this.academicTop);
 
             let whichTileAnimate = whichTileAnimating(this.academicCheckPoints);
             if (!this.academicTilesStatus[whichTileAnimate]) {
-                academicAnimation(this.academicTiles[whichTileAnimate]);
+                this.academicTilesStatus[whichTileAnimate] = true;
+                this.academicTiles[whichTileAnimate].style.transform = 'translateX(0px)';
             }
-            this.academicTilesStatus[whichTileAnimate] = true;
         }
         // web
-        function webAnimation(tile) {
-            let currentTranslateX = this.translateX;
-            const interval = this.translateX / (0.5 * 60);
-            function loop() {
-                tile.style.transform = 'translateX('+currentTranslateX+'px)';
-                if (currentTranslateX > 0) {
-                    currentTranslateX -= interval;
-                    requestAnimationFrame(loop);
-                }
-            }
-            requestAnimationFrame(loop);
-        }
-        webAnimation = webAnimation.bind(this);
         if (scrolledBottom >= this.webTop && scrolledBottom <= this.webBottom && !this.webAnimationDone) {
 
             this.webTitle.style.opacity = (scrolledBottom - this.webTop) / (this.webBottom - this.webTop);
             const whichTileAnimate = whichTileAnimating(this.webCheckPoints);
             if (!this.webTilesStatus[whichTileAnimate]) {
-                webAnimation(this.webTiles[whichTileAnimate]);
+                this.webTilesStatus[whichTileAnimate] = true;
+                this.webTiles[whichTileAnimate].style.transform = 'translateX(0px)';
             }
-            this.webTilesStatus[whichTileAnimate] = true;
         }
         // gallery
-        function galleryAnimation(tile) {
-            let currentOpacity = 0;
-            const interval = 1 / (1 * 60);
-            function loop() {
-                tile.style.opacity = currentOpacity;
-                if (interval < 1) {
-                    currentOpacity += interval;
-                    requestAnimationFrame(loop);
-                }
-            }
-            requestAnimationFrame(loop);
-        }
-        galleryAnimation = galleryAnimation.bind(this);
-
         if (scrolledBottom >= this.galleryTop && scrolledBottom <= this.galleryBottom && !this.galleryAnimationDone) {
             const whichTileAnimate = whichTileAnimating(this.galleryCheckPoints);
             if (!this.galleryTilesStatus[whichTileAnimate]) {
-                galleryAnimation(this.galleryTiles[whichTileAnimate]);
+                this.galleryTilesStatus[whichTileAnimate] = true;
+                this.galleryTiles[whichTileAnimate].style.opacity = 1;
             }
-            this.galleryTilesStatus[whichTileAnimate] = true;
         }
 
         // finish
@@ -325,6 +304,7 @@ class Frontpage extends React.Component {
             this.academicTitle.style.opacity = 1;
             this.academicTiles.map(el => {
                 el.style.transform = 'translateX(0px)';
+                el.style.transition = '0.3s'; //0.3 is the default in css
             })
         }
         if (scrolledBottom > this.webBottom && !this.webAnimationDone) {
@@ -332,12 +312,14 @@ class Frontpage extends React.Component {
             this.webTitle.style.opacity = 1;
             this.webTiles.map(el => {
                 el.style.transform = 'translateX(0px)';
+                el.style.transition = '0.3s'; //0.3 is the default in css
             })
         }
         if (scrolledBottom > this.galleryBottom && !this.galleryAnimationDone) {
             this.galleryAnimationDone = true;
             this.galleryTiles.map(el => {
                 el.style.opacity = 1;
+                el.style.transition = '0.3s'; //0.3 is the default in css
             })
         }
     }

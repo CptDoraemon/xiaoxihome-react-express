@@ -144,11 +144,11 @@
     background-position: center;
     background-size: cover;
     background-image: radial-gradient(#434343, #000000);
-    transition: 0s;
+    transition: 0.3s;
 }
 .tile-gallery:hover {
     box-shadow:inset 0px 0px 0px 2px rgba(255, 255, 255, 0.8);
-    transition: 0.2s;
+    transition: 0.3s;
 }
 .tile-gallery h5{
     color: rgba(255, 255, 255, 0.5);
