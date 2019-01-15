@@ -3,7 +3,7 @@ module.exports = myScrollTo;
 function myScrollTo(targetY) {
     const scrolled = window.scrollY;
     const diff = Math.abs(targetY - scrolled);
-    const time = 0.3;
+    const time = 1;
     let speed = diff/(60*time);
     speed = scrolled >= targetY ? -speed : speed;
     let step = scrolled + speed;
