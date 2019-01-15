@@ -1,6 +1,7 @@
 .frontpage-main{
     width: 100vw;
     max-width: 100%; /* offset scrollbar width */
+    overflow: hidden;
 }
 .cover-wrapper{
     width: 100%;
