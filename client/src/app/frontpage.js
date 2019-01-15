@@ -66,7 +66,7 @@ class ProjectList extends React.Component {
             const linkArray = [...this.props.listAndArray.academicProjectLinkArray];
             return (
                 <div className='project-container'>
-                    <h2>Academic Project</h2>
+                    <h2 id='academicTitle'>Academic Project</h2>
                     <div className='flexbox-wrapper-800' id='academic'>
                         {array.map((i, index) => {
                             const tileSize = (index === 1 || index === 3) ? 'tile-big' : 'tile-sm';
@@ -83,7 +83,7 @@ class ProjectList extends React.Component {
             const linkArray = [...this.props.listAndArray.webAppProjectLinkArray];
             return (
                 <div className='project-container'>
-                    <h2>Web App Project</h2>
+                    <h2 id='webTitle'>Web App Project</h2>
                     <div className='flexbox-wrapper-800' id='web'>
                         {array.map((i, index) => {
                             const tileSize = (index === 0 || index === 5) ? 'tile-big' : 'tile-sm';
@@ -120,8 +120,6 @@ class Frontpage extends React.Component {
         this.academicRef = React.createRef();
         this.webRef = React.createRef();
         this.galleryRef = React.createRef();
-        this.academicTiles = [];
-        this.webTiles = [];
         this.academicAnimationDone = false;
         this.webAnimationDone = false;
         this.academicBox = null;
@@ -172,39 +170,49 @@ class Frontpage extends React.Component {
         // }
         this.academicBox = document.getElementById('academic');
         this.webBox = document.getElementById('web');
+        this.academicTitle = document.getElementById('academicTitle');
+        this.webTitle = document.getElementById('webTitle');
 
         this.academicBox.style.transform = 'translateX(-1000px)';
         this.webBox.style.transform = 'translateX(1000px)';
+        this.academicTitle.style.opacity = 0;
+        this.webTitle.style.opacity = 0;
     }
     animation() {
         // academic
         const scrolled = window.scrollY;
         const scrolledBottom = scrolled + window.innerHeight;
         const academicTop = this.academicBox.offsetTop;
-        const academicHeight = this.academicBox.offsetHeight;
+        const academicHeight = this.academicBox.offsetHeight + 200;
         const academicBottom = academicTop + academicHeight;
         const init = -1000;
         const translateX = init - init*((scrolledBottom - academicTop)/academicHeight);
+        const opacity = (scrolledBottom - academicTop)/academicHeight;
         if (scrolledBottom >= academicTop && scrolledBottom <= academicBottom && !this.academicAnimationDone) {
-            this.academicBox.style.transform = 'translateX('+translateX+'px)'
+            this.academicBox.style.transform = 'translateX('+translateX+'px)';
+            this.academicTitle.style.opacity = opacity;
         }
         // web
         const webTop = this.webBox.offsetTop;
-        const webHeight = this.webBox.offsetHeight;
+        const webHeight = this.webBox.offsetHeight + 200;
         const webBottom = webTop + webHeight;
         const initPrime = 1000;
         const translateXPrime = initPrime - initPrime*((scrolledBottom - webTop)/webHeight);
+        const opacityPrime = (scrolledBottom - webTop)/webHeight;
         if (scrolledBottom >= webTop && scrolledBottom <= webBottom && !this.webAnimationDone) {
-            this.webBox.style.transform = 'translateX('+translateXPrime+'px)'
+            this.webBox.style.transform = 'translateX('+translateXPrime+'px)';
+            this.webTitle.style.opacity = opacityPrime;
         }
         //
-        if (scrolledBottom > academicBottom) {
+        if (scrolledBottom > academicBottom && !this.academicAnimationDone) {
             this.academicAnimationDone = true;
-            this.academicBox.style.transform = 'none'
+            this.academicBox.style.transform = 'none';
+            this.academicTitle.style.opacity = 1;
         }
-        if (scrolledBottom > webBottom) {
+        if (scrolledBottom > webBottom && !this.webAnimationDone) {
             this.webAnimationDone = true;
-            this.webBox.style.transform = 'none'
+            this.webBox.style.transform = 'none';
+            this.academicTitle.style.opacity = 1;
         }
     }
     componentDidMount() {
