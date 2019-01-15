@@ -208,15 +208,15 @@ class Frontpage extends React.Component {
         }
     }
     componentDidMount() {
-        window.innerWidth > 800 ?
-            this.loadImage('https://s3.us-east-2.amazonaws.com/xiaoxihome/cover-5k.jpg').then(() => this.setState({bgIsLoaded: true})) :
-            this.loadImage('https://s3.us-east-2.amazonaws.com/xiaoxihome/cover-mobile.jpg').then(() => this.setState({bgIsLoaded: true}));
-
         window.addEventListener('scroll', this.galleryLazyLoad);
         if (window.innerWidth > 800 && window.scrollY < document.getElementById('academic').offsetTop) {
             this.prepareForAnimation();
             window.addEventListener('scroll', this.animation);
         }
+
+        window.innerWidth > 800 ?
+            this.loadImage('https://s3.us-east-2.amazonaws.com/xiaoxihome/cover-5k.jpg').then(() => this.setState({bgIsLoaded: true})) :
+            this.loadImage('https://s3.us-east-2.amazonaws.com/xiaoxihome/cover-mobile.jpg').then(() => this.setState({bgIsLoaded: true}));
     }
     componentWillUnmount() {
         window.removeEventListener('scroll', this.galleryLazyLoad);
