@@ -208,7 +208,8 @@ class Frontpage extends React.Component {
             this.academicTilesStatus.push(false);
         }
         this.academicTiles.map((el) => {
-            el.style.transform = 'translateX(-1000px)';
+            const value = this.translateX * -1;
+            el.style.transform = 'translateX('+value+'px)';
         });
 
         // web
@@ -220,7 +221,7 @@ class Frontpage extends React.Component {
             this.webTilesStatus.push(false);
         }
         this.webTiles.map((el) => {
-            el.style.transform = 'translateX(1000px)';
+            el.style.transform = 'translateX('+this.translateX+'px)';
         });
 
         // gallery
