@@ -179,9 +179,9 @@ class Frontpage extends React.Component {
         this.webTitle.style.opacity = 0;
     }
     animation() {
-        // academic
         const scrolled = window.scrollY;
         const scrolledBottom = scrolled + window.innerHeight;
+        // academic
         const academicTop = this.academicBox.offsetTop;
         const academicHeight = this.academicBox.offsetHeight + 200;
         const academicBottom = academicTop + academicHeight;
@@ -190,6 +190,7 @@ class Frontpage extends React.Component {
         const opacity = (scrolledBottom - academicTop)/academicHeight;
         if (scrolledBottom >= academicTop && scrolledBottom <= academicBottom && !this.academicAnimationDone) {
             this.academicBox.style.transform = 'translateX('+translateX+'px)';
+            this.academicBox.style.opacity = opacity;
             this.academicTitle.style.opacity = opacity;
         }
         // web
@@ -201,6 +202,7 @@ class Frontpage extends React.Component {
         const opacityPrime = (scrolledBottom - webTop)/webHeight;
         if (scrolledBottom >= webTop && scrolledBottom <= webBottom && !this.webAnimationDone) {
             this.webBox.style.transform = 'translateX('+translateXPrime+'px)';
+            this.webBox.style.opacity = opacityPrime;
             this.webTitle.style.opacity = opacityPrime;
         }
         //
@@ -208,11 +210,13 @@ class Frontpage extends React.Component {
             this.academicAnimationDone = true;
             this.academicBox.style.transform = 'none';
             this.academicTitle.style.opacity = 1;
+            this.academicBox.style.opacity = 1;
         }
         if (scrolledBottom > webBottom && !this.webAnimationDone) {
             this.webAnimationDone = true;
             this.webBox.style.transform = 'none';
-            this.academicTitle.style.opacity = 1;
+            this.webTitle.style.opacity = 1;
+            this.webBox.style.opacity = 1;
         }
     }
     componentDidMount() {
