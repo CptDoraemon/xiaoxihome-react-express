@@ -9,18 +9,21 @@ import './frontpage.css';
 
 const myScrollTo = require('../tools/myScrollTo');
 
-function Cover(props) {
+class Cover extends React.Component{
     // It receives a prop onClickMouseIcon={this.scrollToWorkRef}, bgIsLoaded
-    return (
-        <div className='cover-wrapper'>
-            <div className={props.bgIsLoaded ? 'cover-bg-loaded' : 'cover-bg'}>
+    render() {
+        return (
+            <div className='cover-wrapper'>
+                <div className={this.props.bgIsLoaded ? 'cover-bg-loaded' : 'cover-bg'}>
+                </div>
+                <canvas id="bgBlur"/>
+                <div className='cover'>
+                    <h1 className='cover-intro'>Welcome To Xiaoxi's Home!</h1>
+                    <MouseIcon className='mouse-icon' onClickMouseIcon={this.props.onClickMouseIcon}/>
+                </div>
             </div>
-            <div className='cover'>
-                <h1 className='cover-intro'>Welcome To Xiaoxi's Home!</h1>
-                <MouseIcon className='mouse-icon' onClickMouseIcon={props.onClickMouseIcon}/>
-            </div>
-        </div>
-    )
+        )
+    }
 }
 
 function Tile(props) {
@@ -143,7 +146,7 @@ class Frontpage extends React.Component {
     loadImage(src) {
         return new Promise((resolve, reject) => {
             const image = new Image();
-            image.onload = () => resolve(src);
+            image.onload = () => resolve(image);
             image.onerror = err => reject(err);
             image.src = src;
         });
@@ -171,7 +174,7 @@ class Frontpage extends React.Component {
 
         function generateCheckPoints (el, checkPointsArrayName) {
             const top = el.offsetTop;
-            const height = el.offsetHeight + 200; // 200 more pixel than bottom, extends animation
+            const height = el.offsetHeight + 100; // 200 more pixel than bottom, extends animation
             this[checkPointsArrayName] = [];
             (() => {
                 let start = top;
@@ -331,9 +334,14 @@ class Frontpage extends React.Component {
             window.addEventListener('scroll', this.animation);
         }
 
-        window.innerWidth > 800 ?
-            this.loadImage('https://s3.us-east-2.amazonaws.com/xiaoxihome/cover-5k.jpg').then(() => this.setState({bgIsLoaded: true})) :
+        if (window.innerWidth > 800) {
+            this.loadImage('https://s3.us-east-2.amazonaws.com/xiaoxihome/cover-5k.jpg')
+                .then((image) => {
+                    this.setState({bgIsLoaded: true})
+                })
+        } else {
             this.loadImage('https://s3.us-east-2.amazonaws.com/xiaoxihome/cover-mobile.jpg').then(() => this.setState({bgIsLoaded: true}));
+        }
     }
     componentWillUnmount() {
         window.removeEventListener('scroll', this.galleryLazyLoad);
