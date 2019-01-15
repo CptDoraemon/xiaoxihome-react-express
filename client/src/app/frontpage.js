@@ -35,6 +35,7 @@ function Tile(props) {
                 <div
                     className={props.className}
                     {...image}
+                    id={props.id}
                     >
                     <h5>{props.tileName}</h5>
                 </div>
@@ -45,7 +46,8 @@ function Tile(props) {
     return (
         <Link to={props.link}>
             <div
-                className={props.className}>
+                className={props.className}
+                id={props.id}>
                 <h3>{props.tileName}</h3>
             </div>
         </Link>
@@ -65,10 +67,10 @@ class ProjectList extends React.Component {
             return (
                 <div className='project-container'>
                     <h2>Academic Project</h2>
-                    <div className='flexbox-wrapper-800'>
+                    <div className='flexbox-wrapper-800' id='academic'>
                         {array.map((i, index) => {
                             const tileSize = (index === 1 || index === 3) ? 'tile-big' : 'tile-sm';
-                            return <Tile link={linkArray[index]} tileName={i} className={tileSize} />
+                            return <Tile link={linkArray[index]} tileName={i} className={tileSize} id={'academicTile' + index}/>
                         })}
                     </div>
                 </div>
@@ -82,10 +84,10 @@ class ProjectList extends React.Component {
             return (
                 <div className='project-container'>
                     <h2>Web App Project</h2>
-                    <div className='flexbox-wrapper-800'>
+                    <div className='flexbox-wrapper-800' id='web'>
                         {array.map((i, index) => {
                             const tileSize = (index === 0 || index === 5) ? 'tile-big' : 'tile-sm';
-                            return <Tile link={linkArray[index]} tileName={i} className={tileSize} />
+                            return <Tile link={linkArray[index]} tileName={i} className={tileSize} id={'webTile' + index}/>
                         })}
                     </div>
                 </div>
@@ -103,7 +105,7 @@ class ProjectList extends React.Component {
                         {array.map((i, index) => {
                             const tileSize = 'tile-gallery';
                             const imgUrl = this.props.imgUrls[index];
-                            return <Tile link={linkArray[index]} tileName={i} className={tileSize} imgUrl={imgUrl} imgIsLoaded={this.props.imgIsLoaded}/>
+                            return <Tile link={linkArray[index]} tileName={i} className={tileSize} imgUrl={imgUrl} imgIsLoaded={this.props.imgIsLoaded} id={'galleryTile' + index}/>
                         })}
                     </div>
                 </div>
@@ -115,7 +117,15 @@ class ProjectList extends React.Component {
 class Frontpage extends React.Component {
     constructor(props) {
         super(props);
-        this.workRef = React.createRef();
+        this.academicRef = React.createRef();
+        this.webRef = React.createRef();
+        this.galleryRef = React.createRef();
+        this.academicTiles = [];
+        this.webTiles = [];
+        this.academicAnimationDone = false;
+        this.webAnimationDone = false;
+        this.academicBox = null;
+        this.webBox = null;
         this.state = {
             toWorkRef: this.props.toWorkRef,
             bgIsLoaded: false,
@@ -129,9 +139,12 @@ class Frontpage extends React.Component {
             'https://s3.us-east-2.amazonaws.com/xiaoxihome/galleryphoto/preview/yorku.png',
             'https://s3.us-east-2.amazonaws.com/xiaoxihome/galleryphoto/preview/astro.png'
         ];
+        this.galleryLazyLoad = this.galleryLazyLoad.bind(this);
+        this.prepareForAnimation = this.prepareForAnimation.bind(this);
+        this.animation = this.animation.bind(this);
     }
     scrollToWorkRef = () => {
-        myScrollTo(this.workRef.current.offsetTop);
+        myScrollTo(this.academicRef.current.offsetTop);
     };
     loadImage(src) {
         return new Promise((resolve, reject) => {
@@ -141,12 +154,73 @@ class Frontpage extends React.Component {
             image.src = src;
         });
     }
-    componentDidMount() {
-        if (this.state.toWorkRef) this.scrollToWorkRef();
+    galleryLazyLoad() {
+        const scrolled = window.scrollY;
+        const scrolledBottom = scrolled + window.innerHeight;
+        const galleryTop = this.galleryRef.current.offsetTop;
+        if (scrolledBottom >= galleryTop && !this.state.imgIsLoaded) {
+            this.setState({imgIsLoaded: true})
+        }
+    }
+    prepareForAnimation() {
+        // let el;
+        // for (let i=0; i<6; i++) {
+        //     el = document.getElementById('academicTile' + i);
+        //     this.academicTiles.push(el);
+        //     el = document.getElementById('webTile' + i);
+        //     this.webTiles.push(el);
+        // }
+        this.academicBox = document.getElementById('academic');
+        this.webBox = document.getElementById('web');
 
+        this.academicBox.style.transform = 'translateX(-1000px)';
+        this.webBox.style.transform = 'translateX(1000px)';
+    }
+    animation() {
+        // academic
+        const scrolled = window.scrollY;
+        const scrolledBottom = scrolled + window.innerHeight;
+        const academicTop = this.academicBox.offsetTop;
+        const academicHeight = this.academicBox.offsetHeight;
+        const academicBottom = academicTop + academicHeight;
+        const init = -1000;
+        const translateX = init - init*((scrolledBottom - academicTop)/academicHeight);
+        if (scrolledBottom >= academicTop && scrolledBottom <= academicBottom && !this.academicAnimationDone) {
+            this.academicBox.style.transform = 'translateX('+translateX+'px)'
+        }
+        // web
+        const webTop = this.webBox.offsetTop;
+        const webHeight = this.webBox.offsetHeight;
+        const webBottom = webTop + webHeight;
+        const initPrime = 1000;
+        const translateXPrime = initPrime - initPrime*((scrolledBottom - webTop)/webHeight);
+        if (scrolledBottom >= webTop && scrolledBottom <= webBottom && !this.webAnimationDone) {
+            this.webBox.style.transform = 'translateX('+translateXPrime+'px)'
+        }
+        //
+        if (scrolledBottom > academicBottom) {
+            this.academicAnimationDone = true;
+            this.academicBox.style.transform = 'none'
+        }
+        if (scrolledBottom > webBottom) {
+            this.webAnimationDone = true;
+            this.webBox.style.transform = 'none'
+        }
+    }
+    componentDidMount() {
         window.innerWidth > 800 ?
-            this.loadImage('https://s3.us-east-2.amazonaws.com/xiaoxihome/cover-5k.jpg').then(() => this.setState({bgIsLoaded: true, imgIsLoaded: true})) :
-            this.loadImage('https://s3.us-east-2.amazonaws.com/xiaoxihome/cover-mobile.jpg').then(() => this.setState({bgIsLoaded: true, imgIsLoaded: true}));
+            this.loadImage('https://s3.us-east-2.amazonaws.com/xiaoxihome/cover-5k.jpg').then(() => this.setState({bgIsLoaded: true})) :
+            this.loadImage('https://s3.us-east-2.amazonaws.com/xiaoxihome/cover-mobile.jpg').then(() => this.setState({bgIsLoaded: true}));
+
+        window.addEventListener('scroll', this.galleryLazyLoad);
+        if (window.innerWidth > 800 && window.scrollY < document.getElementById('academic').offsetTop) {
+            this.prepareForAnimation();
+            window.addEventListener('scroll', this.animation);
+        }
+    }
+    componentWillUnmount() {
+        window.removeEventListener('scroll', this.galleryLazyLoad);
+        window.removeEventListener('scroll', this.animation);
     }
     render() {
         //It receives props: listAndLink
@@ -155,15 +229,16 @@ class Frontpage extends React.Component {
                 <HeaderCover listAndLink={this.props.listAndLink} />
                 <Cover onClickMouseIcon={this.scrollToWorkRef} bgIsLoaded={this.state.bgIsLoaded}/>
                 <div className={'academic-and-web'}>
-                    <div ref={this.workRef}/>
+                    <div ref={this.academicRef}/>
                     <ProjectList
                         type='academic'
                         listAndArray={this.props.listAndLink} />
+                    <div ref={this.webRef}/>
                     <ProjectList
                         type='webApp'
                         listAndArray={this.props.listAndLink} />
                 </div>
-                <div className={'gallery'}>
+                <div className={'gallery'} ref={this.galleryRef}>
                     <ProjectList
                         type='gallery'
                         listAndArray={this.props.listAndLink}
