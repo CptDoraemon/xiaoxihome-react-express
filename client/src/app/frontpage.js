@@ -101,7 +101,7 @@ class ProjectList extends React.Component {
             return (
                 <div className='project-container'>
                     <h2>Photography</h2>
-                    <div className='flexbox-wrapper-800'>
+                    <div className='flexbox-wrapper-800' id='gallery'>
                         {array.map((i, index) => {
                             const tileSize = 'tile-gallery';
                             const imgUrl = this.props.imgUrls[index];
@@ -120,10 +120,6 @@ class Frontpage extends React.Component {
         this.academicRef = React.createRef();
         this.webRef = React.createRef();
         this.galleryRef = React.createRef();
-        this.academicAnimationDone = false;
-        this.webAnimationDone = false;
-        this.academicBox = null;
-        this.webBox = null;
         this.state = {
             toWorkRef: this.props.toWorkRef,
             bgIsLoaded: false,
@@ -161,67 +157,193 @@ class Frontpage extends React.Component {
         }
     }
     prepareForAnimation() {
-        // let el;
-        // for (let i=0; i<6; i++) {
-        //     el = document.getElementById('academicTile' + i);
-        //     this.academicTiles.push(el);
-        //     el = document.getElementById('webTile' + i);
-        //     this.webTiles.push(el);
-        // }
+        // initiate variables
+        this.academicAnimationDone = false;
+        this.webAnimationDone = false;
+        this.galleryAnimationDone = false;
+
         this.academicBox = document.getElementById('academic');
         this.webBox = document.getElementById('web');
+        this.galleryBox = document.getElementById('gallery');
         this.academicTitle = document.getElementById('academicTitle');
         this.webTitle = document.getElementById('webTitle');
+        this.translateX = 1000;
 
-        this.academicBox.style.transform = 'translateX(-1000px)';
-        this.webBox.style.transform = 'translateX(1000px)';
+        function generateCheckPoints (el, checkPointsArrayName) {
+            const top = el.offsetTop;
+            const height = el.offsetHeight; // 200 more pixel than bottom, extends animation
+            this[checkPointsArrayName] = [];
+            (() => {
+                let start = top;
+                let interval = height / 6;
+                for (let i=0; i<7; i++) {
+                    this[checkPointsArrayName].push(start);
+                    start += interval;
+                }
+            })();
+        }
+        generateCheckPoints = generateCheckPoints.bind(this);
+        generateCheckPoints(this.academicBox, 'academicCheckPoints');
+        generateCheckPoints(this.webBox, 'webCheckPoints');
+        generateCheckPoints(this.galleryBox, 'galleryCheckPoints');
+
+        this.academicTop = this.academicCheckPoints[0];
+        this.academicBottom = this.academicCheckPoints[this.academicCheckPoints.length - 1];
+        this.webTop = this.webCheckPoints[0];
+        this.webBottom = this.webCheckPoints[this.webCheckPoints.length - 1];
+        this.galleryTop = this.galleryCheckPoints[0];
+        this.galleryBottom = this.galleryCheckPoints[this.galleryCheckPoints.length - 1];
+
+        // move components to the start point of animation
         this.academicTitle.style.opacity = 0;
         this.webTitle.style.opacity = 0;
+
+        let el;
+        // academic
+        this.academicTiles = [];
+        this.academicTilesStatus = [];
+        for (let i=0; i<6; i++) {
+            el = document.getElementById('academicTile' + i);
+            this.academicTiles.push(el);
+            this.academicTilesStatus.push(false);
+        }
+        this.academicTiles.map((el) => {
+            el.style.transform = 'translateX(-1000px)';
+        });
+
+        // web
+        this.webTiles = [];
+        this.webTilesStatus = [];
+        for (let i=0; i<6; i++) {
+            el = document.getElementById('webTile' + i);
+            this.webTiles.push(el);
+            this.webTilesStatus.push(false);
+        }
+        this.webTiles.map((el) => {
+            el.style.transform = 'translateX(1000px)';
+        });
+
+        // gallery
+        this.galleryTiles = [];
+        this.galleryTilesStatus = [];
+        for (let i=0; i<6; i++) {
+            el = document.getElementById('galleryTile' + i);
+            this.galleryTiles.push(el);
+            this.galleryTilesStatus.push(false);
+        }
+        this.galleryTiles.map((el) => {
+            el.style.opacity = 0
+        });
     }
     animation() {
         const scrolled = window.scrollY;
         const scrolledBottom = scrolled + window.innerHeight;
+        function whichTileAnimating(checkPointArray) {
+            let whichTileAnimate = -1;
+            for (let i=0; i<6; i++) {
+                if (scrolledBottom >= checkPointArray[i]) {
+                    whichTileAnimate++
+                } else {
+                    break
+                }
+            }
+            return whichTileAnimate;
+        }
         // academic
-        const academicTop = this.academicBox.offsetTop;
-        const academicHeight = this.academicBox.offsetHeight + 200;
-        const academicBottom = academicTop + academicHeight;
-        const init = -1000;
-        const translateX = init - init*((scrolledBottom - academicTop)/academicHeight);
-        const opacity = (scrolledBottom - academicTop)/academicHeight;
-        if (scrolledBottom >= academicTop && scrolledBottom <= academicBottom && !this.academicAnimationDone) {
-            this.academicBox.style.transform = 'translateX('+translateX+'px)';
-            this.academicBox.style.opacity = opacity;
-            this.academicTitle.style.opacity = opacity;
+        function academicAnimation(tile) {
+            let currentTranslateX = - this.translateX;
+            const interval = this.translateX / (0.5 * 60);
+            function loop() {
+                tile.style.transform = 'translateX('+currentTranslateX+'px)';
+                if (currentTranslateX < 0) {
+                    currentTranslateX += interval;
+                    requestAnimationFrame(loop);
+                }
+            }
+            requestAnimationFrame(loop);
+        }
+        academicAnimation = academicAnimation.bind(this);
+        if (scrolledBottom >= this.academicTop && scrolledBottom <= this.academicBottom && !this.academicAnimationDone) {
+            this.academicTitle.style.opacity = (scrolledBottom - this.academicTop) / (this.academicBottom - this.academicTop);
+
+            let whichTileAnimate = whichTileAnimating(this.academicCheckPoints);
+            if (!this.academicTilesStatus[whichTileAnimate]) {
+                academicAnimation(this.academicTiles[whichTileAnimate]);
+            }
+            this.academicTilesStatus[whichTileAnimate] = true;
         }
         // web
-        const webTop = this.webBox.offsetTop;
-        const webHeight = this.webBox.offsetHeight + 200;
-        const webBottom = webTop + webHeight;
-        const initPrime = 1000;
-        const translateXPrime = initPrime - initPrime*((scrolledBottom - webTop)/webHeight);
-        const opacityPrime = (scrolledBottom - webTop)/webHeight;
-        if (scrolledBottom >= webTop && scrolledBottom <= webBottom && !this.webAnimationDone) {
-            this.webBox.style.transform = 'translateX('+translateXPrime+'px)';
-            this.webBox.style.opacity = opacityPrime;
-            this.webTitle.style.opacity = opacityPrime;
+        function webAnimation(tile) {
+            let currentTranslateX = this.translateX;
+            const interval = this.translateX / (0.5 * 60);
+            function loop() {
+                tile.style.transform = 'translateX('+currentTranslateX+'px)';
+                if (currentTranslateX > 0) {
+                    currentTranslateX -= interval;
+                    requestAnimationFrame(loop);
+                }
+            }
+            requestAnimationFrame(loop);
         }
-        //
-        if (scrolledBottom > academicBottom && !this.academicAnimationDone) {
+        webAnimation = webAnimation.bind(this);
+        if (scrolledBottom >= this.webTop && scrolledBottom <= this.webBottom && !this.webAnimationDone) {
+
+            this.webTitle.style.opacity = (scrolledBottom - this.webTop) / (this.webBottom - this.webTop);
+            const whichTileAnimate = whichTileAnimating(this.webCheckPoints);
+            if (!this.webTilesStatus[whichTileAnimate]) {
+                webAnimation(this.webTiles[whichTileAnimate]);
+            }
+            this.webTilesStatus[whichTileAnimate] = true;
+        }
+        // gallery
+        function galleryAnimation(tile) {
+            let currentOpacity = 0;
+            const interval = 1 / (1 * 60);
+            function loop() {
+                tile.style.opacity = currentOpacity;
+                if (interval < 1) {
+                    currentOpacity += interval;
+                    requestAnimationFrame(loop);
+                }
+            }
+            requestAnimationFrame(loop);
+        }
+        galleryAnimation = galleryAnimation.bind(this);
+
+        if (scrolledBottom >= this.galleryTop && scrolledBottom <= this.galleryBottom && !this.galleryAnimationDone) {
+            const whichTileAnimate = whichTileAnimating(this.galleryCheckPoints);
+            if (!this.galleryTilesStatus[whichTileAnimate]) {
+                galleryAnimation(this.galleryTiles[whichTileAnimate]);
+            }
+            this.galleryTilesStatus[whichTileAnimate] = true;
+        }
+
+        // finish
+        if (scrolledBottom > this.academicBottom && !this.academicAnimationDone) {
             this.academicAnimationDone = true;
-            this.academicBox.style.transform = 'none';
             this.academicTitle.style.opacity = 1;
-            this.academicBox.style.opacity = 1;
+            this.academicTiles.map(el => {
+                el.style.transform = 'translateX(0px)';
+            })
         }
-        if (scrolledBottom > webBottom && !this.webAnimationDone) {
+        if (scrolledBottom > this.webBottom && !this.webAnimationDone) {
             this.webAnimationDone = true;
-            this.webBox.style.transform = 'none';
             this.webTitle.style.opacity = 1;
-            this.webBox.style.opacity = 1;
+            this.webTiles.map(el => {
+                el.style.transform = 'translateX(0px)';
+            })
+        }
+        if (scrolledBottom > this.galleryBottom && !this.galleryAnimationDone) {
+            this.galleryAnimationDone = true;
+            this.galleryTiles.map(el => {
+                el.style.opacity = 1;
+            })
         }
     }
     componentDidMount() {
         window.addEventListener('scroll', this.galleryLazyLoad);
-        if (window.innerWidth > 800 && window.scrollY < document.getElementById('academic').offsetTop) {
+        const scrolledBottom = window.scrollY + window.innerHeight;
+        if (window.innerWidth > 800 && scrolledBottom < document.getElementById('academic').offsetTop) {
             this.prepareForAnimation();
             window.addEventListener('scroll', this.animation);
         }
