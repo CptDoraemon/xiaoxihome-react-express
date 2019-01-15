@@ -171,7 +171,7 @@ class Frontpage extends React.Component {
 
         function generateCheckPoints (el, checkPointsArrayName) {
             const top = el.offsetTop;
-            const height = el.offsetHeight; // 200 more pixel than bottom, extends animation
+            const height = el.offsetHeight + 200; // 200 more pixel than bottom, extends animation
             this[checkPointsArrayName] = [];
             (() => {
                 let start = top;
