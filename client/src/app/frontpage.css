@@ -5,22 +5,21 @@
 }
 .cover-wrapper{
     width: 100%;
+    height: 100vh;
     position: relative;
     overflow: hidden;
-}
-.cover-bg {
-    position: absolute;
     background-image: linear-gradient(to bottom, rgb(70, 100, 130), rgb(180, 140, 125), rgb(70, 100, 130));
     background-repeat: no-repeat;
     background-position: center;
     background-size: 100% 100%;
     background-attachment: fixed;
-    height: 100vh;
-    width: 100%;
-    max-width: 100%;
+}
+.cover-bg {
+    position: absolute;
+    opacity: 0;
     transform: scale(1.2);
-    transition: 1s transform ease;
-    z-index: -99;
+    transition: 1s transform ease, 1s opacity ease;
+    z-index: 2;
 }
 .cover-bg-loaded {
     position: absolute;
@@ -29,24 +28,17 @@
     background-position: center;
     background-size: cover;
     background-attachment: fixed;
+    opacity: 1;
     height: 100vh;
     width: 100%;
-    max-width: 100%;
-    z-index: -99;
+    z-index: 2;
     transform: scale(1);
-    transition: 1s transform ease;
-}
-#bgBlur {
-    width: 100%;
-    height: 100%;
-    z-index: -98;
-    position: absolute;
-    top: 0;
-    left: 0;
+    transition: 1s transform ease, 1s opacity ease;
 }
 .cover {
     height: 100vh;
     width: 100%;
+    z-index: 999;
 }
 .cover-intro {
     position: absolute;
@@ -59,6 +51,7 @@
     width: 100%;
     text-align: center;
     margin: 0;
+    z-index: 999;
 }
 .mouse-icon {
     position: absolute;
@@ -66,6 +59,7 @@
     left: 49%;
     opacity: 0.5;
     transition: 0.3s;
+    z-index: 999;
 }
 .mouse-icon:hover {
     cursor: pointer;

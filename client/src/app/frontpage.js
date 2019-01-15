@@ -16,7 +16,6 @@ class Cover extends React.Component{
             <div className='cover-wrapper'>
                 <div className={this.props.bgIsLoaded ? 'cover-bg-loaded' : 'cover-bg'}>
                 </div>
-                <canvas id="bgBlur"/>
                 <div className='cover'>
                     <h1 className='cover-intro'>Welcome To Xiaoxi's Home!</h1>
                     <MouseIcon className='mouse-icon' onClickMouseIcon={this.props.onClickMouseIcon}/>
