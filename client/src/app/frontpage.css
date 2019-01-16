@@ -189,6 +189,7 @@
         margin: 0;
         word-spacing: 100vw;
         letter-spacing: 3px;
+        z-index: 98;
     }
     .mouse-icon {
         display: none;
