@@ -276,6 +276,10 @@ class Frontpage extends React.Component {
             this.academicTitle.style.opacity = (scrolledBottom - this.academicTop) / (this.academicBottom - this.academicTop);
 
             let whichTileAnimate = whichTileAnimating(this.academicCheckPoints);
+            // real order:
+            const realOrder = [2, 1, 0, 5, 4, 3];
+            whichTileAnimate = realOrder[whichTileAnimate];
+
             if (!this.academicTilesStatus[whichTileAnimate]) {
                 this.academicTilesStatus[whichTileAnimate] = true;
                 this.academicTiles[whichTileAnimate].style.transform = 'translateX(0px)';
