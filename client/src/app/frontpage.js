@@ -212,6 +212,7 @@ class Frontpage extends React.Component {
         this.academicTiles.map((el) => {
             const value = this.translateX * -1;
             el.style.transform = 'translateX('+value+'px)';
+            el.style.opacity = 0;
         });
 
         // web
@@ -224,6 +225,7 @@ class Frontpage extends React.Component {
         }
         this.webTiles.map((el) => {
             el.style.transform = 'translateX('+this.translateX+'px)';
+            el.style.opacity = 0;
         });
 
         // gallery
@@ -280,6 +282,7 @@ class Frontpage extends React.Component {
             if (!this.academicTilesStatus[whichTileAnimate]) {
                 this.academicTilesStatus[whichTileAnimate] = true;
                 this.academicTiles[whichTileAnimate].style.transform = 'translateX(0px)';
+                this.academicTiles[whichTileAnimate].style.opacity = '1';
             }
         }
         // web
@@ -290,6 +293,7 @@ class Frontpage extends React.Component {
             if (!this.webTilesStatus[whichTileAnimate]) {
                 this.webTilesStatus[whichTileAnimate] = true;
                 this.webTiles[whichTileAnimate].style.transform = 'translateX(0px)';
+                this.webTiles[whichTileAnimate].style.opacity = '1';
             }
         }
         // gallery
@@ -307,6 +311,7 @@ class Frontpage extends React.Component {
             this.academicTitle.style.opacity = 1;
             this.academicTiles.map(el => {
                 el.style.transform = 'translateX(0px)';
+                el.style.opacity = 1;
             })
         }
         if (scrolledBottom > this.webBottom && !this.webAnimationDone) {
@@ -314,6 +319,7 @@ class Frontpage extends React.Component {
             this.webTitle.style.opacity = 1;
             this.webTiles.map(el => {
                 el.style.transform = 'translateX(0px)';
+                el.style.opacity = 1;
             })
         }
         if (scrolledBottom > this.galleryBottom && !this.galleryAnimationDone) {
