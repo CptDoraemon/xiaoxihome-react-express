@@ -212,7 +212,6 @@ class Frontpage extends React.Component {
         this.academicTiles.map((el) => {
             const value = this.translateX * -1;
             el.style.transform = 'translateX('+value+'px)';
-            el.style.transition = '1s';
         });
 
         // web
@@ -225,7 +224,6 @@ class Frontpage extends React.Component {
         }
         this.webTiles.map((el) => {
             el.style.transform = 'translateX('+this.translateX+'px)';
-            el.style.transition = '1s';
         });
 
         // gallery
@@ -238,7 +236,6 @@ class Frontpage extends React.Component {
         }
         this.galleryTiles.map((el) => {
             el.style.opacity = 0;
-            el.style.transition = '1s';
         });
     }
     animation() {
@@ -310,7 +307,6 @@ class Frontpage extends React.Component {
             this.academicTitle.style.opacity = 1;
             this.academicTiles.map(el => {
                 el.style.transform = 'translateX(0px)';
-                el.style.transition = '0.3s'; //0.3 is the default in css
             })
         }
         if (scrolledBottom > this.webBottom && !this.webAnimationDone) {
@@ -318,14 +314,12 @@ class Frontpage extends React.Component {
             this.webTitle.style.opacity = 1;
             this.webTiles.map(el => {
                 el.style.transform = 'translateX(0px)';
-                el.style.transition = '0.3s'; //0.3 is the default in css
             })
         }
         if (scrolledBottom > this.galleryBottom && !this.galleryAnimationDone) {
             this.galleryAnimationDone = true;
             this.galleryTiles.map(el => {
                 el.style.opacity = 1;
-                el.style.transition = '0.3s'; //0.3 is the default in css
             })
         }
     }
