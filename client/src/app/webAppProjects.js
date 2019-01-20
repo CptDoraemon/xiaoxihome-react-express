@@ -17,7 +17,7 @@ function WebAppProjectTemplate(props) {
                 <h1> { props.name } </h1>
                 <div dangerouslySetInnerHTML={{__html: description }} />
                 <a href={link}  target="_blank" rel='noopener noreferrer'>Open in a new window</a>
-                <iframe src={link} />
+                <iframe src={link} title='web project'/>
             </div>
         </div>
     )

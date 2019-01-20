@@ -47,7 +47,7 @@ class HeaderCover extends React.Component {
                         <h5>Academic Projects</h5>
                         { this.props.listAndLink.academicProjectArray.map((i, index) => {
                             return (
-                                <Link to={this.props.listAndLink.academicProjectLinkArray[index]}>
+                                <Link to={this.props.listAndLink.academicProjectLinkArray[index]} key={index}>
                                     <p>{i}</p>
                                 </Link>
                             )
@@ -55,7 +55,7 @@ class HeaderCover extends React.Component {
                         <h5>Web App Projects</h5>
                         { this.props.listAndLink.webAppProjectArray.map((i, index) => {
                             return (
-                                <Link to={this.props.listAndLink.webAppProjectLinkArray[index]}>
+                                <Link to={this.props.listAndLink.webAppProjectLinkArray[index]} key={index}>
                                     <p>{i}</p>
                                 </Link>
                             )
@@ -63,7 +63,7 @@ class HeaderCover extends React.Component {
                         <h5>Gallery</h5>
                         { this.props.listAndLink.galleryArray.map((i, index) => {
                             return (
-                                <Link to={this.props.listAndLink.galleryLinkArray[index]}>
+                                <Link to={this.props.listAndLink.galleryLinkArray[index]} key={index}>
                                     <p>{i}</p>
                                 </Link>
                             )

@@ -7,7 +7,7 @@ import { MouseIcon } from "../component/mouseIcon";
 import { Link } from 'react-router-dom';
 import './frontpage.css';
 
-const myScrollTo = require('../tools/myScrollTo');
+const myScrollTo = require('../tools/myScrollTo').myScrollTo;
 
 class Cover extends React.Component{
     // It receives a prop onClickMouseIcon={this.scrollToWorkRef}, bgIsLoaded
@@ -72,7 +72,7 @@ class ProjectList extends React.Component {
                     <div className='flexbox-wrapper-800' id='academic'>
                         {array.map((i, index) => {
                             const tileSize = (index === 1 || index === 3) ? 'tile-big' : 'tile-sm';
-                            return <Tile link={linkArray[index]} tileName={i} className={tileSize} id={'academicTile' + index}/>
+                            return <Tile link={linkArray[index]} tileName={i} className={tileSize} id={'academicTile' + index} key={i}/>
                         })}
                     </div>
                 </div>
@@ -89,7 +89,7 @@ class ProjectList extends React.Component {
                     <div className='flexbox-wrapper-800' id='web'>
                         {array.map((i, index) => {
                             const tileSize = (index === 0 || index === 5) ? 'tile-big' : 'tile-sm';
-                            return <Tile link={linkArray[index]} tileName={i} className={tileSize} id={'webTile' + index}/>
+                            return <Tile link={linkArray[index]} tileName={i} className={tileSize} id={'webTile' + index} key={i}/>
                         })}
                     </div>
                 </div>
@@ -107,7 +107,7 @@ class ProjectList extends React.Component {
                         {array.map((i, index) => {
                             const tileSize = 'tile-gallery';
                             const imgUrl = this.props.imgUrls[index];
-                            return <Tile link={linkArray[index]} tileName={i} className={tileSize} imgUrl={imgUrl} imgIsLoaded={this.props.imgIsLoaded} id={'galleryTile' + index}/>
+                            return <Tile link={linkArray[index]} tileName={i} className={tileSize} imgUrl={imgUrl} imgIsLoaded={this.props.imgIsLoaded} id={'galleryTile' + index} key={i}/>
                         })}
                     </div>
                 </div>
@@ -171,20 +171,17 @@ class Frontpage extends React.Component {
         this.webTitle = document.getElementById('webTitle');
         this.translateX = 1000;
 
-        function generateCheckPoints (el, checkPointsArrayName) {
+        const generateCheckPoints = (el, checkPointsArrayName) => {
             const top = el.offsetTop;
             const height = el.offsetHeight + 100; // 200 more pixel than bottom, extends animation
             this[checkPointsArrayName] = [];
-            (() => {
-                let start = top;
-                let interval = height / 6;
-                for (let i=0; i<7; i++) {
-                    this[checkPointsArrayName].push(start);
-                    start += interval;
-                }
-            })();
-        }
-        generateCheckPoints = generateCheckPoints.bind(this);
+            let start = top;
+            let interval = height / 6;
+            for (let i=0; i<7; i++) {
+                this[checkPointsArrayName].push(start);
+                start += interval;
+            }
+        };
         generateCheckPoints(this.academicBox, 'academicCheckPoints');
         generateCheckPoints(this.webBox, 'webCheckPoints');
         generateCheckPoints(this.galleryBox, 'galleryCheckPoints');

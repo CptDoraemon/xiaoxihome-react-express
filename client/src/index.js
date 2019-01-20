@@ -4,7 +4,7 @@ import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import ScrollToTop from './component/scrolltotop'
 import { AcademicProject } from './app/academicProjects';
@@ -13,6 +13,7 @@ import { Frontpage } from './app/frontpage';
 import { Missing404 } from './component/missing404';
 import { Gallery } from './app/gallery/gallery';
 import { Contact } from './app/contact/contact';
+import { AboutPage } from './app/about/aboutPage';
 
 const academicProjectArray = [
     'Machine Learning',
@@ -70,17 +71,17 @@ class App extends React.Component {
         super(props);
         this.academicProjectPaths = academicProjectLinkArray.map((i, index) => {
             return (
-                <Route path={i} render={(props) => <AcademicProject {...props} name={academicProjectArray[index]} listAndLink={listAndLink}/>} />
+                <Route path={i} render={(props) => <AcademicProject {...props} name={academicProjectArray[index]} listAndLink={listAndLink}/>} key={index}/>
             )
         });
         this.webAppProjectPaths = webAppProjectLinkArray.map((i, index) => {
             return (
-                <Route path={i} render={(props) => <WebAppProject {...props} name={webAppProjectArray[index]} listAndLink={listAndLink} />} />
+                <Route path={i} render={(props) => <WebAppProject {...props} name={webAppProjectArray[index]} listAndLink={listAndLink} />} key={index}/>
             )
         });
         this.galleryPaths = galleryLinkArray.map((i, index) => {
             return (
-                <Route path={i} render={(props) => <Gallery {...props} album={index} page={1} /> } />
+                <Route path={i} render={(props) => <Gallery {...props} album={index} page={1} /> } key={index}/>
             )
         });
 
@@ -112,6 +113,7 @@ class App extends React.Component {
                     <Route path="/home" exact render={(props) => <Frontpage {...props} listAndLink={listAndLink} />} />
                     <Route path="/work" exact key='work' render={(props) => <Frontpage {...props} toWorkRef={true} listAndLink={listAndLink} />} />
                     <Route path="/contact" render={(props) => <Contact {...props}/> } />
+                    <Route path="/about" render={(props) => <AboutPage {...props}/> } />
 
                     { this.academicProjectPaths }
 
