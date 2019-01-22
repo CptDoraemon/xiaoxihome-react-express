@@ -12,7 +12,7 @@ export const data = [
     {
         imageUrl: 'https://s3.us-east-2.amazonaws.com/xiaoxihome/about/3.jpg',
         title: 'Programmer',
-        content: 'I love programming. Javascript is my main language, because it\'s easy to use and share: a text editor and a web browser are all I need. I also use Python sometimes, because academia likes it. This site was written with React Framework.'
+        content: 'I love programming. JavaScript is my main language, it\'s easy to use and share: a text editor and a web browser are all I need. I also use Python sometimes, because academia likes it.'
     },
     {
         imageUrl: 'https://s3.us-east-2.amazonaws.com/xiaoxihome/about/4.jpg',
@@ -21,7 +21,7 @@ export const data = [
     },
     {
         imageUrl: 'https://s3.us-east-2.amazonaws.com/xiaoxihome/about/5.jpg',
-        title: 'Credits',
-        content: 'All the images in this page are purchased from Adobe Stock, because drawing is hard :('
+        title: 'About this Website',
+        content: 'This website was written with React Framework, it has some wheels reinvented therefore relies on minimum dependencies for learning purpose. I own all the contents except the flat-design arts in this page, which were provided by Adobe Stock, drawing is hard :('
     }
 ];
