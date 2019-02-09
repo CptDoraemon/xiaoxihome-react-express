@@ -8,7 +8,7 @@
     position: absolute;
     top: 35px; /* ul has padding for better accessibility */
     left: 50px;
-    z-index: 99;
+    z-index: 9999;
 }
 .header-cover ul{
     margin: 0;
