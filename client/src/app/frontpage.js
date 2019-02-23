@@ -155,7 +155,7 @@ class Frontpage extends React.Component {
         const scrolledBottom = scrolled + window.innerHeight;
         const galleryTop = this.galleryRef.current.offsetTop;
         if (scrolledBottom >= galleryTop && !this.state.imgIsLoaded) {
-            this.setState({imgIsLoaded: true})
+            this.setState({imgIsLoaded: true});
         }
     }
     prepareForAnimation() {
@@ -173,7 +173,7 @@ class Frontpage extends React.Component {
 
         const generateCheckPoints = (el, checkPointsArrayName) => {
             const top = el.offsetTop;
-            const height = el.offsetHeight + 100; // 200 more pixel than bottom, extends animation
+            const height = el.offsetHeight + 20; // 200 more pixel than bottom, extends animation
             this[checkPointsArrayName] = [];
             let start = top;
             let interval = height / 6;
@@ -201,41 +201,30 @@ class Frontpage extends React.Component {
         // academic
         this.academicTiles = [];
         this.academicTilesStatus = [];
+        this.webTiles = [];
+        this.webTilesStatus = [];
+        this.galleryTiles = [];
+        this.galleryTilesStatus = [];
+
         for (let i=0; i<6; i++) {
+            // academic
             el = document.getElementById('academicTile' + i);
             this.academicTiles.push(el);
             this.academicTilesStatus.push(false);
-        }
-        this.academicTiles.map((el) => {
-            const value = this.translateX * -1;
-            el.style.transform = 'translateX('+value+'px)';
+            el.style.transform = 'translateX('+(this.translateX * -1)+'px)';
             el.style.opacity = 0;
-        });
-
-        // web
-        this.webTiles = [];
-        this.webTilesStatus = [];
-        for (let i=0; i<6; i++) {
+            // web
             el = document.getElementById('webTile' + i);
             this.webTiles.push(el);
             this.webTilesStatus.push(false);
-        }
-        this.webTiles.map((el) => {
             el.style.transform = 'translateX('+this.translateX+'px)';
             el.style.opacity = 0;
-        });
-
-        // gallery
-        this.galleryTiles = [];
-        this.galleryTilesStatus = [];
-        for (let i=0; i<6; i++) {
+            // gallery
             el = document.getElementById('galleryTile' + i);
             this.galleryTiles.push(el);
             this.galleryTilesStatus.push(false);
-        }
-        this.galleryTiles.map((el) => {
             el.style.opacity = 0;
-        });
+        }
     }
     animation() {
         const scrolled = window.scrollY;
@@ -251,6 +240,14 @@ class Frontpage extends React.Component {
             }
             return whichTileAnimate;
         }
+
+        const moveInAnimation = (element, status) => {
+            if (!status) {
+                status = true;
+                element.style.transform = 'translateX(0px)';
+                element.style.opacity = '1';
+            }
+        };
         // academic
 
         // function academicAnimation(tile) {
@@ -270,35 +267,40 @@ class Frontpage extends React.Component {
 
         if (scrolledBottom >= this.academicTop && scrolledBottom <= this.academicBottom && !this.academicAnimationDone) {
             this.academicTitle.style.opacity = (scrolledBottom - this.academicTop) / (this.academicBottom - this.academicTop);
-
-            let whichTileAnimate = whichTileAnimating(this.academicCheckPoints);
+            const whichTileAnimate = whichTileAnimating(this.academicCheckPoints);
             // real order:
             const realOrder = [2, 1, 0, 5, 4, 3];
-            whichTileAnimate = realOrder[whichTileAnimate];
 
-            if (!this.academicTilesStatus[whichTileAnimate]) {
-                this.academicTilesStatus[whichTileAnimate] = true;
-                this.academicTiles[whichTileAnimate].style.transform = 'translateX(0px)';
-                this.academicTiles[whichTileAnimate].style.opacity = '1';
+            for (let i=0; i<whichTileAnimate; i++) {
+                // discrete scroll may skip last checkpoint
+                const whichTileAnimateInRealOrder = realOrder[i];
+                const status = this.academicTilesStatus[whichTileAnimateInRealOrder];
+                if (!status) {
+                    moveInAnimation(this.academicTiles[whichTileAnimateInRealOrder], this.academicTilesStatus[whichTileAnimateInRealOrder]);
+                }
             }
-        }
-        // web
-        if (scrolledBottom >= this.webTop && scrolledBottom <= this.webBottom && !this.webAnimationDone) {
-
+        } else if (scrolledBottom >= this.webTop && scrolledBottom <= this.webBottom && !this.webAnimationDone) {
+            // web
             this.webTitle.style.opacity = (scrolledBottom - this.webTop) / (this.webBottom - this.webTop);
             const whichTileAnimate = whichTileAnimating(this.webCheckPoints);
-            if (!this.webTilesStatus[whichTileAnimate]) {
-                this.webTilesStatus[whichTileAnimate] = true;
-                this.webTiles[whichTileAnimate].style.transform = 'translateX(0px)';
-                this.webTiles[whichTileAnimate].style.opacity = '1';
+
+            for (let i=0; i<whichTileAnimate; i++) {
+                // discrete scroll may skip last checkpoint
+                const status = this.webTilesStatus[whichTileAnimate];
+                if (!status) {
+                    moveInAnimation(this.webTiles[i], this.webTilesStatus[i]);
+                }
             }
-        }
-        // gallery
-        if (scrolledBottom >= this.galleryTop && scrolledBottom <= this.galleryBottom && !this.galleryAnimationDone) {
+        } else if (scrolledBottom >= this.galleryTop && scrolledBottom <= this.galleryBottom && !this.galleryAnimationDone) {
+            // gallery
             const whichTileAnimate = whichTileAnimating(this.galleryCheckPoints);
-            if (!this.galleryTilesStatus[whichTileAnimate]) {
-                this.galleryTilesStatus[whichTileAnimate] = true;
-                this.galleryTiles[whichTileAnimate].style.opacity = 1;
+
+            for (let i=0; i<whichTileAnimate; i++) {
+                // discrete scroll may skip last checkpoint
+                const status = this.galleryTilesStatus[whichTileAnimate];
+                if (!status) {
+                    moveInAnimation(this.galleryTiles[i], this.galleryTilesStatus[i]);
+                }
             }
         }
 
@@ -306,23 +308,28 @@ class Frontpage extends React.Component {
         if (scrolledBottom > this.academicBottom && !this.academicAnimationDone) {
             this.academicAnimationDone = true;
             this.academicTitle.style.opacity = 1;
-            this.academicTiles.map(el => {
-                el.style.transform = 'translateX(0px)';
-                el.style.opacity = 1;
+            this.academicTiles.map((el, index) => {
+                const status = this.academicTilesStatus[index];
+                if (!status) {
+                    moveInAnimation(el, status)
+                }
             })
-        }
-        if (scrolledBottom > this.webBottom && !this.webAnimationDone) {
+        } else if (scrolledBottom > this.webBottom && !this.webAnimationDone) {
             this.webAnimationDone = true;
             this.webTitle.style.opacity = 1;
-            this.webTiles.map(el => {
-                el.style.transform = 'translateX(0px)';
-                el.style.opacity = 1;
+            this.webTiles.map((el, index) => {
+                const status = this.webTilesStatus[index];
+                if (!status) {
+                    moveInAnimation(el, status)
+                }
             })
-        }
-        if (scrolledBottom > this.galleryBottom && !this.galleryAnimationDone) {
+        } else if (scrolledBottom > this.galleryBottom && !this.galleryAnimationDone) {
             this.galleryAnimationDone = true;
-            this.galleryTiles.map(el => {
-                el.style.opacity = 1;
+            this.galleryTiles.map((el, index) => {
+                const status = this.galleryTilesStatus[index];
+                if (!status) {
+                    moveInAnimation(el, status)
+                }
             })
         }
     }

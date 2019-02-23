@@ -2,7 +2,10 @@ const webAppProjectData = [
     {
         title: 'Reddit-like Website',
         link: 'http://riddet.xiaoxihome.com',
-        description: ''
+        description:
+            '<p>This is a rediit like content-sharing website.</p>' +
+            '<p>Please open in new window and allow up to half minute for server to wake up.</p>'
+
     },
     {
         title: 'FireworkJS',
@@ -33,11 +36,12 @@ const webAppProjectData = [
     },
     {
         title: 'RaycasterJS',
-        link: 'https://s3.us-east-2.amazonaws.com/xiaoxihome/webprojects/raycaster0_3.html',
+        link: 'https://raycaster.herokuapp.com',
         description:
             '<p>Raycaster was a very popular game engine in the 80s and 90s, the computer was not powerful enough to handle real time 3D rendering, but people were getting tired of 2D games and wanted to see something new.</p>' +
             '<p>Raycaster is able to give audience a 3D feeling only by doing geometry calculation and drawing vertical lines on the screen.</p>' +
-            '<p>The most famous game using this engine must be Wolfenstein 3D.</p>'
+            '<p>The most famous game using this engine must be Wolfenstein 3D.</p>' +
+            '<p>Please allow up to half minute for server to wake up.</p>'
     }
 ]
 
