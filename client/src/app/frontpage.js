@@ -156,6 +156,7 @@ class Frontpage extends React.Component {
         const galleryTop = this.galleryRef.current.offsetTop;
         if (scrolledBottom >= galleryTop && !this.state.imgIsLoaded) {
             this.setState({imgIsLoaded: true});
+            window.removeEventListener('scroll', this.galleryLazyLoad);
         }
     }
     prepareForAnimation() {
@@ -331,6 +332,8 @@ class Frontpage extends React.Component {
                     moveInAnimation(el, status)
                 }
             })
+        } else if (this.academicAnimationDone && this.webAnimationDone && this.galleryAnimationDone) {
+            window.removeEventListener('scroll', this.animation);
         }
     }
     componentDidMount() {
