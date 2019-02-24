@@ -38,11 +38,11 @@ const webAppProjectData = [
         title: 'RaycasterJS',
         link: 'http://raycaster.xiaoxihome.com',
         description:
-            '<p>Raycaster was a very popular game engine in the 80s and 90s, the computer was not powerful enough to handle real time 3D rendering, but people were getting tired of 2D games and wanted to see something new.</p>' +
+            '<p>Raycaster was a very popular game engine in the 80s and 90s, the computer was not powerful enough to handle real time 3D rendering, but players were getting tired of 2D games and wanted to see something new.</p>' +
             '<p>Raycaster is able to give audience a 3D feeling only by doing geometry calculation and drawing vertical lines on the screen.</p>' +
             '<p>The most famous game using this engine must be Wolfenstein 3D.</p>' +
-            '<p>Please allow up to half minute for server to wake up.</p>'
+            '<p>Please Open in new tab and allow up to half minute for server to wake up.</p>'
     }
-]
+];
 
 export default webAppProjectData;
