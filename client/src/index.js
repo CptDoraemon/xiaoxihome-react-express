@@ -61,7 +61,7 @@ const listAndLink = {
     academicProjectLinkArray: academicProjectLinkArray,
     webAppProjectLinkArray: webAppProjectLinkArray,
     galleryLinkArray: galleryLinkArray
-}
+};
 
 
 

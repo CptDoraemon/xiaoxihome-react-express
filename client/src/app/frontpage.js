@@ -88,7 +88,7 @@ class ProjectList extends React.Component {
                     <h2 id='webTitle'>Web App Project</h2>
                     <div className='flexbox-wrapper-800' id='web'>
                         {array.map((i, index) => {
-                            const tileSize = (index === 0 || index === 5) ? 'tile-big' : 'tile-sm';
+                            const tileSize = (index === 0 || index === 5) ? 'tile-big ribboned' : 'tile-sm';
                             return <Tile link={linkArray[index]} tileName={i} className={tileSize} id={'webTile' + index} key={i}/>
                         })}
                     </div>
