@@ -50,7 +50,7 @@ function Tile(props) {
             <div
                 className={props.className}
                 id={props.id}>
-                <h3>{props.tileName}</h3>
+                { props.tileName.split(' ').map(name => <h3> { name } </h3>) }
             </div>
         </Link>
     )

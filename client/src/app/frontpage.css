@@ -2,6 +2,7 @@
     width: 100vw;
     max-width: 100%; /* offset scrollbar width */
     overflow: hidden;
+    position: relative;
 }
 .cover-wrapper{
     width: 100%;
@@ -114,13 +115,16 @@
     height: 192px;
     background-color: rgba(255,255,255,0.2);
     margin: 5px;
-    display: table;
     transition: transform 1s ease, 0.3s;
     -webkit-transition: -webkit-transform 1s; /* Safari */
     text-transform: capitalize;
     will-change: transform;
     overflow: hidden;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 .tile-big {
     width: 385px;
@@ -134,10 +138,7 @@
     cursor: pointer;
 }
 .tile-big h3, .tile-sm h3 {
-    word-spacing: 100vw;
-    display: table-cell;
-    text-align: center;
-    vertical-align: middle;
+    width: fit-content;
     color: white;
 }
 .tile-gallery {
@@ -171,11 +172,16 @@
     position: absolute;
     content: '';
     top: 0;
-    left: -20px;
+    left: -45px;
     width: 100px;
-    height: 10px;
+    height: 35px;
     transform: rotate(-45deg);
     background-color: rgba(255, 255, 255, 0.5);
+    transition: 0.3s;
+}
+.ribboned:hover::after {
+    left: -65px;
+    background-color: rgba(255, 255, 255, 0.8);
 }
 
 
@@ -240,7 +246,6 @@
         background-color: rgba(255,255,255,0.2);;
         margin: 5px 0;
         padding: 15px 0;
-        display: table;
         transition: 0s;
         text-transform: capitalize;
         width: 100%; /* inherit flexbox-wrapper-800 */
@@ -252,10 +257,6 @@
     }
     .tile-big h3, .tile-sm h3 {
         font-size: 16px;
-        word-spacing: 100vw;
-        display: table-cell;
-        text-align: center;
-        vertical-align: middle;
         color: white;
     }
     .tile-gallery {
@@ -282,8 +283,11 @@
         cursor: pointer;
     }
     .ribboned::after {
-        left: -10px;
-        width: 50px;
-        height: 5px;
+        left: -25px;
+        width: 60px;
+        height: 25px;
+    }
+    .ribboned:hover::after {
+        left: -40px;
     }
 }
