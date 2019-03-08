@@ -1,7 +1,7 @@
 const galleryData = [
     ['Toronto',
         {
-            description: 'Toronto\'s innder harbour in a freezing cold windy day',
+            description: 'Toronto\'s inner harbour in a freezing cold windy day',
             link: 'https://s3.us-east-2.amazonaws.com/xiaoxihome/galleryphoto/toronto/toronto1.jpg'
         },
         {

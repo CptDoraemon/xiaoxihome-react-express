@@ -111,7 +111,6 @@ class App extends React.Component {
                 <Switch>
                     <Route path="/" exact render={(props) => <Frontpage {...props} listAndLink={listAndLink} />} />
                     <Route path="/home" exact render={(props) => <Frontpage {...props} listAndLink={listAndLink} />} />
-                    <Route path="/work" exact key='work' render={(props) => <Frontpage {...props} toWorkRef={true} listAndLink={listAndLink} />} />
                     <Route path="/contact" render={(props) => <Contact {...props}/> } />
                     <Route path="/about" render={(props) => <AboutPage {...props}/> } />
 
