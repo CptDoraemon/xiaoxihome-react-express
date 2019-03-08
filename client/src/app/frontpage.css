@@ -219,12 +219,11 @@
     width: calc(100% - 10px);
     height: calc(100% - 6px);
     padding: 3px 5px;
-    transition: 0.3s;
+    transition: 0.1s 0.4s;
 }
 .tile-gallery h5:hover{
     color: rgba(255, 255, 255, 1);
     cursor: pointer;
-    transition: 0.3s;
 }
 .ribboned::after {
     position: absolute;
