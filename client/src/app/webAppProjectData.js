@@ -1,7 +1,7 @@
 const webAppProjectData = [
     {
         title: 'Reddit-like Website',
-        link: 'riddet.xiaoxihome.com',
+        link: 'https://riddet.xiaoxihome.com',
         description:
             '<p>This is a rediit like content-sharing website.</p>' +
             '<p>Please open in new window and allow up to half minute for server to wake up.</p>'
@@ -36,7 +36,7 @@ const webAppProjectData = [
     },
     {
         title: 'RaycasterJS',
-        link: 'raycaster.xiaoxihome.com',
+        link: 'https://raycaster.xiaoxihome.com',
         description:
             '<p>Raycaster was a very popular game engine in the 80s and 90s, the computer was not powerful enough to handle real time 3D rendering, but players were getting tired of 2D games and wanted to see something new.</p>' +
             '<p>Raycaster is able to give audience a 3D feeling only by doing geometry calculation and drawing vertical lines on the screen.</p>' +
