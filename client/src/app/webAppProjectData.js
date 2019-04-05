@@ -20,11 +20,11 @@ const webAppProjectData = [
         description: '<p>A classic game to practice coding</p>'
     },
     {
-        title: 'PHP/MySQL Login System',
-        link: '',
+        title: 'Masonry Gallery',
+        link: 'http://gallery.xiaoxihome.com',
         description:
-        '<p>This is a simple PHP login system</p>' +
-        '<p>Setting up a php server to host it later</p>'
+        '<p>A Pinterest like gallery</p>' +
+        '<p>Please open in new window and allow up to half minutes for server waking up</p>'
     },
     {
         title: 'DOM Practice',

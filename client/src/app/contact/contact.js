@@ -6,7 +6,7 @@ import Loader from 'react-loader-spinner';
 
 class Contact extends React.Component {
     constructor(props){
-        super(props)
+        super(props);
         this.state = {
             name: '',
             email: '',

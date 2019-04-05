@@ -27,7 +27,7 @@ const webAppProjectArray = [
     'Reddit-like Website',
     'FireworkJS',
     'SnakeyJS',
-    'PHP/MySQL Login System',
+    'Masonry Gallery',
     'DOM Practice',
     'RaycasterJS'
     ];
