@@ -8,11 +8,11 @@ const webAppProjectData = [
 
     },
     {
-        title: 'FireworkJS',
-        link: 'https://s3.us-east-2.amazonaws.com/xiaoxihome/webprojects/mySecondFireworks.html',
+        title: 'Youtube Downloader',
+        link: 'https://cptdoraemon.github.io/youtube-downloader/',
         description:
-            '<p>This is a firework animation made with Javascript and Html5 Canvas</p>' +
-            '<p>The trajectories of fireworks are calculated in real time following the law of physics (well, simplified): they are affected by gravity, and wind with random direction and speed.</p>'
+            '<p>An app to download mp3 from Youtube playlist</p>' +
+            '<p>For legal reasons only the frontend is hosted</p>',
     },
     {
         title: 'SnakeyJS',

@@ -25,7 +25,7 @@ const academicProjectArray = [
 ];
 const webAppProjectArray = [
     'Reddit-like Website',
-    'FireworkJS',
+    'Youtube Downloader',
     'SnakeyJS',
     'Masonry Gallery',
     'DOM Practice',
