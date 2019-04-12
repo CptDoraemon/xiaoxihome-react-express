@@ -12,7 +12,9 @@ const webAppProjectData = [
         link: 'https://cptdoraemon.github.io/youtube-downloader/',
         description:
             '<p>An app to download mp3 from Youtube playlist</p>' +
-            '<p>For legal reasons only the frontend is hosted</p>',
+            '<p>For legal reasons only the frontend is hosted</p>' +
+            '<p>https://github.com/CptDoraemon/youtube-downloader</p>'
+
     },
     {
         title: 'SnakeyJS',
