@@ -12,6 +12,7 @@ function reverseGeoCoding(app) {
         const latitude = req.body.latitude;
         const longitude = req.body.longitude;
         const locationIqAPI = `https://us1.locationiq.com/v1/reverse.php?key=${process.env.GEOCODING_SECRET_KEY}&lat=${latitude}&lon=${longitude}&format=json`;
+        console.log('locationIqAPI', latitude, longitude);
 
         https.get(locationIqAPI, (locationIqAPIRes) => {
             // error returned from locationIQ

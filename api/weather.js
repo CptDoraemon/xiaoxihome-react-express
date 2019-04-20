@@ -12,6 +12,7 @@ function weather(app) {
         const latitude = req.body.latitude;
         const longitude = req.body.longitude;
         const darkSkyAPI = `https://api.darksky.net/forecast/${process.env.WEATHER_SECRET_KEY}/${latitude},${longitude}`;
+        console.log('darkSkyAPI', latitude, longitude);
 
         https.get(darkSkyAPI, (darkSkyAPIRes) => {
             let body = '';
