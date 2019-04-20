@@ -1,12 +1,19 @@
 const express = require('express');
+const app = express();
 const path = require('path');
 const bodyParser = require('body-parser');
 const mongoose = require ("mongoose");
 const helmet = require('helmet');
+require('dotenv').config();
+const cors = require('cors');
+app.use(cors());
+app.options('*', cors());
 
-const app = express();
+const weatherAPI = require('./api/weather').weather;
+const reverseGeoCodingAPI = require('./api/geocoding').reverseGeoCoding;
+
 const uristring = process.env.MONGODB_URI;
-// 'mongodb://test:abcd1234@ds125684.mlab.com:25684/freecodecamp';
+
 let feedbackSchema = new mongoose.Schema({
     name: String,
     email: String,
@@ -64,6 +71,9 @@ app.post('/contact/submit/', bodyParser.json(), (req, res, next) => {
         });
     }
 });
+
+weatherAPI(app);
+reverseGeoCodingAPI(app);
 
 app.get('*', (req, res) => {
    res.sendFile(path.join(__dirname+'/client/build/index.html'));
