@@ -1,5 +1,6 @@
 const bodyParser = require('body-parser');
 const https = require('https');
+const weatherQueryCors = require('./cors').weatherQueryCors;
 
 module.exports = {
     weather: weather
@@ -8,7 +9,7 @@ module.exports = {
 //TODO api protection
 
 function weather(app) {
-    app.post('/api/weather/', bodyParser.json(), (req, res) => {
+    app.post('/api/weather/', weatherQueryCors, bodyParser.json(), (req, res) => {
         const latitude = req.body.latitude;
         const longitude = req.body.longitude;
         const darkSkyAPI = `https://api.darksky.net/forecast/${process.env.WEATHER_SECRET_KEY}/${latitude},${longitude}`;
