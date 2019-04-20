@@ -20,10 +20,18 @@ function weather(app) {
             });
             darkSkyAPIRes.on('end', () => {
                 body = JSON.parse(body);
-                res.json({
-                    status: 'success',
-                    data: body
-                })
+                if (body.error !== undefined) {
+                    // error returned from darkSkyAPI
+                    res.json({
+                        status: 'fail',
+                        data: 'DarkSky API is not available at the moment'
+                    })
+                } else {
+                    res.json({
+                        status: 'success',
+                        data: body
+                    })
+                }
             });
         })
             .on('error', (e) => {

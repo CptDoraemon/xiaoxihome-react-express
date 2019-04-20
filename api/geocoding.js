@@ -14,6 +14,15 @@ function reverseGeoCoding(app) {
         const locationIqAPI = `https://us1.locationiq.com/v1/reverse.php?key=${process.env.GEOCODING_SECRET_KEY}&lat=${latitude}&lon=${longitude}&format=json`;
 
         https.get(locationIqAPI, (locationIqAPIRes) => {
+            // error returned from locationIQ
+            if (locationIqAPIRes.statusCode !== 200) {
+                res.json({
+                    status: 'fail',
+                    data: 'locationIq API is not available at the moment'
+                });
+                return
+            }
+            //
             let body = '';
             locationIqAPIRes.on('data', (data) => {
                 body += data
