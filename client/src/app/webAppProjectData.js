@@ -17,9 +17,12 @@ const webAppProjectData = [
 
     },
     {
-        title: 'SnakeyJS',
-        link: 'https://s3.us-east-2.amazonaws.com/xiaoxihome/webprojects/snake_beta.html',
-        description: '<p>A classic game to practice coding</p>'
+        title: 'Weather App',
+        link: 'https://cptdoraemon.github.io/weather/',
+        description:
+            '<p>A Google like weather app</p>' +
+            '<p>Weather API is provided by DarkSky</p>' +
+            '<p>Reverse geocoding API is provided by LocationIQ</p>'
     },
     {
         title: 'Masonry Gallery',
