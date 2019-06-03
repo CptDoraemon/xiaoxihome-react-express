@@ -14,4 +14,4 @@ class Missing404 extends React.Component {
 }
 
 
-export { Missing404 };
+export { Missing404 as default };

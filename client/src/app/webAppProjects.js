@@ -34,4 +34,4 @@ class WebAppProject extends React.Component {
     }
 }
 
-export { WebAppProject };
+export { WebAppProject as default };

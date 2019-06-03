@@ -8,9 +8,9 @@ function AcademicProjectTemplate(props) {
     // It receives two props: name and projectDataArray: the subject's name; the projects array under this subject.
     const boxes = props.projectDataArray.map((i, index) => {
         return (
-            <AcademicProjectBox index={index} description={i.description} link={i.link}/>
+            <AcademicProjectBox index={index} description={i.description} link={i.link} key={`academicProjectBox${index}`}/>
         )
-    })
+    });
     let name = props.name;
     name = name.replace(/(^|\s)\w/g, (i) => i.toUpperCase());
     return (
@@ -49,4 +49,4 @@ class AcademicProject extends React.Component{
     }
 }
 
-export { AcademicProject };
+export { AcademicProject as default };

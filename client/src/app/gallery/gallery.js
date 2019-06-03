@@ -301,4 +301,4 @@ class Gallery extends React.Component {
     }
 }
 
-export { Gallery }
+export { Gallery as default }

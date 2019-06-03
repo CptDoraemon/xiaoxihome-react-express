@@ -5,11 +5,11 @@ import { IoIosList, IoIosClose } from "react-icons/io";
 
 class HeaderCover extends React.Component {
     constructor(props){
-        super(props)
+        super(props);
         this.state={
             dropDownClassName: 'work-drop-down-cover-inactive',
             headerCoverClassName: 'header-cover',
-        }
+        };
         this.handleMobileMenuClick = this.handleMobileMenuClick.bind(this);
         this.workDropDownListToggle = this.workDropDownListToggle.bind(this);
         this.workDropDownListInactive = this.workDropDownListInactive.bind(this);
@@ -88,7 +88,7 @@ class HeaderSticky extends React.Component {
             headerClassName: 'header-fixed',
             placeholderClassName: 'header-fixed-placeholder',
             dropDownClassName: 'work-drop-down-inactive'
-        }
+        };
         this.handleScroll = this.handleScroll.bind(this);
         this.workDropDownListToggle = this.workDropDownListToggle.bind(this);
         this.workDropDownListInactive = this.workDropDownListInactive.bind(this);
@@ -141,7 +141,7 @@ class HeaderSticky extends React.Component {
                             <h5>Academic Projects</h5>
                             { this.props.listAndLink.academicProjectArray.map((i, index) => {
                                 return (
-                                    <Link to={this.props.listAndLink.academicProjectLinkArray[index]}>
+                                    <Link to={this.props.listAndLink.academicProjectLinkArray[index]} key={`linkAcademic${i}`}>
                                         <p>{i}</p>
                                     </Link>
                                 )
@@ -149,7 +149,7 @@ class HeaderSticky extends React.Component {
                             <h5>Web App Projects</h5>
                             { this.props.listAndLink.webAppProjectArray.map((i, index) => {
                                 return (
-                                    <Link to={this.props.listAndLink.webAppProjectLinkArray[index]}>
+                                    <Link to={this.props.listAndLink.webAppProjectLinkArray[index]} key={`linkWeb${i}`}>
                                         <p>{i}</p>
                                     </Link>
                                 )
@@ -157,7 +157,7 @@ class HeaderSticky extends React.Component {
                             <h5>Gallery</h5>
                             { this.props.listAndLink.galleryArray.map((i, index) => {
                                 return (
-                                    <Link to={this.props.listAndLink.galleryLinkArray[index]}>
+                                    <Link to={this.props.listAndLink.galleryLinkArray[index]} key={`linkGallery${i}`}>
                                         <p>{i}</p>
                                     </Link>
                                 )

@@ -206,4 +206,4 @@ class AboutPage extends React.Component {
     }
 }
 
-export { AboutPage };
+export { AboutPage as default };

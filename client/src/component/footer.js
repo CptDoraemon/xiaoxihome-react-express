@@ -67,7 +67,7 @@ class Footer extends React.Component {
                     </div>
                 </div>
                 <div className='copyright'>
-                    <p>&copy; Xiaoxi 2018</p>
+                    <p>&copy; Xiaoxi 2018-2019</p>
                 </div>
             </div>
         )

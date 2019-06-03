@@ -50,7 +50,7 @@ function Tile(props) {
             <div
                 className={props.className}
                 id={props.id}>
-                { props.tileName.split(' ').map(name => <h3> { name } </h3>) }
+                { props.tileName.split(' ').map(name => <h3 key={name}> { name } </h3>) }
             </div>
         </Link>
     )
@@ -72,7 +72,7 @@ class ProjectList extends React.Component {
                     <div className='flexbox-wrapper-800' id='academic'>
                         {array.map((i, index) => {
                             const tileSize = (index === 1 || index === 3) ? 'tile-big' : 'tile-sm';
-                            return <Tile link={linkArray[index]} tileName={i} className={tileSize} id={'academicTile' + index} key={i}/>
+                            return <Tile link={linkArray[index]} tileName={i} className={tileSize} id={'academicTile' + index} key={`academic${i}`}/>
                         })}
                     </div>
                 </div>
@@ -89,7 +89,7 @@ class ProjectList extends React.Component {
                     <div className='flexbox-wrapper-800' id='web'>
                         {array.map((i, index) => {
                             const tileSize = (index === 0 || index === 5) ? 'tile-big ribboned' : 'tile-sm';
-                            return <Tile link={linkArray[index]} tileName={i} className={tileSize} id={'webTile' + index} key={i}/>
+                            return <Tile link={linkArray[index]} tileName={i} className={tileSize} id={'webTile' + index} key={`web${i}`}/>
                         })}
                     </div>
                 </div>
@@ -107,7 +107,7 @@ class ProjectList extends React.Component {
                         {array.map((i, index) => {
                             const tileSize = 'tile-gallery';
                             const imgUrl = this.props.imgUrls[index];
-                            return <Tile link={linkArray[index]} tileName={i} className={tileSize} imgUrl={imgUrl} imgIsLoaded={this.props.imgIsLoaded} id={'galleryTile' + index} key={i}/>
+                            return <Tile link={linkArray[index]} tileName={i} className={tileSize} imgUrl={imgUrl} imgIsLoaded={this.props.imgIsLoaded} id={'galleryTile' + index} key={`gallery${i}`}/>
                         })}
                     </div>
                 </div>
@@ -309,7 +309,7 @@ class Frontpage extends React.Component {
         if (scrolledBottom > this.academicBottom && !this.academicAnimationDone) {
             this.academicAnimationDone = true;
             this.academicTitle.style.opacity = 1;
-            this.academicTiles.map((el, index) => {
+            this.academicTiles.forEach((el, index) => {
                 const status = this.academicTilesStatus[index];
                 if (!status) {
                     moveInAnimation(el, status)
@@ -318,7 +318,7 @@ class Frontpage extends React.Component {
         } else if (scrolledBottom > this.webBottom && !this.webAnimationDone) {
             this.webAnimationDone = true;
             this.webTitle.style.opacity = 1;
-            this.webTiles.map((el, index) => {
+            this.webTiles.forEach((el, index) => {
                 const status = this.webTilesStatus[index];
                 if (!status) {
                     moveInAnimation(el, status)
@@ -326,7 +326,7 @@ class Frontpage extends React.Component {
             })
         } else if (scrolledBottom > this.galleryBottom && !this.galleryAnimationDone) {
             this.galleryAnimationDone = true;
-            this.galleryTiles.map((el, index) => {
+            this.galleryTiles.forEach((el, index) => {
                 const status = this.galleryTilesStatus[index];
                 if (!status) {
                     moveInAnimation(el, status)
@@ -386,6 +386,6 @@ class Frontpage extends React.Component {
     }
 }
 
-export {Frontpage};
+export { Frontpage };
 
 

@@ -1,19 +1,25 @@
 //stupid IE
-import 'babel-polyfill';
+//import 'babel-polyfill';
 
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import ScrollToTop from './component/scrolltotop'
-import { AcademicProject } from './app/academicProjects';
-import { WebAppProject } from './app/webAppProjects';
 import { Frontpage } from './app/frontpage';
-import { Missing404 } from './component/missing404';
-import { Gallery } from './app/gallery/gallery';
-import { Contact } from './app/contact/contact';
-import { AboutPage } from './app/about/aboutPage';
+// import { Missing404 } from './component/missing404';
+// import { Gallery } from './app/gallery/gallery';
+// import { Contact } from './app/contact/contact';
+// import { AboutPage } from './app/about/aboutPage';
+// import { AcademicProject } from './app/academicProjects';
+// import { WebAppProject } from './app/webAppProjects';
+const AcademicProject = lazy(() => import('./app/academicProjects'));
+const WebAppProject = lazy(() => import('./app/webAppProjects'));
+const Gallery = lazy(() => import('./app/gallery/gallery'));
+const Contact = lazy(() => import('./app/contact/contact'));
+const AboutPage = lazy(() => import('./app/about/aboutPage'));
+const Missing404 = lazy(() => import('./component/missing404'));
 
 const academicProjectArray = [
     'Machine Learning',
@@ -41,19 +47,16 @@ const galleryArray = [
 ];
 
 // Links are in the format of /xxxxxx-xxxxxx
-const academicProjectLinkArray = [];
-const webAppProjectLinkArray = [];
-const galleryLinkArray = [];
-function convertToLink(array, linkArray) {
-    array.map((i) => {
+
+function convertToLink(array) {
+    return array.map((i) => {
         let item = i.toLowerCase().split(' ').join('-').replace('/', '');
-        item = ('/').concat(item);
-        linkArray.push(item);
+        return ('/').concat(item);
     });
 }
-convertToLink(academicProjectArray, academicProjectLinkArray);
-convertToLink(webAppProjectArray, webAppProjectLinkArray);
-convertToLink(galleryArray, galleryLinkArray);
+const academicProjectLinkArray = convertToLink(academicProjectArray);
+const webAppProjectLinkArray = convertToLink(webAppProjectArray);
+const galleryLinkArray = convertToLink(galleryArray);
 const listAndLink = {
     academicProjectArray: academicProjectArray,
     webAppProjectArray: webAppProjectArray,
@@ -108,27 +111,28 @@ class App extends React.Component {
         return (
             <Router>
                 <ScrollToTop>
-                <Switch>
-                    <Route path="/" exact render={(props) => <Frontpage {...props} listAndLink={listAndLink} />} />
-                    <Route path="/home" exact render={(props) => <Frontpage {...props} listAndLink={listAndLink} />} />
-                    <Route path="/contact" render={(props) => <Contact {...props}/> } />
-                    <Route path="/about" render={(props) => <AboutPage {...props}/> } />
+                    <Suspense fallback={<Frontpage {...this.props} listAndLink={listAndLink} />} >
+                        <Switch>
+                            <Route path="/" exact render={(props) => <Frontpage {...props} listAndLink={listAndLink} />} />
+                            <Route path="/home" exact render={(props) => <Frontpage {...props} listAndLink={listAndLink} />} />
+                            <Route path="/contact" render={(props) => <Contact {...props}/> } />
+                            <Route path="/about" render={(props) => <AboutPage {...props}/> } />
 
-                    { this.academicProjectPaths }
+                            { this.academicProjectPaths }
 
-                    { this.webAppProjectPaths }
+                            { this.webAppProjectPaths }
 
-                    { this.galleryPaths }
+                            { this.galleryPaths }
 
-                    <Route component={ Missing404 } />
+                            <Route render={ () => Missing404 } />
 
-                </Switch>
+                        </Switch>
+                    </Suspense>
                 </ScrollToTop>
             </Router>
         )
     }
 }
 
-export default App;
 
 ReactDOM.render(<App />, document.getElementById('root'));
