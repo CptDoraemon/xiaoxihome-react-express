@@ -9,8 +9,7 @@ class Loading extends  React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            percent: 0,
-            opacity: 1
+            percent: 0
         };
         this.textColorChanged = false;
         this.animation = this.animation.bind(this);
@@ -33,10 +32,8 @@ class Loading extends  React.Component {
                 this.setState({percent: this.state.percent + speed});
                 requestAnimationFrame(loop)
             } else {
-                this.setState({
-                    percent: 100,
-                    opacity: 0
-                }, () => setTimeout(this.props.finishLoad, 1000));
+                this.props.prerender();
+                setTimeout(this.props.finishLoad, 1000)
             }
         };
         requestAnimationFrame(loop)
@@ -45,12 +42,13 @@ class Loading extends  React.Component {
         this.animation()
     }
     render() {
+        const percent = Math.floor(this.state.percent);
         return (
-            <div className='one-page-section-wrapper-row loading-ontop' style={{opacity: this.state.opacity}}>
+            <div className='one-page-section-wrapper-row loading-ontop' style={{opacity: percent === 100 ? 0 : 1}}>
                 <div className='loading-gradient' />
-                <div className='loading-bg' style={{height: 100 - this.state.percent + '%'}}/>
+                <div className='loading-bg' style={{height: 100 - percent + '%'}}/>
                 <div className='loading-text-wrapper'>
-                    <span style={{color: this.textColorChanged ? 'white' : 'black'}}>Loading {Math.floor(this.state.percent)}%</span>
+                    <span style={{color: this.textColorChanged ? 'white' : 'black'}}>Loading {percent}%</span>
                 </div>
             </div>
         )
@@ -91,11 +89,13 @@ class AboutPage extends React.Component {
         this.state = {
             isLoadPageFinished: false,
             areImagesReady: false,
+            isPrerenderFinished: false,
             currentAtPage: 0
         };
         this.finishLoad = this.finishLoad.bind(this);
         this.loadResources = this.loadResources.bind(this);
         this.handleScroll = this.handleScroll.bind(this);
+        this.prerender = this.prerender.bind(this);
         this.data = data.slice();
         this.checkPoints = [];
         this.isScrolling = false;
@@ -157,8 +157,17 @@ class AboutPage extends React.Component {
 
         setTimeout(() => this.isScrolling = false, 2000)
     }
+    prerender() {
+        this.prerenderedElements = this.data.map((i, index) => <Page
+            id={index}
+            title={i.title}
+            content={i.content}
+            currentAtPage={this.state.currentAtPage}
+            imageUrl={i.imageUrl}
+            key={`aboutPage${index}`}/>);
+        this.setState({isPrerenderFinished: true})
+    }
     componentDidMount() {
-        this.loadResources();
         window.scrollY = 0;
 
         if (window.innerWidth >= 800) {
@@ -166,26 +175,30 @@ class AboutPage extends React.Component {
             body.style.overflow = 'hidden';
             window.addEventListener('wheel', this.handleScroll);
         }
+
+        this.loadResources();
     }
     componentWillUnmount() {
         window.removeEventListener('wheel', this.handleScroll);
     }
     render() {
-
         return (
-            <React.Fragment>
-                { this.state.isLoadPageFinished ? null : <Loading finishLoad={this.finishLoad} isSkip={this.state.areImagesReady} /> }
                 <div>
 
-                    { this.state.areImagesReady ?
-                        this.data.map((i, index) => <Page
-                            id={index}
-                            title={i.title}
-                            content={i.content}
-                            currentAtPage={this.state.currentAtPage}
-                            imageUrl={i.imageUrl}
-                            key={`aboutPage${index}`}/>) :
-                        null
+                    {
+                        this.state.isLoadPageFinished ?
+                            null :
+                            <Loading
+                                finishLoad={this.finishLoad}
+                                isSkip={this.state.areImagesReady}
+                                prerender={this.prerender}
+                            />
+                    }
+
+                    {
+                        this.state.isPrerenderFinished ?
+                            this.prerenderedElements :
+                            null
                     }
 
                     <NavBar currentAtPage={this.state.currentAtPage} length={this.data.length}/>
@@ -195,7 +208,6 @@ class AboutPage extends React.Component {
                         </div>
                     </a>
                 </div>
-            </React.Fragment>
         );
     }
 }

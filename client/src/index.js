@@ -111,7 +111,7 @@ class App extends React.Component {
         return (
             <Router>
                 <ScrollToTop>
-                    <Suspense fallback={<div>Loading...</div>} >
+                    <Suspense fallback={<div> </div>} >
                         <Switch>
                             <Route path="/" exact render={(props) => <Frontpage {...props} listAndLink={listAndLink} />} />
                             <Route path="/home" exact render={(props) => <Frontpage {...props} listAndLink={listAndLink} />} />
