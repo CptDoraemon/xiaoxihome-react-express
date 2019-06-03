@@ -36,6 +36,10 @@ class Hud extends React.Component {
         this.dataArray = [...galleryData];
         this.xDown = null;
         this.yDown = null;
+        this.toggleHud = this.toggleHud.bind(this);
+        this.handleKeyDown = this.handleKeyDown.bind(this);
+        this.handleTouchStart = this.handleTouchStart.bind(this);
+        this.handleTouchMove = this.handleTouchMove.bind(this);
     }
     handleMouseEnter = (album, page, e) => {
         page === 0 ?
@@ -67,12 +71,12 @@ class Hud extends React.Component {
     }
     handleKeyDown(e) {
         this.toggleHud();
-        if (e.keyCode === 37) {
+        if (e.keyCode === 37 || e.keyCode === 38) {
             this.props.handleClickLeft();
-        };
-        if (e.keyCode === 39) {
+        }
+        if (e.keyCode === 39 || e.keyCode === 40) {
             this.props.handleClickRight();
-        };
+        }
     }
     //mobile
     handleTouchStart(e) {
@@ -81,7 +85,7 @@ class Hud extends React.Component {
         this.toggleHud();
     };
     handleTouchMove(e) {
-        if ( ! this.xDown || ! this.yDown ) {
+        if ( !this.xDown || !this.yDown ) {
             return;
         }
         let xUp = e.touches[0].clientX;
@@ -118,18 +122,21 @@ class Hud extends React.Component {
         this.timeout = setTimeout(() => {
             this.setState({hudClassName: 'hud-off'})}, 5000
         );
-        window.addEventListener('mousemove', () => this.toggleHud());
-        window.addEventListener('keydown', (e) => this.handleKeyDown(e));
+        window.addEventListener('mousemove', this.toggleHud);
+        window.addEventListener('keydown', this.handleKeyDown);
         // mobile
-        window.addEventListener('touchstart', (e) => this.handleTouchStart(e));
-        window.addEventListener('touchmove', (e) => this.handleTouchMove(e));
+        window.addEventListener('touchstart', this.handleTouchStart);
+        window.addEventListener('touchmove', this.handleTouchMove);
     }
     componentWillUnmount() {
-        window.addEventListener('mousemove', () => this.toggleHud());
-        window.addEventListener('keydown', (e) => this.handleKeyDown(e));
+        clearTimeout(this.timeout);
+        this.timeout = null;
+        //
+        window.removeEventListener('mousemove', this.toggleHud);
+        window.removeEventListener('keydown', this.handleKeyDown);
         // mobile
-        window.addEventListener('touchstart', (e) => this.handleTouchStart(e));
-        window.addEventListener('touchmove', (e) => this.handleTouchMove(e));
+        window.removeEventListener('touchstart', this.handleTouchStart);
+        window.removeEventListener('touchmove', this.handleTouchMove);
     }
     render() {
         const list = this.dataArray.map((i, indexI) => i.map((j, indexJ) => {
@@ -138,15 +145,18 @@ class Hud extends React.Component {
                 page: {indexJ},
                 onMouseEnter: (e) => this.handleMouseEnter(indexI, indexJ, e),
                 onMouseLeave: () => this.handleMouseLeave(),
-            }
+            };
+            const key = `galleryLiKey${indexJ}`;
             return (
                 indexI === this.props.album && indexJ === this.props.page ?
                     <li {...attr}
+                        key={key}
                         onClick={() => this.props.handleClickMenu(indexI, indexJ)}><IoMdRadioButtonOn/></li> :
                 indexJ === 0 ?
-                   <li {...attr}><IoMdAlbums/></li> :
+                   <li {...attr} key={key}><IoMdAlbums/></li> :
                    <li
                        {...attr}
+                       key={key}
                        onClick={() => this.props.handleClickMenu(indexI, indexJ)}><IoMdRadioButtonOff/></li>
             )
         }));

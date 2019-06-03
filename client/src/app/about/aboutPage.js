@@ -9,13 +9,13 @@ class Loading extends  React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            percent: 0
+            percent: 0,
+            opacity: 1
         };
         this.textColorChanged = false;
         this.animation = this.animation.bind(this);
     }
     animation() {
-        const el = document.getElementById('loading');
         let speed = 0.5;
         const loop = () => {
             if (this.props.isSkip && speed !== 2) {
@@ -33,9 +33,10 @@ class Loading extends  React.Component {
                 this.setState({percent: this.state.percent + speed});
                 requestAnimationFrame(loop)
             } else {
-                this.setState({percent: 100});
-                el.style.opacity = 0;
-                setTimeout(this.props.finishLoad, 1000)
+                this.setState({
+                    percent: 100,
+                    opacity: 0
+                }, () => setTimeout(this.props.finishLoad, 1000));
             }
         };
         requestAnimationFrame(loop)
@@ -45,7 +46,7 @@ class Loading extends  React.Component {
     }
     render() {
         return (
-            <div className='one-page-section-wrapper-row' id='loading'>
+            <div className='one-page-section-wrapper-row loading-ontop' style={{opacity: this.state.opacity}}>
                 <div className='loading-gradient' />
                 <div className='loading-bg' style={{height: 100 - this.state.percent + '%'}}/>
                 <div className='loading-text-wrapper'>
@@ -57,20 +58,11 @@ class Loading extends  React.Component {
 }
 function NavBar(props) {
     const buttons = [];
-    const activeButton = (
-        <div className='about-nav-button-wrapper'>
-            <MdRadioButtonChecked size='15px' color='black'/>
-        </div>
-    );
-    const inActiveButton = (
-        <div className='about-nav-button-wrapper'>
-            <MdRadioButtonUnchecked size='15px' color='rgba(0,0,0,0.2)'/>
-        </div>
-    );
     for (let i=0; i<props.length; i++) {
+        const key = `aboutPageButton${i}`;
         i === props.currentAtPage ?
-            buttons.push(activeButton) :
-            buttons.push(inActiveButton)
+            buttons.push(<div key={key} className='about-nav-button-wrapper'><MdRadioButtonChecked size='15px' color='black'/></div>) :
+            buttons.push(<div key={key} className='about-nav-button-wrapper'><MdRadioButtonUnchecked size='15px' color='rgba(0,0,0,0.2)'/></div>)
     }
     return (
         <div className='about-nav-wrapper'>
@@ -89,7 +81,7 @@ function Page(props) {
                 <p>{ props.content }</p>
             </div>
             { isMobile ? null : <div className='about-text-wrapper-placeholder' /> }
-            <div className='about-image-wrapper' style={{backgroundImage: 'url('+props.imageUrl+')'}}/>
+            <div className='about-image-wrapper' style={{ backgroundImage: 'url('+props.imageUrl+')' }}/>
         </div>
     )
 }
@@ -116,7 +108,7 @@ class AboutPage extends React.Component {
             return new Promise((resolve, reject) => {
                 const image = new Image();
                 image.src = src;
-                image.onload = () => resolve(image);
+                image.onload = () => resolve();
                 image.onerror = (err) => reject(err);
             })
         }
@@ -179,21 +171,23 @@ class AboutPage extends React.Component {
         window.removeEventListener('wheel', this.handleScroll);
     }
     render() {
-        const pages = this.data.map((i, index) => {
-            return (
-                <Page id={index} title={i.title} content={i.content} currentAtPage={this.state.currentAtPage} imageUrl={i.imageUrl} key={index}/>
-                )
-        });
 
-        // RENDER
-        if(!this.state.isLoadPageFinished) {
-            return (
-                <Loading finishLoad={this.finishLoad} isSkip={this.state.areImagesReady}/>
-            )
-        } else {
-            return (
+        return (
+            <React.Fragment>
+                { this.state.isLoadPageFinished ? null : <Loading finishLoad={this.finishLoad} isSkip={this.state.areImagesReady} /> }
                 <div>
-                    { pages }
+
+                    { this.state.areImagesReady ?
+                        this.data.map((i, index) => <Page
+                            id={index}
+                            title={i.title}
+                            content={i.content}
+                            currentAtPage={this.state.currentAtPage}
+                            imageUrl={i.imageUrl}
+                            key={`aboutPage${index}`}/>) :
+                        null
+                    }
+
                     <NavBar currentAtPage={this.state.currentAtPage} length={this.data.length}/>
                     <a href='/'>
                         <div className='about-return-wrapper'>
@@ -201,8 +195,8 @@ class AboutPage extends React.Component {
                         </div>
                     </a>
                 </div>
-            )
-        }
+            </React.Fragment>
+        );
     }
 }
 

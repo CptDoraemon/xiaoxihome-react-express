@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { HeaderCover} from "../component/header";
-import { Footer} from "../component/footer";
+import { HeaderCover } from "../component/header";
+import { Footer } from "../component/footer";
 import { MouseIcon } from "../component/mouseIcon";
 
 import { Link } from 'react-router-dom';

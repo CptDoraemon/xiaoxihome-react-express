@@ -5,11 +5,13 @@
     opacity: 1;
     transition: opacity 1s;
     -webkit-transition: opacity 1s; /* Safari */
-    transition-delay: 0.2s;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
+}
+.loading-ontop {
+    z-index: 9999;
 }
 .loading-bg {
     background-color: white;
