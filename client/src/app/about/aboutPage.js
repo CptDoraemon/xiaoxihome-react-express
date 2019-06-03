@@ -9,46 +9,49 @@ class Loading extends  React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            percent: 0
+            percent: 0,
         };
         this.textColorChanged = false;
         this.animation = this.animation.bind(this);
+        this.animationLoop = this.animationLoop.bind(this);
     }
     animation() {
+        requestAnimationFrame(this.animationLoop)
+    }
+    animationLoop() {
         let speed = 0.5;
-        const loop = () => {
-            if (this.props.isSkip && speed !== 2) {
-                speed = 2;
-            }
-            if (!this.props.isSkip && this.state.percent >= 20 && this.speed !== 0.2) {
-                speed = 0.1;
-            }
-            if (this.state.percent >= 50 && !this.textColorChanged) {
-                this.textColorChanged = true;
-            }
+        if (this.props.isSkip && speed !== 2) {
+            speed = 2;
+        }
+        if (!this.props.isSkip && this.state.percent >= 20 && this.speed !== 0.2) {
+            speed = 0.1;
+        }
+        if (this.state.percent >= 50 && !this.textColorChanged) {
+            this.textColorChanged = true;
+        }
 
 
-            if (this.state.percent < 100) {
-                this.setState({percent: this.state.percent + speed});
-                requestAnimationFrame(loop)
-            } else {
-                this.props.prerender();
-                setTimeout(this.props.finishLoad, 1000)
-            }
-        };
-        requestAnimationFrame(loop)
+        if (this.state.percent < 100) {
+            this.setState({percent: this.state.percent + speed});
+            requestAnimationFrame(this.animationLoop)
+        } else {
+            this.setState({
+                percent: 100,
+            }, () => {
+                setTimeout(this.props.prerender, 100);
+            });
+        }
     }
     componentDidMount() {
         this.animation()
     }
     render() {
-        const percent = Math.floor(this.state.percent);
         return (
-            <div className='one-page-section-wrapper-row loading-ontop' style={{opacity: percent === 100 ? 0 : 1}}>
+            <div className='one-page-section-wrapper-row loading-ontop' style={{opacity: this.props.isPrerenderFinished ? 0 : 1}}>
                 <div className='loading-gradient' />
-                <div className='loading-bg' style={{height: 100 - percent + '%'}}/>
+                <div className='loading-bg' style={{height: 100 - this.state.percent + '%'}}/>
                 <div className='loading-text-wrapper'>
-                    <span style={{color: this.textColorChanged ? 'white' : 'black'}}>Loading {percent}%</span>
+                    <span style={{color: this.textColorChanged ? 'white' : 'black'}}>Loading {Math.floor(this.state.percent)}%</span>
                 </div>
             </div>
         )
@@ -87,21 +90,18 @@ class AboutPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isLoadPageFinished: false,
             areImagesReady: false,
             isPrerenderFinished: false,
+            isLoadingFinished: false,
             currentAtPage: 0
         };
-        this.finishLoad = this.finishLoad.bind(this);
         this.loadResources = this.loadResources.bind(this);
         this.handleScroll = this.handleScroll.bind(this);
         this.prerender = this.prerender.bind(this);
+        this.finishLoading = this.finishLoading.bind(this);
         this.data = data.slice();
         this.checkPoints = [];
         this.isScrolling = false;
-    }
-    finishLoad() {
-        this.setState({isLoadPageFinished: true})
     }
     loadResources() {
         function loadImage(src) {
@@ -119,7 +119,7 @@ class AboutPage extends React.Component {
             .catch(err => console.log(err));
     }
     handleScroll(e) {
-        if (!this.state.isLoadPageFinished || this.isScrolling) return;
+        if (!this.state.isLoadingFinished || this.isScrolling) return;
 
         // set checkPoints:
         if (!this.checkPoints.length) {
@@ -165,7 +165,10 @@ class AboutPage extends React.Component {
             currentAtPage={this.state.currentAtPage}
             imageUrl={i.imageUrl}
             key={`aboutPage${index}`}/>);
-        this.setState({isPrerenderFinished: true})
+        this.setState({isPrerenderFinished: true}, () => setTimeout(this.finishLoading, 1000));
+    }
+    finishLoading() {
+        this.setState({isLoadingFinished: true})
     }
     componentDidMount() {
         window.scrollY = 0;
@@ -184,14 +187,14 @@ class AboutPage extends React.Component {
     render() {
         return (
                 <div>
-
                     {
-                        this.state.isLoadPageFinished ?
+                        this.state.isLoadingFinished ?
                             null :
                             <Loading
-                                finishLoad={this.finishLoad}
                                 isSkip={this.state.areImagesReady}
                                 prerender={this.prerender}
+                                finishLoading={this.finishLoading}
+                                isPrerenderFinished={this.state.isPrerenderFinished}
                             />
                     }
 
