@@ -21,73 +21,71 @@ const Contact = lazy(() => import('./app/contact/contact'));
 const AboutPage = lazy(() => import('./app/about/aboutPage'));
 const Missing404 = lazy(() => import('./component/missing404'));
 
-const academicProjectArray = [
-    'Machine Learning',
-    'Empirical International Trade',
-    'North American Economic History',
-    'Stochastic Processes',
-    'Applied Macroeconomics',
-    'Econometric Theory'
-];
-const webAppProjectArray = [
-    'Reddit-like Website',
-    'Youtube Downloader',
-    'Weather App',
-    'Masonry Gallery',
-    'DOM Practice',
-    'RaycasterJS'
-    ];
-const galleryArray = [
-    'Toronto',
-    'Canada',
-    'Banff',
-    'Hometown',
-    'YorkU',
-    'Astro'
-];
-
-// Links are in the format of /xxxxxx-xxxxxx
-
-function convertToLink(array) {
-    return array.map((i) => {
-        let item = i.toLowerCase().split(' ').join('-').replace('/', '');
-        return ('/').concat(item);
-    });
-}
-const academicProjectLinkArray = convertToLink(academicProjectArray);
-const webAppProjectLinkArray = convertToLink(webAppProjectArray);
-const galleryLinkArray = convertToLink(galleryArray);
-const listAndLink = {
-    academicProjectArray: academicProjectArray,
-    webAppProjectArray: webAppProjectArray,
-    galleryArray: galleryArray,
-    academicProjectLinkArray: academicProjectLinkArray,
-    webAppProjectLinkArray: webAppProjectLinkArray,
-    galleryLinkArray: galleryLinkArray
-};
-
 
 
 
 class App extends React.Component {
     constructor(props){
         super(props);
-        this.academicProjectPaths = academicProjectLinkArray.map((i, index) => {
+        this.academicProjectArray = [
+            'Machine Learning',
+            'Empirical International Trade',
+            'North American Economic History',
+            'Stochastic Processes',
+            'Applied Macroeconomics',
+            'Econometric Theory'
+        ];
+        this.webAppProjectArray = [
+            'Reddit-like Website',
+            'Youtube Downloader',
+            'Weather App',
+            'Masonry Gallery',
+            'DOM Practice',
+            'RaycasterJS'
+        ];
+        this.galleryArray = [
+            'Toronto',
+            'Canada',
+            'Banff',
+            'Hometown',
+            'YorkU',
+            'Astro'
+        ];
+        this.academicProjectLinkArray = this.convertToLink(this.academicProjectArray);
+        this.webAppProjectLinkArray = this.convertToLink(this.webAppProjectArray);
+        this.galleryLinkArray = this.convertToLink(this.galleryArray);
+
+        this.listAndLink = {
+            academicProjectArray: this.academicProjectArray,
+            webAppProjectArray: this.webAppProjectArray,
+            galleryArray: this.galleryArray,
+            academicProjectLinkArray: this.academicProjectLinkArray,
+            webAppProjectLinkArray: this.webAppProjectLinkArray,
+            galleryLinkArray: this.galleryLinkArray
+        };
+
+        this.academicProjectPaths = this.academicProjectLinkArray.map((i, index) => {
             return (
-                <Route path={i} render={(props) => <AcademicProject {...props} name={academicProjectArray[index]} listAndLink={listAndLink}/>} key={index}/>
+                <Route path={i} render={(props) => <AcademicProject {...props} name={this.academicProjectArray[index]} listAndLink={this.listAndLink}/>} key={index}/>
             )
         });
-        this.webAppProjectPaths = webAppProjectLinkArray.map((i, index) => {
+        this.webAppProjectPaths = this.webAppProjectLinkArray.map((i, index) => {
             return (
-                <Route path={i} render={(props) => <WebAppProject {...props} name={webAppProjectArray[index]} listAndLink={listAndLink} />} key={index}/>
+                <Route path={i} render={(props) => <WebAppProject {...props} name={this.webAppProjectArray[index]} listAndLink={this.listAndLink} />} key={index}/>
             )
         });
-        this.galleryPaths = galleryLinkArray.map((i, index) => {
+        this.galleryPaths = this.galleryLinkArray.map((i, index) => {
             return (
                 <Route path={i} render={(props) => <Gallery {...props} album={index} page={1} /> } key={index}/>
             )
         });
+    }
 
+    convertToLink(array) {
+        return array.map((i) => {
+            let item = i.toLowerCase().split(' ').join('-').replace('/', '');
+            return ('/').concat(item);
+        });
     }
     componentDidMount(){
         const title = [
@@ -113,8 +111,8 @@ class App extends React.Component {
                 <ScrollToTop>
                     <Suspense fallback={<div> </div>} >
                         <Switch>
-                            <Route path="/" exact render={(props) => <Frontpage {...props} listAndLink={listAndLink} />} />
-                            <Route path="/home" exact render={(props) => <Frontpage {...props} listAndLink={listAndLink} />} />
+                            <Route path="/" exact render={(props) => <Frontpage {...props} listAndLink={this.listAndLink} />} />
+                            <Route path="/home" exact render={(props) => <Frontpage {...props} listAndLink={this.listAndLink} />} />
                             <Route path="/contact" render={(props) => <Contact {...props}/> } />
                             <Route path="/about" render={(props) => <AboutPage {...props}/> } />
 
