@@ -83,7 +83,7 @@ class ProjectList extends React.Component {
 
         // Academic Project List
         if (this.props.type === 'academic') {
-            const flyInDelayRemap = [0.3, 0.2, 0.1, 0.1, 0.2, 0.3];
+            const flyInDelayRemap = [0.2, 0.1, 0, 0.1, 0.2, 0.3];
             const flyInDirectionRemap = ['left', 'left', 'left', 'right', 'right', 'right'];
             return (
                 <div className='project-container' ref={this.containerRef}>
@@ -108,7 +108,7 @@ class ProjectList extends React.Component {
 
         // Web App Project List
         if (this.props.type === 'webApp') {
-            const flyInDelayRemap = [0.1, 0.2, 0.3, 0.4, 0.3, 0.2];
+            const flyInDelayRemap = [0, 0.1, 0.2, 0.3, 0.2, 0.1];
             const flyInDirectionRemap = ['right', 'right', 'right', 'left', 'left', 'left'];
             return (
                 <div className='project-container' ref={this.containerRef}>
@@ -135,7 +135,7 @@ class ProjectList extends React.Component {
         if (this.props.type === 'gallery') {
             const array = [...this.props.listAndArray.galleryArray];
             const linkArray = [...this.props.listAndArray.galleryLinkArray];
-            const flyInDelayRemap = [0.3, 0.1, 0.2, 0.2, 0.1, 0.3];
+            const flyInDelayRemap = [0.2, 0, 0.1, 0.1, 0, 0.2];
             const flyInDirectionRemap = ['up', 'down', 'up', 'down', 'up', 'down'];
             return (
                 <div className='project-container' ref={this.containerRef}>
