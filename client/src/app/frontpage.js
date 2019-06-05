@@ -55,9 +55,19 @@ function Tile(props) {
     )
 }
 
-// No animation on small screen
+
 // IMPORTANT!! DON'T USE HOC IN RENDER!!
-const WithFlyInAnimationTile = window.innerWidth > 800 ? withFlyInAnimation(Tile) : Tile;
+let WithFlyInAnimationTile = Tile;
+let AcademicTitle = () => <h2>Academic Project</h2>;
+let WebTitle = () => <h2>Web App Project</h2>;
+let GalleryTitle = () => <h2>Photography</h2>;
+// No animation on small screen
+if (window.innerWidth > 800) {
+    WithFlyInAnimationTile = withFlyInAnimation(Tile);
+    AcademicTitle = withFlyInAnimation(AcademicTitle);
+    WebTitle = withFlyInAnimation(WebTitle);
+    GalleryTitle = withFlyInAnimation(GalleryTitle);
+}
 
 class ProjectList extends React.Component {
     constructor(props) {
@@ -86,7 +96,11 @@ class ProjectList extends React.Component {
             const flyInDirectionRemap = ['left', 'left', 'left', 'right', 'right', 'right'];
             return (
                 <div className='project-container' ref={this.containerRef}>
-                    <h2 id='academicTitle'>Academic Project</h2>
+                    <AcademicTitle
+                        flyInDirection={'down'}
+                        flyInDelay={0}
+                        animationTriggerPoint={this.state.animationTriggerPoint}
+                    />
                     <div className='flexbox-wrapper-800' id='academic'>
                         {array.map((i, index) => {
                             const tileSize = (index === 1 || index === 3) ? 'tile-big' : 'tile-sm';
@@ -113,7 +127,11 @@ class ProjectList extends React.Component {
             const flyInDirectionRemap = ['right', 'right', 'right', 'left', 'left', 'left'];
             return (
                 <div className='project-container' ref={this.containerRef}>
-                    <h2 id='webTitle'>Web App Project</h2>
+                    <WebTitle
+                        flyInDirection={'down'}
+                        flyInDelay={0}
+                        animationTriggerPoint={this.state.animationTriggerPoint}
+                    />
                     <div className='flexbox-wrapper-800' id='web'>
                         {array.map((i, index) => {
                             const tileSize = (index === 0 || index === 5) ? 'tile-big ribboned' : 'tile-sm';
@@ -136,11 +154,15 @@ class ProjectList extends React.Component {
         if (this.props.type === 'gallery') {
             const array = [...this.props.listAndArray.galleryArray];
             const linkArray = [...this.props.listAndArray.galleryLinkArray];
-            const flyInDelayRemap = [0.2, 0, 0.1, 0.1, 0, 0.2];
-            const flyInDirectionRemap = ['up', 'down', 'up', 'down', 'up', 'down'];
+            const flyInDelayRemap = [0.2, 0.2, 0.1, 0.1, 0, 0];
+            const flyInDirectionRemap = ['left', 'right', 'left', 'right', 'left', 'right'];
             return (
                 <div className='project-container' ref={this.containerRef}>
-                    <h2>Photography</h2>
+                    <GalleryTitle
+                        flyInDirection={'down'}
+                        flyInDelay={0}
+                        animationTriggerPoint={this.state.animationTriggerPoint}
+                    />
                     <div className='flexbox-wrapper-800' id='gallery'>
                         {array.map((i, index) => {
                             const tileSize = 'tile-gallery';
