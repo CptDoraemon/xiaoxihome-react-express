@@ -122,7 +122,7 @@ class App extends React.Component {
 
                             { this.galleryPaths }
 
-                            <Route render={ () => Missing404 } />
+                            <Route render={ () => <Missing404/> } />
 
                         </Switch>
                     </Suspense>
