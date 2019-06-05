@@ -25,12 +25,14 @@ function withFlyInAnimation(WrappedComponent) {
             const beforeCSS = {
                 opacity: 0,
                 transform: this.translateCSS[translateCSSIndex],
+                webkitTransition: `-webkit-transform 1s ${this.flyInDelay}s`,
                 transition: `1s ${this.flyInDelay}s`
             };
             const afterCSS = {
                 opacity: 1,
                 transform: 'translate(0,0)',
-                transition: `1s ${this.flyInDelay}s`
+                transition: `1s ${this.flyInDelay}s`,
+                webkitTransition: `-webkit-transform 1s ${this.flyInDelay}s`
             };
             this.setState({
                 beforeCSS: beforeCSS,

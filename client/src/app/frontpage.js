@@ -77,12 +77,11 @@ class ProjectList extends React.Component {
         //props: listAndLink
         //props: if(gallery) imgUrls
 
-        const array = [...this.props.listAndArray.academicProjectArray];
-        const linkArray = [...this.props.listAndArray.academicProjectLinkArray];
-
 
         // Academic Project List
         if (this.props.type === 'academic') {
+            const array = [...this.props.listAndArray.academicProjectArray];
+            const linkArray = [...this.props.listAndArray.academicProjectLinkArray];
             const flyInDelayRemap = [0.2, 0.1, 0, 0.1, 0.2, 0.3];
             const flyInDirectionRemap = ['left', 'left', 'left', 'right', 'right', 'right'];
             return (
@@ -108,6 +107,8 @@ class ProjectList extends React.Component {
 
         // Web App Project List
         if (this.props.type === 'webApp') {
+            const array = [...this.props.listAndArray.webAppProjectArray];
+            const linkArray = [...this.props.listAndArray.webAppProjectArray];
             const flyInDelayRemap = [0, 0.1, 0.2, 0.3, 0.2, 0.1];
             const flyInDirectionRemap = ['right', 'right', 'right', 'left', 'left', 'left'];
             return (
