@@ -122,7 +122,7 @@ class ProjectList extends React.Component {
         // Web App Project List
         if (this.props.type === 'webApp') {
             const array = [...this.props.listAndArray.webAppProjectArray];
-            const linkArray = [...this.props.listAndArray.webAppProjectArray];
+            const linkArray = [...this.props.listAndArray.webAppProjectLinkArray];
             const flyInDelayRemap = [0, 0.1, 0.2, 0.3, 0.2, 0.1];
             const flyInDirectionRemap = ['right', 'right', 'right', 'left', 'left', 'left'];
             return (
