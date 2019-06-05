@@ -26,7 +26,7 @@ const galleryData = [
         }],
     ['Canada',
         {
-            description: 'View of Montreal downtown from Mount Royal Lookout',
+            description: 'Quebec City',
             link: 'https://s3.us-east-2.amazonaws.com/xiaoxihome/galleryphoto/canada/canada1.jpg'
         },
         {
@@ -64,7 +64,12 @@ const galleryData = [
         {
             description: 'Notre-Dame Basilica Montreal',
             link: 'https://s3.us-east-2.amazonaws.com/xiaoxihome/galleryphoto/canada/canada10.jpg'
-        }],
+        },
+        {
+            description: 'View of Montreal downtown from Mount Royal Lookout',
+            link: 'https://s3.us-east-2.amazonaws.com/xiaoxihome/galleryphoto/canada/canada11.jpg'
+        }
+        ],
     ['Banff',
         {
             description: 'Banff Gondola',

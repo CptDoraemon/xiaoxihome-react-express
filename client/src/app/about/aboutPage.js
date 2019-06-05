@@ -9,45 +9,43 @@ class Loading extends  React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            percent: 0,
+            percent: 0
         };
         this.textColorChanged = false;
         this.animation = this.animation.bind(this);
-        this.animationLoop = this.animationLoop.bind(this);
     }
     animation() {
-        requestAnimationFrame(this.animationLoop)
-    }
-    animationLoop() {
+        const el = document.getElementById('loading');
         let speed = 0.5;
-        if (this.props.isSkip && speed !== 2) {
-            speed = 2;
-        }
-        if (!this.props.isSkip && this.state.percent >= 20 && this.speed !== 0.2) {
-            speed = 0.1;
-        }
-        if (this.state.percent >= 50 && !this.textColorChanged) {
-            this.textColorChanged = true;
-        }
+        const loop = () => {
+            if (this.props.isSkip && speed !== 2) {
+                speed = 2;
+            }
+            if (!this.props.isSkip && this.state.percent >= 20 && this.speed !== 0.2) {
+                speed = 0.1;
+            }
+            if (this.state.percent >= 50 && !this.textColorChanged) {
+                this.textColorChanged = true;
+            }
 
 
-        if (this.state.percent < 100) {
-            this.setState({percent: this.state.percent + speed});
-            requestAnimationFrame(this.animationLoop)
-        } else {
-            this.setState({
-                percent: 100,
-            }, () => {
-                setTimeout(this.props.prerender, 100);
-            });
-        }
+            if (this.state.percent < 100) {
+                this.setState({percent: this.state.percent + speed});
+                requestAnimationFrame(loop)
+            } else {
+                this.setState({percent: 100});
+                el.style.opacity = 0;
+                setTimeout(this.props.finishLoad, 1000)
+            }
+        };
+        requestAnimationFrame(loop)
     }
     componentDidMount() {
         this.animation()
     }
     render() {
         return (
-            <div className='one-page-section-wrapper-row loading-ontop' style={{opacity: this.props.isPrerenderFinished ? 0 : 1}}>
+            <div className='one-page-section-wrapper-row' id='loading'>
                 <div className='loading-gradient' />
                 <div className='loading-bg' style={{height: 100 - this.state.percent + '%'}}/>
                 <div className='loading-text-wrapper'>
@@ -59,11 +57,20 @@ class Loading extends  React.Component {
 }
 function NavBar(props) {
     const buttons = [];
+    const activeButton = (
+        <div className='about-nav-button-wrapper'>
+            <MdRadioButtonChecked size='15px' color='black'/>
+        </div>
+    );
+    const inActiveButton = (
+        <div className='about-nav-button-wrapper'>
+            <MdRadioButtonUnchecked size='15px' color='rgba(0,0,0,0.2)'/>
+        </div>
+    );
     for (let i=0; i<props.length; i++) {
-        const key = `aboutPageButton${i}`;
         i === props.currentAtPage ?
-            buttons.push(<div key={key} className='about-nav-button-wrapper'><MdRadioButtonChecked size='15px' color='black'/></div>) :
-            buttons.push(<div key={key} className='about-nav-button-wrapper'><MdRadioButtonUnchecked size='15px' color='rgba(0,0,0,0.2)'/></div>)
+            buttons.push(activeButton) :
+            buttons.push(inActiveButton)
     }
     return (
         <div className='about-nav-wrapper'>
@@ -82,7 +89,7 @@ function Page(props) {
                 <p>{ props.content }</p>
             </div>
             { isMobile ? null : <div className='about-text-wrapper-placeholder' /> }
-            <div className='about-image-wrapper' style={{ backgroundImage: 'url('+props.imageUrl+')' }}/>
+            <div className='about-image-wrapper' style={{backgroundImage: 'url('+props.imageUrl+')'}}/>
         </div>
     )
 }
@@ -90,25 +97,26 @@ class AboutPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            isLoadPageFinished: false,
             areImagesReady: false,
-            isPrerenderFinished: false,
-            isLoadingFinished: false,
             currentAtPage: 0
         };
+        this.finishLoad = this.finishLoad.bind(this);
         this.loadResources = this.loadResources.bind(this);
         this.handleScroll = this.handleScroll.bind(this);
-        this.prerender = this.prerender.bind(this);
-        this.finishLoading = this.finishLoading.bind(this);
         this.data = data.slice();
         this.checkPoints = [];
         this.isScrolling = false;
+    }
+    finishLoad() {
+        this.setState({isLoadPageFinished: true})
     }
     loadResources() {
         function loadImage(src) {
             return new Promise((resolve, reject) => {
                 const image = new Image();
                 image.src = src;
-                image.onload = () => resolve();
+                image.onload = () => resolve(image);
                 image.onerror = (err) => reject(err);
             })
         }
@@ -119,7 +127,7 @@ class AboutPage extends React.Component {
             .catch(err => console.log(err));
     }
     handleScroll(e) {
-        if (!this.state.isLoadingFinished || this.isScrolling) return;
+        if (!this.state.isLoadPageFinished || this.isScrolling) return;
 
         // set checkPoints:
         if (!this.checkPoints.length) {
@@ -157,20 +165,8 @@ class AboutPage extends React.Component {
 
         setTimeout(() => this.isScrolling = false, 2000)
     }
-    prerender() {
-        this.prerenderedElements = this.data.map((i, index) => <Page
-            id={index}
-            title={i.title}
-            content={i.content}
-            currentAtPage={this.state.currentAtPage}
-            imageUrl={i.imageUrl}
-            key={`aboutPage${index}`}/>);
-        this.setState({isPrerenderFinished: true}, () => setTimeout(this.finishLoading, 1000));
-    }
-    finishLoading() {
-        this.setState({isLoadingFinished: true})
-    }
     componentDidMount() {
+        this.loadResources();
         window.scrollY = 0;
 
         if (window.innerWidth >= 800) {
@@ -178,32 +174,26 @@ class AboutPage extends React.Component {
             body.style.overflow = 'hidden';
             window.addEventListener('wheel', this.handleScroll);
         }
-
-        this.loadResources();
     }
     componentWillUnmount() {
         window.removeEventListener('wheel', this.handleScroll);
     }
     render() {
-        return (
+        const pages = this.data.map((i, index) => {
+            return (
+                <Page id={index} title={i.title} content={i.content} currentAtPage={this.state.currentAtPage} imageUrl={i.imageUrl} key={index}/>
+            )
+        });
+
+        // RENDER
+        if(!this.state.isLoadPageFinished) {
+            return (
+                <Loading finishLoad={this.finishLoad} isSkip={this.state.areImagesReady}/>
+            )
+        } else {
+            return (
                 <div>
-                    {
-                        this.state.isLoadingFinished ?
-                            null :
-                            <Loading
-                                isSkip={this.state.areImagesReady}
-                                prerender={this.prerender}
-                                finishLoading={this.finishLoading}
-                                isPrerenderFinished={this.state.isPrerenderFinished}
-                            />
-                    }
-
-                    {
-                        this.state.isPrerenderFinished ?
-                            this.prerenderedElements :
-                            null
-                    }
-
+                    { pages }
                     <NavBar currentAtPage={this.state.currentAtPage} length={this.data.length}/>
                     <a href='/'>
                         <div className='about-return-wrapper'>
@@ -211,7 +201,8 @@ class AboutPage extends React.Component {
                         </div>
                     </a>
                 </div>
-        );
+            )
+        }
     }
 }
 
