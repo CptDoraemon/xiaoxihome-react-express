@@ -5,20 +5,54 @@ import { galleryData } from './galleryData';
 
 import { IoIosArrowDropleft,  IoIosArrowDropright, IoIosPower, IoMdRadioButtonOff, IoMdRadioButtonOn, IoMdAlbums, IoIosPause, IoIosPlay} from "react-icons/io";
 
-
-function Show(props) {
+function GalleryLoader(props) {
     return (
-        <div className='showcase'>
-            <div
-                className='show-blur-bg'
-                style={{backgroundImage: 'url(' + props.link + ')'}}>
+            <div className='gallery-loader'>
+                <div className='gallery-loader-inner'>
+                </div>
             </div>
-            <div
-                className='show'
-                style={{backgroundImage: 'url(' + props.link + ')'}}>
+    )
+}
+class Show extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isLoading: false
+        };
+    }
+    loadImage(link) {
+        return new Promise((resolve, reject) => {
+            const image = new Image();
+            image.src = link;
+            image.onload = () => resolve();
+            image.onerror = (err) => reject(err);
+        });
+    }
+    componentWillUpdate(prevProps) {
+        if (this.props.link !== prevProps.link) {
+            this.setState({isLoading: true});
+            this.loadImage(this.props.link)
+                .then(() => this.setState({isLoading: false}))
+                .catch(err => console.log(err))
+        }
+    }
+    render() {
+        const backgroundImageCSS = {backgroundImage: 'url(' + this.props.link + ')'};
+        const styleSwitcher = this.state.isLoading ? null : backgroundImageCSS;
+        return (
+            <div className='showcase'>
+                <div
+                    className='show-blur-bg'
+                    style={styleSwitcher}>
+                </div>
+                <div
+                    className='show'
+                    style={styleSwitcher}>
+                </div>
+                { this.state.isLoading ? <GalleryLoader /> : null}
             </div>
-        </div>
         )
+    }
 }
 class Hud extends React.Component {
     // It receives props album, pages, title, description
@@ -147,18 +181,26 @@ class Hud extends React.Component {
                 onMouseLeave: () => this.handleMouseLeave(),
             };
             const key = `galleryLiKey${indexJ}`;
-            return (
-                indexI === this.props.album && indexJ === this.props.page ?
-                    <li {...attr}
+
+            if (indexJ === 0 ) {
+                return <li {...attr} key={key}><IoMdAlbums/></li>
+            } else if (indexI === this.props.album && indexJ === this.props.page) {
+                return (
+                    <li
+                        {...attr}
                         key={key}
-                        onClick={() => this.props.handleClickMenu(indexI, indexJ)}><IoMdRadioButtonOn/></li> :
-                indexJ === 0 ?
-                   <li {...attr} key={key}><IoMdAlbums/></li> :
+                        onClick={() => this.props.handleClickMenu(indexI, indexJ)}><IoMdRadioButtonOn/>
+                    </li>
+                    )
+            } else {
+                return (
                    <li
                        {...attr}
                        key={key}
-                       onClick={() => this.props.handleClickMenu(indexI, indexJ)}><IoMdRadioButtonOff/></li>
-            )
+                       onClick={() => this.props.handleClickMenu(indexI, indexJ)}><IoMdRadioButtonOff/>
+                   </li>
+                )
+            }
         }));
         return (
             <div className={this.state.hudClassName}>
@@ -201,7 +243,7 @@ class Hud extends React.Component {
                         style={{
                            top: this.state.thumbnailTop,
                            left: this.state.thumbnailLeft,
-                           backgroundImage: 'url(' + this.state.thumbnailLink + ')'
+                           backgroundImage: this.state.thumbnailLink === null ? null : 'url(' + this.state.thumbnailLink + ')'
                         }}>
                         { this.state.thumbnailText }
                         </div>

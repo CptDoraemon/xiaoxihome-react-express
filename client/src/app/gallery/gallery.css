@@ -27,6 +27,26 @@
     opacity: 0.2;
 }
 
+/* loader */
+.gallery-loader {
+    position: absolute;
+    top: calc(50% - 50px);
+    left: calc(50% - 50px);
+    height: 100px;
+    width: 100px;
+    background-color: transparent;
+    border: 4px solid;
+    border-color: white transparent transparent transparent;
+    border-radius: 54px;
+    z-index: 98;
+    animation: gallery-loader-spin 1s linear infinite;
+}
+@keyframes gallery-loader-spin {
+    0%{transform: rotate(0deg)}
+    100%{transform: rotate(360deg)}
+}
+
+
 
 /* HUD */
 .hud-on {
