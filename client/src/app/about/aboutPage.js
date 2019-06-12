@@ -11,6 +11,7 @@ class Loading extends  React.Component {
         this.state = {
             percent: 0
         };
+        this.preloadCacheArray = [];
         this.textColorChanged = false;
         this.animation = this.animation.bind(this);
     }
@@ -55,22 +56,27 @@ class Loading extends  React.Component {
         )
     }
 }
-function NavBar(props) {
-    const buttons = [];
-    const activeButton = (
+
+const ActiveButton = (props) => {
+    return (
         <div className='about-nav-button-wrapper'>
             <MdRadioButtonChecked size='15px' color='black'/>
         </div>
-    );
-    const inActiveButton = (
+        )
+};
+const InActiveButton = (props) => {
+    return (
         <div className='about-nav-button-wrapper'>
             <MdRadioButtonUnchecked size='15px' color='rgba(0,0,0,0.2)'/>
         </div>
-    );
+    )
+};
+function NavBar(props) {
+    const buttons = [];
     for (let i=0; i<props.length; i++) {
         i === props.currentAtPage ?
-            buttons.push(activeButton) :
-            buttons.push(inActiveButton)
+            buttons.push(<ActiveButton key={i} />) :
+            buttons.push(<InActiveButton key={i} />)
     }
     return (
         <div className='about-nav-wrapper'>
@@ -112,16 +118,20 @@ class AboutPage extends React.Component {
         this.setState({isLoadPageFinished: true})
     }
     loadResources() {
-        function loadImage(src) {
+        const preloadCacheArray = [];
+        function loadImage(src, key) {
             return new Promise((resolve, reject) => {
                 const image = new Image();
                 image.src = src;
+                image.setAttribute('key', key.toString());
+                preloadCacheArray.push(image);
                 image.onload = () => resolve(image);
                 image.onerror = (err) => reject(err);
             })
         }
 
-        const loadImages = this.data.map(data => loadImage(data.imageUrl));
+        const loadImages = this.data.map((data, index) => loadImage(data.imageUrl, index));
+        this.preloadCacheArray = preloadCacheArray;
         Promise.all(loadImages)
             .then(() => this.setState({areImagesReady: true}))
             .catch(err => console.log(err));
