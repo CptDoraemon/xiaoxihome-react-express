@@ -8,6 +8,7 @@ require('dotenv').config();
 
 const weatherAPI = require('./api/weather').weather;
 const reverseGeoCodingAPI = require('./api/geocoding').reverseGeoCoding;
+const ipGeolocation = require('./api/ip-geolocation').ipGeolocation;
 
 const uristring = process.env.MONGODB_URI;
 
@@ -72,6 +73,7 @@ app.post('/contact/submit/', bodyParser.json(), (req, res) => {
     }
 });
 
+ipGeolocation(app);
 weatherAPI(app);
 reverseGeoCodingAPI(app);
 
