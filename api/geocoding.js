@@ -8,14 +8,17 @@ module.exports = {
 //TODO api protection
 
 const cors = require('cors');
-const whitelist = ['https://cptdoraemon.github.io/weather/'];
+const whitelist = ['https://cptdoraemon.github.io/weather123/'];
 const corsOptions = {
     origin: (origin, callback) => {
         whitelist.indexOf(origin) !== -1 ? callback(null, true) : callback(new Error('Not allowed by CORS'))
-    }
+    },
+    maxAge: 31536000
 };
 
 function reverseGeoCoding(app) {
+    app.options('/api/reversegeocoding/', cors(corsOptions));
+
     app.post('/api/reversegeocoding/', cors(corsOptions), bodyParser.json(), (req, res) => {
         const latitude = req.body.latitude;
         const longitude = req.body.longitude;

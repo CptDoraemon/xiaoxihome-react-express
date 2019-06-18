@@ -12,10 +12,13 @@ const whitelist = ['https://cptdoraemon.github.io/weather/'];
 const corsOptions = {
     origin: (origin, callback) => {
         whitelist.indexOf(origin) !== -1 ? callback(null, true) : callback(new Error('Not allowed by CORS'))
-    }
+    },
+    maxAge: 31536000
 };
 
 function weather(app) {
+    app.options('/api/weather/', cors(corsOptions));
+
     app.post('/api/weather/', cors(corsOptions), bodyParser.json(), (req, res) => {
         const latitude = req.body.latitude;
         const longitude = req.body.longitude;
