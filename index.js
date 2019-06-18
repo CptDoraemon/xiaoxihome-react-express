@@ -5,7 +5,6 @@ const bodyParser = require('body-parser');
 const mongoose = require ("mongoose");
 const helmet = require('helmet');
 require('dotenv').config();
-const xiaoxihomeCors = require('./api/cors').xiaoxihomeCors;
 
 const weatherAPI = require('./api/weather').weather;
 const reverseGeoCodingAPI = require('./api/geocoding').reverseGeoCoding;
@@ -34,16 +33,14 @@ app.use(helmet());
 
 app.use(express.static(path.join(__dirname, 'client/build')));
 
-// CORS (PRE-FLIGHT)
-const cors = require('cors');
-app.use(cors());
-// ROUTERS
 
+
+// ROUTERS
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname+'/client/build/index.html'));
 });
 
-app.post('/contact/submit/', xiaoxihomeCors, bodyParser.json(), (req, res) => {
+app.post('/contact/submit/', bodyParser.json(), (req, res) => {
     let name = req.body.name;
     let email = req.body.email;
     let message = req.body.message;
