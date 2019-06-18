@@ -7,8 +7,16 @@ module.exports = {
 
 //TODO api protection
 
+const cors = require('cors');
+const whitelist = ['https://cptdoraemon.github.io/weather/'];
+const corsOptions = {
+    origin: (origin, callback) => {
+        whitelist.indexOf(origin) !== -1 ? callback(null, true) : callback(new Error('Not allowed by CORS'))
+    }
+};
+
 function reverseGeoCoding(app) {
-    app.post('/api/reversegeocoding/', bodyParser.json(), (req, res) => {
+    app.post('/api/reversegeocoding/', cors(corsOptions), bodyParser.json(), (req, res) => {
         const latitude = req.body.latitude;
         const longitude = req.body.longitude;
         const locationIqAPI = `https://us1.locationiq.com/v1/reverse.php?key=${process.env.GEOCODING_SECRET_KEY}&lat=${latitude}&lon=${longitude}&format=json`;
