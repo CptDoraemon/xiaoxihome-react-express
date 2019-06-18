@@ -9,7 +9,7 @@ module.exports = {
 
 const cors = require('cors');
 const corsOptions = {
-    origin: ['https://cptdoraemon.github.io'],
+    origin: ['https://cptdoraemon.github.io', 'http://localhost:3000'],
     maxAge: 31536000,
     methods: 'POST'
 };

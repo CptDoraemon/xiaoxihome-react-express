@@ -15,8 +15,6 @@ const corsOptions = {
 };
 
 function ipGeolocation(app) {
-    app.options('/api/ipGeolocation/', cors(corsOptions));
-
     app.get('/api/ipGeolocation/', (req, res) => {
         const ip = req.headers['x-forwarded-for'] || req.ip;
         //const ip = req.ip.indexOf('::ffff:') !== -1 ? req.ip.slice(7) : req.ip;
