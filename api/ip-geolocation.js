@@ -46,7 +46,8 @@ function ipGeolocation(app) {
                     status: 'success',
                     data: {
                         latitude: latitude,
-                        longitude: longitude
+                        longitude: longitude,
+                        ip: ip
                     }
                 })
             });
