@@ -19,6 +19,7 @@ function ipGeolocation(app) {
 
     app.get('/api/ipGeolocation/', (req, res) => {
         const ip = req.ip;
+        console.log(ip);
         const ipAPI = `https://api.ipdata.co/${ip}?api-key=${process.env.IP_SECRET_KEY}`;
 
         https.get(ipAPI, (ipAPIRes) => {
