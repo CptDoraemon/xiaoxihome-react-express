@@ -9,13 +9,11 @@ module.exports = {
 
 const cors = require('cors');
 const corsOptions = {
-    origin: ['https://cptdoraemon.github.io'],
-    maxAge: 31536000,
-    methods: 'POST'
+    origin: ['https://cptdoraemon.github.io', 'http://localhost:3000'],
 };
 
 function ipGeolocation(app) {
-    app.get('/api/ipGeolocation/', (req, res) => {
+    app.get('/api/ipGeolocation/', cors(corsOptions), (req, res) => {
         const ip = req.headers['x-forwarded-for'] || req.ip;
         //const ip = req.ip.indexOf('::ffff:') !== -1 ? req.ip.slice(7) : req.ip;
         console.log(ip);
