@@ -8,7 +8,7 @@ function withFlyInAnimation(WrappedComponent) {
                 isAnimationTriggered: false,
                 beforeCSS: {
                     opacity: 0,
-                    transition: `0`
+                    transition: 0
                 }
             };
             this.setUp = this.setUp.bind(this);
@@ -66,7 +66,10 @@ function withFlyInAnimation(WrappedComponent) {
         }
         render() {
             return (
-                <div style={this.state.isAnimationTriggered ? this.state.afterCSS : this.state.beforeCSS}>
+                <div
+                    className={this.props.wrapperClassName === undefined ? null : this.props.wrapperClassName}
+                    style={this.state.isAnimationTriggered ? this.state.afterCSS : this.state.beforeCSS}
+                >
                     <WrappedComponent {...this.props}/>
                 </div>
             )

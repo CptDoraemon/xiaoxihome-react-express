@@ -112,6 +112,7 @@ class ProjectList extends React.Component {
                                 flyInDirection={flyInDirectionRemap[index]}
                                 flyInDelay={flyInDelayRemap[index]}
                                 animationTriggerPoint={this.state.animationTriggerPoint}
+                                wrapperClassName={'fly-in-wrapper'}
                             />
                         })}
                     </div>
@@ -143,6 +144,7 @@ class ProjectList extends React.Component {
                                 flyInDirection={flyInDirectionRemap[index]}
                                 flyInDelay={flyInDelayRemap[index]}
                                 animationTriggerPoint={this.state.animationTriggerPoint}
+                                wrapperClassName={'fly-in-wrapper'}
                             />
                         })}
                     </div>
@@ -177,6 +179,7 @@ class ProjectList extends React.Component {
                                 flyInDirection={flyInDirectionRemap[index]}
                                 flyInDelay={flyInDelayRemap[index]}
                                 animationTriggerPoint={this.state.animationTriggerPoint}
+                                wrapperClassName={'fly-in-wrapper'}
                             />
                         })}
                     </div>

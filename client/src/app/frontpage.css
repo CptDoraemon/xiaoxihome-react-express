@@ -332,3 +332,13 @@
         left: -40px;
     }
 }
+
+/* animation wrapper */
+.fly-in-wrapper {
+    width: auto;
+}
+@media only screen and (max-width: 800px) {
+    .fly-in-wrapper {
+        width: calc(100% - 20px);
+    }
+}
