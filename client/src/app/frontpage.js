@@ -43,16 +43,17 @@ function Tile(props) {
                 </div>
             </Link>
         )
+    } else {
+        // tile for projects
+        return (
+            <Link to={props.link}>
+                <div
+                    className={props.className}>
+                    { props.tileName.split(' ').map(name => <h3 key={name}> { name } </h3>) }
+                </div>
+            </Link>
+        )
     }
-    // tile for projects
-    return (
-        <Link to={props.link}>
-            <div
-                className={props.className}>
-                { props.tileName.split(' ').map(name => <h3 key={name}> { name } </h3>) }
-            </div>
-        </Link>
-    )
 }
 
 
@@ -222,10 +223,10 @@ class Frontpage extends React.Component {
         });
     }
     galleryLazyLoad() {
-        const scrolled = window.scrollY;
-        const scrolledBottom = scrolled + window.innerHeight;
-        const galleryTop = this.galleryRef.current.offsetTop;
-        if (scrolledBottom >= galleryTop && !this.state.imgIsLoaded) {
+        const viewpointHeight = window.innerHeight;
+        const galleryTop = this.galleryRef.current.getBoundingClientRect().top;
+        const galleryIsVisible = galleryTop - 200 < viewpointHeight;
+        if (galleryIsVisible) {
             this.setState({imgIsLoaded: true});
             window.removeEventListener('scroll', this.galleryLazyLoad);
         }
