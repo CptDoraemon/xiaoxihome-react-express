@@ -1,8 +1,16 @@
 .frontpage-main{
     width: 100vw;
     max-width: 100%; /* offset scrollbar width */
-    overflow: hidden;
-    position: relative;
+    /*overflow: hidden;*/
+    /*position: relative;*/
+
+    /* parallel box related */
+    perspective: 1px;
+    transform-style: preserve-3d;
+    height: 100vh;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    /**/
 }
 .cover-wrapper{
     width: 100%;
@@ -13,11 +21,16 @@
     background-repeat: no-repeat;
     background-position: center;
     background-size: 100% 100%;
+
+    /* parallel box related */
+    transform: translateZ(-1px) scale(2);
+    z-index: -1;
+    /**/
 }
 .cover-bg {
     position: absolute;
     opacity: 0;
-    transform: scale(1.2);
+    transform: scale(1.5);
     transition: 1s transform ease, 1s opacity ease;
     z-index: 2;
 }
@@ -27,7 +40,7 @@
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
-    background-attachment: fixed;
+    /*background-attachment: fixed;*/
     opacity: 1;
     height: 100vh;
     width: 100%;
@@ -240,6 +253,13 @@
 
 
 @media only screen and (max-width: 800px) {
+    .frontpage-main {
+        perspective: none;
+        transform-style: flat;
+        height: auto;
+        overflow-x: hidden;
+        overflow-y: hidden;
+    }
     .cover-bg-loaded {
         position: absolute;
         background-image: url("https://s3.us-east-2.amazonaws.com/xiaoxihome/cover-mobile.jpg");
@@ -250,6 +270,12 @@
         height: 100vh;
         width: 100vw;
         z-index: 2;
+    }
+    .cover-wrapper {
+        /* parallel box related */
+        transform: translateZ(0) scale(1);
+        z-index: auto;
+        /**/
     }
     .cover-intro {
         position: absolute;

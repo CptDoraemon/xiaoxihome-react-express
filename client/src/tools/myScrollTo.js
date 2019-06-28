@@ -3,8 +3,10 @@ module.exports = {
     myWheelTo: myWheelTo
 };
 
-function myScrollTo(targetY) {
-    const scrolled = window.scrollY;
+function myScrollTo(targetY, targetElement) {
+    const scrolled = targetElement === undefined ? window.scrollY : targetElement.scrollTop;
+    if (targetElement === undefined) targetElement = window;
+
     const diff = Math.abs(targetY - scrolled);
     const time = 0.3;
     let speed = diff/(60*time);
@@ -15,20 +17,20 @@ function myScrollTo(targetY) {
         if (scrolled > targetY) {
             // scroll up
             if (step > targetY) {
-                window.scrollTo(0, step);
+                targetElement.scrollTo(0, step);
                 step += speed;
                 requestAnimationFrame(scrollLoop);
             } else {
-                window.scrollTo(0, targetY);
+                targetElement.scrollTo(0, targetY);
             }
         } else if (scrolled < targetY) {
             // scroll down
             if (step < targetY) {
-                window.scrollTo(0, step);
+                targetElement.scrollTo(0, step);
                 step += speed;
                 requestAnimationFrame(scrollLoop);
             } else {
-                window.scrollTo(0, targetY);
+                targetElement.scrollTo(0, targetY);
             }
         }
     }
