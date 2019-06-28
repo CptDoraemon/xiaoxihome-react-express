@@ -6,8 +6,11 @@
 
     /* parallel box related */
     perspective: 1px;
+    perspective-origin: 0 0;
     transform-style: preserve-3d;
     height: 100vh;
+    overflow-x: hidden;
+    overflow-y: scroll;
     /**/
 }
 .cover-wrapper{
@@ -21,6 +24,7 @@
     background-size: 100% 100%;
 
     /* parallel box related */
+    transform-origin: 0 0; /* together with perspective-origin can ensure exact center when scrollbar takes space */
     transform: translateZ(-1.5px) scale(2.5);
     z-index: -1;
     /**/
@@ -31,6 +35,7 @@
     transform: scale(1.5);
     transition: 1s transform ease, 1s opacity ease;
     z-index: 2;
+    overflow: hidden;
 }
 .cover-bg-loaded {
     position: absolute;
@@ -45,6 +50,7 @@
     z-index: 2;
     transform: scale(1);
     transition: 1s transform ease, 1s opacity ease;
+    overflow: hidden;
 }
 .cover {
     height: 100vh;

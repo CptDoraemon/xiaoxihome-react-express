@@ -25,13 +25,13 @@ function withFlyInAnimation(WrappedComponent) {
             const transitionProperty = `transform 1s ${this.flyInDelay}s, opacity 1s ${this.flyInDelay}s`;
             const beforeCSS = {
                 opacity: 0,
-                transition: transitionProperty,
-                transform: this.translateCSS[translateCSSIndex]
+                // transition: transitionProperty,
+                transform: this.translateCSS[translateCSSIndex],
             };
             const afterCSS = {
                 opacity: 1,
                 transform: 'translate(0,0)',
-                transition: transitionProperty
+                transition: transitionProperty,
             };
             this.setState({
                 beforeCSS: beforeCSS,
