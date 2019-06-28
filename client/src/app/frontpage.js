@@ -214,6 +214,7 @@ class Frontpage extends React.Component {
 
         this.parallelBoxRef = React.createRef();
         this.parallelBoxScrollHandler = this.parallelBoxScrollHandler.bind(this);
+        this.prepareParallelBoxScrollEvent = this.prepareParallelBoxScrollEvent.bind(this);
     }
     scrollToWorkRef() {
         myScrollTo(this.academicRef.current.offsetTop, this.parallelBoxRef.current);
@@ -235,17 +236,33 @@ class Frontpage extends React.Component {
             window.removeEventListener('scroll', this.galleryLazyLoad);
         }
     }
+    prepareParallelBoxScrollEvent() {
+        this.parallelBoxRef.current.addEventListener('scroll', this.parallelBoxScrollHandler);
+        // polyfill
+        (function () {
+
+            if ( typeof window.CustomEvent === "function" ) return false;
+
+            function CustomEvent ( event, params ) {
+                params = params || { bubbles: false, cancelable: false, detail: null };
+                const evt = document.createEvent( 'CustomEvent' );
+                evt.initCustomEvent( event, params.bubbles, params.cancelable, params.detail );
+                return evt;
+            }
+
+            window.CustomEvent = CustomEvent;
+        })();
+        //
+        this.parallelBoxScrollEvent = new CustomEvent('scroll', { bubbles: true, cancelable: false, detail: null })
+    }
     parallelBoxScrollHandler() {
         window.scrollY = this.parallelBoxRef.current.scrollTop;
-
-        const event = document.createEvent('Event');
-        event.initEvent('scroll', true, true);
-        document.dispatchEvent(event)
+        document.dispatchEvent(this.parallelBoxScrollEvent);
     }
     componentDidMount() {
         window.addEventListener('scroll', this.galleryLazyLoad);
         if (!IS_MOBILE) {
-            this.parallelBoxRef.current.addEventListener('scroll', this.parallelBoxScrollHandler);
+            this.prepareParallelBoxScrollEvent();
             this.loadImage('https://s3.us-east-2.amazonaws.com/xiaoxihome/cover-5k.jpg')
                 .then(() => {
                     this.setState({bgIsLoaded: true})

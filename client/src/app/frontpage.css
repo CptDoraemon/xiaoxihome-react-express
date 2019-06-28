@@ -23,7 +23,7 @@
     background-size: 100% 100%;
 
     /* parallel box related */
-    transform: translateZ(-1px) scale(2);
+    transform: translateZ(-1.5px) scale(2.5);
     z-index: -1;
     /**/
 }
