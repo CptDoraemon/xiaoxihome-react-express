@@ -8,6 +8,7 @@ import { withFlyInAnimation } from '../animations/fly-in';
 import { Link } from 'react-router-dom';
 import './frontpage.css';
 
+const IS_MOBILE = window.innerWidth < 800;
 const myScrollTo = require('../tools/myScrollTo').myScrollTo;
 
 class Cover extends React.Component{
@@ -63,7 +64,7 @@ let AcademicTitle = () => <h2>Academic Project</h2>;
 let WebTitle = () => <h2>Web App Project</h2>;
 let GalleryTitle = () => <h2>Photography</h2>;
 // No animation on small screen
-if (window.innerWidth > 800) {
+if (!IS_MOBILE) {
     WithFlyInAnimationTile = withFlyInAnimation(Tile);
     AcademicTitle = withFlyInAnimation(AcademicTitle);
     WebTitle = withFlyInAnimation(WebTitle);
@@ -210,9 +211,12 @@ class Frontpage extends React.Component {
         ];
         this.galleryLazyLoad = this.galleryLazyLoad.bind(this);
         this.scrollToWorkRef = this.scrollToWorkRef.bind(this);
+
+        this.parallelBoxRef = React.createRef();
+        this.parallelBoxScrollHandler = this.parallelBoxScrollHandler.bind(this);
     }
     scrollToWorkRef() {
-        myScrollTo(this.academicRef.current.offsetTop);
+        myScrollTo(this.academicRef.current.offsetTop, this.parallelBoxRef.current);
     };
     loadImage(src) {
         return new Promise((resolve, reject) => {
@@ -231,10 +235,17 @@ class Frontpage extends React.Component {
             window.removeEventListener('scroll', this.galleryLazyLoad);
         }
     }
+    parallelBoxScrollHandler() {
+        window.scrollY = this.parallelBoxRef.current.scrollTop;
+
+        const event = document.createEvent('Event');
+        event.initEvent('scroll', true, true);
+        document.dispatchEvent(event)
+    }
     componentDidMount() {
         window.addEventListener('scroll', this.galleryLazyLoad);
-
-        if (window.innerWidth > 800) {
+        if (!IS_MOBILE) {
+            this.parallelBoxRef.current.addEventListener('scroll', this.parallelBoxScrollHandler);
             this.loadImage('https://s3.us-east-2.amazonaws.com/xiaoxihome/cover-5k.jpg')
                 .then(() => {
                     this.setState({bgIsLoaded: true})
@@ -245,11 +256,12 @@ class Frontpage extends React.Component {
     }
     componentWillUnmount() {
         window.removeEventListener('scroll', this.galleryLazyLoad);
+        this.parallelBoxRef.current.removeEventListener('scroll', this.parallelBoxScrollHandler);
     }
     render() {
         //It receives props: listAndLink
         return (
-            <div className='frontpage-main'>
+            <div className='frontpage-main' ref={this.parallelBoxRef}>
                 <HeaderCover listAndLink={this.props.listAndLink} />
                 <Cover onClickMouseIcon={this.scrollToWorkRef} bgIsLoaded={this.state.bgIsLoaded}/>
 

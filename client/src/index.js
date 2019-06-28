@@ -21,9 +21,6 @@ const Contact = lazy(() => import('./app/contact/contact'));
 const AboutPage = lazy(() => import('./app/about/aboutPage'));
 const Missing404 = lazy(() => import('./component/missing404'));
 
-
-
-
 class App extends React.Component {
     constructor(props){
         super(props);
