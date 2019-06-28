@@ -52,11 +52,6 @@
     transition: 1s transform ease, 1s opacity ease;
     overflow: hidden;
 }
-.cover {
-    height: 100vh;
-    width: 100%;
-    z-index: 999;
-}
 .cover-intro {
     position: absolute;
     top: 50%;
@@ -108,6 +103,11 @@
 .project-container {
     width: 100%;
     padding: 100px 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
 }
 .project-container h2 {
     width: 100%;
@@ -120,7 +120,6 @@
 }
 .flexbox-wrapper-800 {
     width: 800px;
-    margin: 0 auto; /* centering wrapper */
     height: auto;
     display: flex;
     flex-direction: row;
@@ -132,7 +131,7 @@
     height: 192px;
     background-color: rgba(255,255,255,0.2);
     margin: 5px;
-    transition: transform 1s ease, 0.3s;
+    transition: background-color 0.3s;
     text-transform: capitalize;
     overflow: hidden;
     position: relative;
@@ -149,7 +148,7 @@
 }
 .tile-big:hover, .tile-sm:hover {
     background-color: rgba(0,0,0,0.1);
-    transition: transform 1s ease, 0.3s;
+    transition: background-color 0.3s;
     cursor: pointer;
 }
 .tile-big h3, .tile-sm h3 {

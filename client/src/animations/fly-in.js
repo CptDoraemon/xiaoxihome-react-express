@@ -22,7 +22,7 @@ function withFlyInAnimation(WrappedComponent) {
             this.translateCSS = [`translate(-${this.offsetPixel},0)`, `translate(${this.offsetPixel},0)`, `translate(0,-${this.offsetPixel})`, `translate(0,${this.offsetPixel})`];
 
             const translateCSSIndex = this.directionPossibleValues.indexOf(this.flyInDirection);
-            const transitionProperty = `transform 1s ${this.flyInDelay}s, opacity 1s ${this.flyInDelay}s`;
+            const transitionProperty = `transform 1s ease ${this.flyInDelay}s, opacity 1s ease ${this.flyInDelay}s`;
             const beforeCSS = {
                 opacity: 0,
                 // transition: transitionProperty,
