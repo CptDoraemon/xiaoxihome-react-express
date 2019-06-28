@@ -31,8 +31,8 @@ function Tile(props) {
     // tile for gallery
     if (props.imgUrl) {
         const image = props.imgIsLoaded ?
-            {style: {backgroundImage: 'url("' + props.imgUrl + '")'}} :
-            null;
+            {style: {backgroundImage: `url(${props.imgUrl})`}}:
+            {style: {}};
         return (
             <Link to={props.link}>
                 <div
