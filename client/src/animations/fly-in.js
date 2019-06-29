@@ -6,48 +6,28 @@ function withFlyInAnimation(WrappedComponent) {
             super(props);
             this.state = {
                 isAnimationTriggered: false,
-                beforeCSS: {
-                    opacity: 0,
-                    transition: 0
-                }
             };
             this.setUp = this.setUp.bind(this);
             this.scrollEventListener = this.scrollEventListener.bind(this);
             this.directionPossibleValues = ['left', 'right', 'up', 'down'];
+            // some set up need to be done before rendering
+            this.offsetPixel = (this.props.flyInDirection === 'left' || this.props.flyInDirection === 'right') ? 0.5 * window.innerWidth : 200;
+            this.translateCSS = [`translate(-${this.offsetPixel}px,0)`, `translate(${this.offsetPixel}px,0)`, `translate(0,-${this.offsetPixel}px)`, `translate(0,${this.offsetPixel}px)`];
+            this.beforeCSS = {
+                opacity: 0,
+                transform: this.translateCSS[this.directionPossibleValues.indexOf(this.props.flyInDirection)],
+            };
+            //
         }
         setUp() {
-            this.flyInDirection = this.checkValidation(this.props.flyInDirection, this.directionPossibleValues, 'left');
             this.flyInDelay = this.props.flyInDelay;
-            this.offsetPixel = (this.flyInDirection === 'left' || this.flyInDirection === 'right') ? `${0.5 * window.innerWidth}px` : '200px';
-            this.translateCSS = [`translate(-${this.offsetPixel},0)`, `translate(${this.offsetPixel},0)`, `translate(0,-${this.offsetPixel})`, `translate(0,${this.offsetPixel})`];
 
-            const translateCSSIndex = this.directionPossibleValues.indexOf(this.flyInDirection);
             const transitionProperty = `transform 1s ease ${this.flyInDelay}s, opacity 1s ease ${this.flyInDelay}s`;
-            const beforeCSS = {
-                opacity: 0,
-                // transition: transitionProperty,
-                transform: this.translateCSS[translateCSSIndex],
-            };
-            const afterCSS = {
+            this.afterCSS = {
                 opacity: 1,
                 transform: 'translate(0,0)',
                 transition: transitionProperty,
             };
-            this.setState({
-                beforeCSS: beforeCSS,
-                afterCSS: afterCSS
-            })
-        }
-        checkValidation(input, possibleValuesInArray, defaultValueInString) {
-            input = input.toString();
-
-            if (input === undefined) {
-                return defaultValueInString
-            } else if (possibleValuesInArray.indexOf(input) === -1) {
-                return defaultValueInString
-            } else {
-                return input
-            }
         }
         scrollEventListener() {
             const myScrolled = 0.7 * window.innerHeight + window.scrollY;
@@ -67,7 +47,7 @@ function withFlyInAnimation(WrappedComponent) {
             return (
                 <div
                     className={this.props.wrapperClassName === undefined ? null : this.props.wrapperClassName}
-                    style={this.state.isAnimationTriggered ? this.state.afterCSS : this.state.beforeCSS}
+                    style={this.state.isAnimationTriggered ? this.afterCSS : this.beforeCSS}
                 >
                     <WrappedComponent {...this.props}/>
                 </div>
