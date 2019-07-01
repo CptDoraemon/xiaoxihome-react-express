@@ -22,7 +22,7 @@ function withFlyInAnimation(WrappedComponent) {
         setUp() {
             this.flyInDelay = this.props.flyInDelay;
 
-            const transitionProperty = `transform 1s ease ${this.flyInDelay}s, opacity 1s ease ${this.flyInDelay}s`;
+            const transitionProperty = `transform 1s ease ${this.flyInDelay}s, opacity 1s linear ${this.flyInDelay}s`;
             this.afterCSS = {
                 opacity: 1,
                 transform: 'translate(0,0)',
