@@ -28,7 +28,7 @@ function Cover(props){
             </div>
             <div className='cover-intro parallax-container'>
                 <div className='cover-intro-inner'>
-                    <h1 style={{opacity: 1 - scrolledPercentage}}>Welcome To Xiaoxi's Home!</h1>
+                    <h1 style={{opacity: 1 - scrolledPercentage, willChange: 'opacity'}}>Welcome To Xiaoxi's Home!</h1>
                 </div>
             </div>
             <div className='mouse-icon-parallax parallax-container flexbox-col-center-bottom'>
