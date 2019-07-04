@@ -12,40 +12,6 @@ const IS_MOBILE = window.innerWidth < 800;
 const myScrollTo = require('../tools/myScrollTo').myScrollTo;
 
 class Cover extends React.Component{
-    // It receives a prop onClickMouseIcon={this.scrollToWorkRef}, bgIsLoaded
-    // constructor(props) {
-    //     super(props);
-    //     this.state = {
-    //         brightness: 100,
-    //         isViewed: false
-    //     };
-    //     this.containerRef = React.createRef();
-    //     this.scrollHandler = this.scrollHandler.bind(this);
-    // }
-    // scrollHandler() {
-    //     const containerTop = this.containerRef.current.getBoundingClientRect().top;
-    //     const containerBottom = containerTop / 0.4 + this.containerHeight; // 0.4 offset parallel effect
-    //     const isContainerVisible = containerBottom > 0;
-    //     if (isContainerVisible) {
-    //         const percentageScrolled = 1 - containerBottom / this.containerHeight;
-    //         console.log(percentageScrolled);
-    //         const newBrightness = Math.ceil(percentageScrolled * 50 + 100);
-    //         this.setState(prevState => {
-    //             return prevState.width === newBrightness ? null : { brightness: newBrightness }
-    //         })
-    //     } else {
-    //         document.removeEventListener('scroll', this.scrollHandler);
-    //         this.setState({isViewed: true})
-    //     }
-    //
-    // }
-    // componentDidMount() {
-    //     this.containerHeight = this.containerRef.current.getBoundingClientRect().height;
-    //     document.addEventListener('scroll', this.scrollHandler)
-    // }
-    // componentWillUnmount() {
-    //     document.removeEventListener('scroll', this.scrollHandler)
-    // }
     render() {
         return (
             <div className='cover-wrapper'>
