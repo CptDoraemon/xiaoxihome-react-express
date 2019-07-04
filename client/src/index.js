@@ -4,6 +4,7 @@
 import React, { Suspense, lazy } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import './flexbox.css';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import ScrollToTop from './component/scrolltotop'

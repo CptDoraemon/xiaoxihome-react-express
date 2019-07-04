@@ -1,31 +1,37 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 
 import { HeaderCover } from "../component/header";
 import { Footer } from "../component/footer";
 import { MouseIcon } from "../component/mouseIcon";
 import { withFlyInAnimation } from '../animations/fly-in';
+import { myScrollTo } from "../tools/myScrollTo";
 
 import { Link } from 'react-router-dom';
 import './frontpage.css';
 
 const IS_MOBILE = window.innerWidth < 800;
-const myScrollTo = require('../tools/myScrollTo').myScrollTo;
 
-class Cover extends React.Component{
-    render() {
-        return (
-            <div className='cover-wrapper'>
+function Cover(props){
+    return (
+        <>
+            <div className='cover-wrapper parallax-container'>
                 <div
-                    className={this.props.bgIsLoaded ? 'cover-bg-loaded' : 'cover-bg'}
-                    // style={{ filter: `brightness(${this.state.brightness}%)`}}
+                    className={props.bgIsLoaded ? 'cover-bg-loaded' : 'cover-bg'}
                 >
                 </div>
-
-                <h1 className='cover-intro'>Welcome To Xiaoxi's Home!</h1>
-                <MouseIcon className='mouse-icon' onClickMouseIcon={this.props.onClickMouseIcon}/>
             </div>
-        )
-    }
+            <div className='mouse-icon-parallax parallax-container flexbox-col-center-bottom'>
+                <div className='mouse-icon'>
+                    <MouseIcon onClickMouseIcon={props.onClickMouseIcon}/>
+                </div>
+            </div>
+            <div className='cover-intro parallax-container'>
+                <div className='cover-intro-inner'>
+                    <h1>Welcome To Xiaoxi's Home!</h1>
+                </div>
+            </div>
+        </>
+    )
 }
 
 function Tile(props) {

@@ -1,6 +1,14 @@
 .mouse-icon-wrapper {
     width: 28px;
     height: 40px;
+    padding: 10px;
+    opacity: 0.5;
+    transition: 0.3s;
+}
+.mouse-icon-wrapper:hover {
+    cursor: pointer;
+    opacity: 1;
+    transition: opacity 0.3s;
 }
 .mouse-icon-mouse {
     width: calc(100% - 4px);

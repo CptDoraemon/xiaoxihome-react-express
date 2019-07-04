@@ -1,8 +1,3 @@
-module.exports = {
-    myScrollTo: myScrollTo,
-    myWheelTo: myWheelTo
-};
-
 function myScrollTo(targetY, targetElement) {
     const scrolled = targetElement === undefined ? window.scrollY : targetElement.scrollTop;
     if (targetElement === undefined) targetElement = window;
@@ -68,3 +63,5 @@ function myWheelTo(from, to) {
     }
     requestAnimationFrame(scrollLoop);
 }
+
+export { myScrollTo, myWheelTo };
