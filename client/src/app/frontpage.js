@@ -204,7 +204,7 @@ class ProjectList extends React.Component {
     }
 }
 
-const ParallaxFooter = parallaxWrapper(Footer);
+// const ParallaxFooter = parallaxWrapper(Footer, 0.83);
 class Frontpage extends React.Component {
     constructor(props) {
         super(props);

@@ -40,28 +40,41 @@ function useGetContainerPosition(ref) {
     useEffect(() => {
         setContainerPosition({
             offsetTop: ref.current.offsetTop,
-            offsetHeight: ref.current.offsetHeight
+            offsetHeight: ref.current.offsetHeight,
+            offsetBottom: ref.current.offsetTop + ref.current.offsetHeight
         });
     }, [ref.current]);
     return containerPosition
 }
 
-function parallaxWrapper(WrappedComponent) {
+function parallaxWrapper(WrappedComponent, parallaxStrength0to1) {
     return function(props) {
-        const parallaxRef = useRef();
-        const placeholderRef = useRef();
-        const placeholderPosition = useGetContainerPosition(placeholderRef);
-        const parallaxBoxPosition = useGetContainerPosition(parallaxRef);
-        const [parallaxBoxTop, setParallaxBoxTop] = useState(0);
+        const wrapperRef = useRef();
+        const wrapperPosition = useGetContainerPosition(wrapperRef);
+
+        const [translateY, setTranslateY] = useState(0);
         useEffect(() => {
-            setParallaxBoxTop(placeholderPosition.offsetTop - parallaxBoxPosition.offsetHeight + 300);
-        });
+            document.addEventListener('scroll', scrollHandler);
+            return () => document.removeEventListener('scroll', scrollHandler);
+        }, [wrapperRef.current]);
+
+        function scrollHandler() {
+            console.log(translateY);
+            const scrolledBottom = window.scrollY + window.innerHeight;
+            // do not update when outside of view
+            if (scrolledBottom >= wrapperPosition.offsetBottom || scrolledBottom <= wrapperPosition.offsetTop) {
+                setTranslateY(0);
+                return
+            }
+            const newTranslateY = Math.ceil((scrolledBottom - wrapperPosition.offsetBottom) * parallaxStrength0to1);
+            setTranslateY(newTranslateY);
+        }
+
+
         return (
             <>
-                <div className='parallax-wrapper' style={{transform: `translateZ(-5px) scale(6)`, top: `${parallaxBoxTop}px`}} ref={parallaxRef}>
+                <div className='parallax-wrapper' style={{transform: `translateY(${translateY}px)`}} ref={wrapperRef}>
                     <WrappedComponent {...props}/>
-                </div>
-                <div className='parallax-placeholder' style={{height: '300px'}} ref={placeholderRef}>
                 </div>
             </>
             )
