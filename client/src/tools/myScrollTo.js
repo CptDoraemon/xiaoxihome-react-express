@@ -1,4 +1,5 @@
 function myScrollTo(targetY, targetElement) {
+    // edge has problem using scrollTo()
     const scrolled = targetElement === undefined ? window.scrollY : targetElement.scrollTop;
     if (targetElement === undefined) targetElement = window;
 
@@ -12,20 +13,24 @@ function myScrollTo(targetY, targetElement) {
         if (scrolled > targetY) {
             // scroll up
             if (step > targetY) {
-                targetElement.scrollTo(0, step);
+                // targetElement.scrollTo(0, step);
+                targetElement.scrollTop = step;
                 step += speed;
                 requestAnimationFrame(scrollLoop);
             } else {
-                targetElement.scrollTo(0, targetY);
+                // targetElement.scrollTo(0, targetY);
+                targetElement.scrollTop = targetY;
             }
         } else if (scrolled < targetY) {
             // scroll down
             if (step < targetY) {
-                targetElement.scrollTo(0, step);
+                // targetElement.scrollTo(0, step);
+                targetElement.scrollTop = step;
                 step += speed;
                 requestAnimationFrame(scrollLoop);
             } else {
-                targetElement.scrollTo(0, targetY);
+                // targetElement.scrollTo(0, targetY);
+                targetElement.scrollTop = targetY;
             }
         }
     }

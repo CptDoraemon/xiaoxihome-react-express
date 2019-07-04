@@ -5,7 +5,7 @@ import { Footer } from "../component/footer";
 import { MouseIcon } from "../component/mouseIcon";
 import { withFlyInAnimation } from '../animations/fly-in';
 import { myScrollTo } from "../tools/myScrollTo";
-import { useScrollOpacityAnimation, useGetContainerPosition } from "../animations/parallax";
+import { useScrollOpacityAnimation, useGetContainerPosition, parallaxWrapper } from "../animations/parallax";
 
 import { Link } from 'react-router-dom';
 import './frontpage.css';
@@ -16,7 +16,7 @@ function Cover(props){
     // scroll opacity animation
     const containerRef = useRef();
     const containerPosition = useGetContainerPosition(containerRef);
-    const scrolledPercentage = useScrollOpacityAnimation(containerPosition.offsetTop, containerPosition.offsetTop + containerPosition.offsetHeight);
+    const scrolledPercentage = useScrollOpacityAnimation(containerPosition.offsetTop, containerPosition.offsetTop + containerPosition.offsetHeight, 0.8);
     //
     return (
         <>
@@ -204,6 +204,7 @@ class ProjectList extends React.Component {
     }
 }
 
+const ParallaxFooter = parallaxWrapper(Footer);
 class Frontpage extends React.Component {
     constructor(props) {
         super(props);
@@ -266,7 +267,7 @@ class Frontpage extends React.Component {
             window.CustomEvent = CustomEvent;
         })();
         //
-        this.parallelBoxScrollEvent = new CustomEvent('scroll', { bubbles: true, cancelable: false, detail: null })
+        this.parallelBoxScrollEvent = new CustomEvent('scroll', { bubbles: true, cancelable: false, detail: null });
     }
     parallelBoxScrollHandler() {
         window.scrollY = this.parallelBoxRef.current.scrollTop;
@@ -317,6 +318,7 @@ class Frontpage extends React.Component {
                         imgIsLoaded={this.state.imgIsLoaded}
                     />
                 </div>
+                {/*<ParallaxFooter listAndLink={this.props.listAndLink}/>*/}
                 <Footer listAndLink={this.props.listAndLink}/>
             </div>
         )

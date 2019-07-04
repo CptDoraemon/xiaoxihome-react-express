@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 class Footer extends React.Component {
     // It receives props listAndArray
     constructor(props){
-        super(props)
+        super(props);
         this.state={
             dropListClassName: 'drop-list-inactive'
         };
