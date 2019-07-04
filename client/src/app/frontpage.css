@@ -11,7 +11,7 @@
     height: 100vh;
     overflow-x: hidden;
     overflow-y: scroll;
-    z-index: 1;
+    z-index: 10;
     /**/
 }
 .parallax-container {
@@ -20,6 +20,7 @@
     width: 100%;
     top: 0;
     left: 0;
+    backface-visibility: visible;
 }
 .cover-wrapper{
     width: 100%;
@@ -61,7 +62,7 @@
 .cover-intro {
     /* parallel box related */
     transform-origin: 0 0; /* together with perspective-origin can ensure exact center when scrollbar takes space */
-    transform: translateZ(-5px) scale(6);
+    transform: translateZ(-1px) scale(2);
     z-index: -2;
     /**/
     display: flex;

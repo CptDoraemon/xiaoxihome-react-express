@@ -1,10 +1,11 @@
-import React, {useState, useEffect} from 'react';
+import React, {useRef} from 'react';
 
 import { HeaderCover } from "../component/header";
 import { Footer } from "../component/footer";
 import { MouseIcon } from "../component/mouseIcon";
 import { withFlyInAnimation } from '../animations/fly-in';
 import { myScrollTo } from "../tools/myScrollTo";
+import { useScrollOpacityAnimation, useGetContainerPosition } from "../animations/parallax";
 
 import { Link } from 'react-router-dom';
 import './frontpage.css';
@@ -12,22 +13,27 @@ import './frontpage.css';
 const IS_MOBILE = window.innerWidth < 800;
 
 function Cover(props){
+    // scroll opacity animation
+    const containerRef = useRef();
+    const containerPosition = useGetContainerPosition(containerRef);
+    const scrolledPercentage = useScrollOpacityAnimation(containerPosition.offsetTop, containerPosition.offsetTop + containerPosition.offsetHeight);
+    //
     return (
         <>
-            <div className='cover-wrapper parallax-container'>
+            <div className='cover-wrapper' ref={containerRef}>
                 <div
                     className={props.bgIsLoaded ? 'cover-bg-loaded' : 'cover-bg'}
                 >
                 </div>
             </div>
+            <div className='cover-intro parallax-container'>
+                <div className='cover-intro-inner'>
+                    <h1 style={{opacity: 1 - scrolledPercentage}}>Welcome To Xiaoxi's Home!</h1>
+                </div>
+            </div>
             <div className='mouse-icon-parallax parallax-container flexbox-col-center-bottom'>
                 <div className='mouse-icon'>
                     <MouseIcon onClickMouseIcon={props.onClickMouseIcon}/>
-                </div>
-            </div>
-            <div className='cover-intro parallax-container'>
-                <div className='cover-intro-inner'>
-                    <h1>Welcome To Xiaoxi's Home!</h1>
                 </div>
             </div>
         </>
