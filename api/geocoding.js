@@ -19,8 +19,8 @@ function reverseGeoCoding(app) {
     app.options('/api/reversegeocoding/', cors(corsOptions));
 
     app.post('/api/reversegeocoding/', cors(corsOptions), bodyParser.json(), (req, res) => {
-        const latitude = req.body.latitude;
-        const longitude = req.body.longitude;
+        const latitude = +req.body.latitude;
+        const longitude = +req.body.longitude;
         const locationIqAPI = `https://us1.locationiq.com/v1/reverse.php?key=${process.env.GEOCODING_SECRET_KEY}&lat=${latitude}&lon=${longitude}&format=json`;
         console.log('locationIqAPI', latitude, longitude);
 

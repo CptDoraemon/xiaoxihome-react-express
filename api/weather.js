@@ -19,8 +19,8 @@ function weather(app) {
     app.options('/api/weather/', cors(corsOptions));
 
     app.post('/api/weather/', cors(corsOptions), bodyParser.json(), (req, res) => {
-        const latitude = req.body.latitude;
-        const longitude = req.body.longitude;
+        const latitude = +req.body.latitude;
+        const longitude = +req.body.longitude;
         const darkSkyAPI = `https://api.darksky.net/forecast/${process.env.WEATHER_SECRET_KEY}/${latitude},${longitude}`;
         console.log('darkSkyAPI', latitude, longitude);
 
