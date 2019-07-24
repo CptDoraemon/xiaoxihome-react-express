@@ -14,7 +14,7 @@ function searchCityName(app, cityNameDB) {
             return;
         }
         //
-        cityNameDB.query(`SELECT * FROM cityname WHERE city ~* '.*${cityName}.*'`, (err, res) => {
+        cityNameDB.query(`SELECT * FROM cityname WHERE city ~* '.*${cityName}.*'`, (err, queryRes) => {
             if (err) {
                 console.log(err);
                 res.json({
@@ -28,7 +28,7 @@ function searchCityName(app, cityNameDB) {
             } else {
                 res.json({
                     status: 'success',
-                    rows: res.rows
+                    rows: queryRes.rows
                 })
             }
         });
