@@ -14,7 +14,13 @@ function searchCityName(app, cityNameDB) {
             return;
         }
         //
-        cityNameDB.query(`SELECT * FROM cityname WHERE city ~* '.*${cityName}.*'`, (err, queryRes) => {
+        const queryString =
+            `SELECT *
+            FROM cityname 
+            WHERE strpos(city, '${cityName}') > -1
+            ORDER BY strpos(city, '${cityName}') ASC, city ASC
+            LIMIT 5;`;
+        cityNameDB.query(queryString, (err, queryRes) => {
             if (err) {
                 console.log(err);
                 res.json({
