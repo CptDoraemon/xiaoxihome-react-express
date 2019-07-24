@@ -21,7 +21,7 @@ function searchCityName(app, cityNameDB) {
                     status: 'failed',
                 })
             }
-            if (res.rows === undefined) {
+            if (queryRes.rows.length === 0) {
                 res.json({
                     status: 'failed',
                 })
