@@ -21,16 +21,10 @@ function searchCityName(app, cityNameDB) {
                     status: 'failed',
                 })
             }
-            if (queryRes.rows.length === 0) {
-                res.json({
-                    status: 'failed',
-                })
-            } else {
-                res.json({
-                    status: 'success',
-                    rows: queryRes.rows
-                })
-            }
+            res.json({
+                status: 'success',
+                rows: queryRes.rows
+            })
         });
         // client.end();
     })
