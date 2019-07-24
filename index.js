@@ -5,13 +5,15 @@ const bodyParser = require('body-parser');
 const mongoose = require ("mongoose");
 const helmet = require('helmet');
 require('dotenv').config();
+const { Client } = require('pg');
 
 const weatherAPI = require('./api/weather').weather;
 const reverseGeoCodingAPI = require('./api/geocoding').reverseGeoCoding;
-const ipGeolocation = require('./api/ip-geolocation').ipGeolocation;
+const searchCityName = require('./api/search-cityname').searchCityName;
 
+// DBs
+    // Mongo
 const uristring = process.env.MONGODB_URI;
-
 let feedbackSchema = new mongoose.Schema({
     name: String,
     email: String,
@@ -19,6 +21,13 @@ let feedbackSchema = new mongoose.Schema({
     date: Date
 });
 let Feedback = mongoose.model('Feedback', feedbackSchema);
+    //Postgres
+const cityNameDB = new Client({
+    connectionString: process.env.CITYNAME_DATABASE_URL,
+    ssl: true,
+});
+cityNameDB.connect();
+// DB ends
 
 
 
@@ -73,7 +82,7 @@ app.post('/contact/submit/', bodyParser.json(), (req, res) => {
     }
 });
 
-ipGeolocation(app);
+searchCityName(app, cityNameDB);
 weatherAPI(app);
 reverseGeoCodingAPI(app);
 
