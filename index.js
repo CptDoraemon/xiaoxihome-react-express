@@ -23,7 +23,7 @@ let feedbackSchema = new mongoose.Schema({
 let Feedback = mongoose.model('Feedback', feedbackSchema);
     //Postgres
 const cityNameDB = new Client({
-    connectionString: process.env.CITYNAME_DATABASE_URL,
+    connectionString: process.env.DATABASE_URL,
     ssl: true,
 });
 cityNameDB.connect();
