@@ -15,10 +15,13 @@ function searchCityName(app, cityNameDB) {
         }
         //
         const queryString = `
-                SELECT *
-                FROM cityname 
-                WHERE strpos(city, \'${cityName}\') > -1
-                ORDER BY strpos(city, \'${cityName}\') ASC, city ASC
+                SELECT city, province, country, longitude, latitude
+                FROM (
+                  SELECT *, regexp_match(city, '(.*)(${cityName}).*', 'i') AS matched
+                  FROM cityname
+                ) sub
+                WHERE matched IS NOT NULL
+                ORDER BY length(matched[1]) ASC, city ASC
                 LIMIT 5;
             `;
         cityNameDB.query(queryString, (err, queryRes) => {
