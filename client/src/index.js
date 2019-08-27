@@ -38,7 +38,7 @@ class App extends React.Component {
             'Youtube Downloader',
             'Weather App',
             'Masonry Gallery',
-            'DOM Practice',
+            'Miscellany',
             'RaycasterJS'
         ];
         this.galleryArray = [

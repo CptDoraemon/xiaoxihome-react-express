@@ -16,8 +16,12 @@ function WebAppProjectTemplate(props) {
             <div className='web-app-project-template-wrapper'>
                 <h1> { props.name } </h1>
                 <div dangerouslySetInnerHTML={{__html: description }} />
-                <a href={link}  target="_blank" rel='noopener noreferrer'>Open in a new window</a>
-                <iframe src={link} title='web project'/>
+                { link === false ? null :
+                    <React.Fragment>
+                        <a href={link} target="_blank" rel='noopener noreferrer' className='web-app-project-template-button'>Open in a new window</a>
+                        <iframe src={link} title='web project'/>
+                    </React.Fragment>
+                }
             </div>
         </div>
     )

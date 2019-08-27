@@ -92,7 +92,7 @@ function Page(props) {
         <div className='one-page-section-wrapper-row' id={'page'+props.id}>
             <div className={textCSS} style={isMobile ? null : {opacity: props.currentAtPage === props.id ? 1 : 0}}>
                 <h2>{ props.title }</h2>
-                <p>{ props.content }</p>
+                { props.content.split('\n').map(p => <p>{p}</p>) }
             </div>
             { isMobile ? null : <div className='about-text-wrapper-placeholder' /> }
             <div className='about-image-wrapper' style={{backgroundImage: 'url('+props.imageUrl+')'}}/>

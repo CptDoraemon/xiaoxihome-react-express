@@ -66,13 +66,14 @@
     width: 50%;
     text-align: left;
     text-transform: capitalize;
+    margin-bottom: 15px;
 }
 .about-text-wrapper p {
     width: 50%;
     font-size: 20px;
     line-height: 30px;
     text-align: left;
-    margin: 20px 0;
+    margin: 5px 0;
 }
 .about-text-wrapper-placeholder {
     width: 50%;
@@ -135,10 +136,11 @@
         font-size: 24px;
         text-align: center;
         width: 70%;
+        margin-bottom: 10px;
     }
     .about-text-wrapper-mobile p {
         text-align: center;
-        margin: 10px 0;
+        margin: 4px 0;
         width: 70%;
     }
     .about-nav-wrapper {
