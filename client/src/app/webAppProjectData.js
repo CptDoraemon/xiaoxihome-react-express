@@ -20,17 +20,19 @@ const webAppProjectData = [
         title: 'Weather App',
         link: 'https://cptdoraemon.github.io/weather/',
         description:
-            `<p>A Google like weather app</p>
-            <p>Weather API is provided by DarkSky</p>
-            <p>Reverse geocoding API is provided by LocationIQ</p>
-            <p>A mobile version written with Dart/Flutter is also available at <a href="https://github.com/CptDoraemon/weather-app-flutter" target="_blank" rel='noopener noreferrer'>HERE</a>. To lookup cities, a PostgreSQL database is attached to this version instead of using third party API.</p>`
+            `
+                <p>A Google like weather app</p>
+                <p>Weather API is provided by DarkSky</p>
+                <p>Reverse geocoding API is provided by LocationIQ</p>
+                <p>A mobile version written with Dart/Flutter is also available at <a href="https://github.com/CptDoraemon/weather-app-flutter" target="_blank" rel='noopener noreferrer'>HERE</a>. To lookup cities, a PostgreSQL database is attached to this version instead of using third party API.</p>
+            `
     },
     {
         title: 'Masonry Gallery',
         link: 'http://gallery.xiaoxihome.com',
         description:
         '<p>A Pinterest like gallery</p>' +
-        '<p>Please open in new window and allow up to half minutes for server waking up</p>'
+        '<p>Please open in new window and allow up to half minutes for server to wake up</p>'
     },
     {
         title: 'Miscellany',
@@ -41,7 +43,7 @@ const webAppProjectData = [
                 <p><a href="https://xiaoxihome.s3.us-east-2.amazonaws.com/webprojects/snake_beta.html" target="_blank" rel='noopener noreferrer'>Snakey</a>: You know what's Snakey.</p>
                 <p><a href="https://xiaoxihome.s3.us-east-2.amazonaws.com/webprojects/mySecondFireworks.html" target="_blank" rel='noopener noreferrer'>Firework animation</a>: Inspired by <a href="http://www.playfuljs.com/physics-for-the-lazy/" target="_blank" rel='noopener noreferrer'>PlayfulJS</a></p>
                 <p><a href="https://github.com/CptDoraemon/oneplus7pro" target="_blank" rel='noopener noreferrer'>OnePlus 7 pro advertisement page</a>: Wanted to try some cool animations.</p>
-                <p><a href="https://s3.us-east-2.amazonaws.com/xiaoxihome/webprojects/BandWebsite/index.html" target="_blank" rel='noopener noreferrer'>DOM practise</a>: A website is the practice project in the book DOM Scripting: Web Design with JavaScript and the Document Object Model by Jeremy Keith, I followed the book step by step.</p>
+                <p><a href="https://s3.us-east-2.amazonaws.com/xiaoxihome/webprojects/BandWebsite/index.html" target="_blank" rel='noopener noreferrer'>DOM practise</a>: This is the practice project in the book DOM Scripting: Web Design with JavaScript and the Document Object Model by Jeremy Keith, I followed the book step by step.</p>
             `
     },
     {
