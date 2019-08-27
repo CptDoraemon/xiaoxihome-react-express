@@ -23,7 +23,7 @@ const webAppProjectData = [
             `<p>A Google like weather app</p>
             <p>Weather API is provided by DarkSky</p>
             <p>Reverse geocoding API is provided by LocationIQ</p>
-            <p>A mobile version written with Dart/Flutter is also available at <a href="https://github.com/CptDoraemon/weather-app-flutter" target="_blank" rel='noopener noreferrer'>HERE</a></p>`
+            <p>A mobile version written with Dart/Flutter is also available at <a href="https://github.com/CptDoraemon/weather-app-flutter" target="_blank" rel='noopener noreferrer'>HERE</a>. To lookup cities, a PostgreSQL database is attached to this version instead of using third party API.</p>`
     },
     {
         title: 'Masonry Gallery',
