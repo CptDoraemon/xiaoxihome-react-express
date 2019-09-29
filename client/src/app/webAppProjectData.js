@@ -41,7 +41,7 @@ const webAppProjectData = [
             `
                 <p><a href="https://github.com/CptDoraemon/tetris" target="_blank" rel='noopener noreferrer'>Tetris</a>: You know what's Tetris.</p>
                 <p><a href="https://xiaoxihome.s3.us-east-2.amazonaws.com/webprojects/snake_beta.html" target="_blank" rel='noopener noreferrer'>Snakey</a>: You know what's Snakey.</p>
-                <p><a href="https://xiaoxihome.s3.us-east-2.amazonaws.com/webprojects/mySecondFireworks.html" target="_blank" rel='noopener noreferrer'>Firework animation</a>: Inspired by <a href="http://www.playfuljs.com/physics-for-the-lazy/" target="_blank" rel='noopener noreferrer'>PlayfulJS</a></p>
+                <p><a href="https://cptdoraemon.github.io/firework/" target="_blank" rel='noopener noreferrer'>Firework animation</a>: Inspired by <a href="http://www.playfuljs.com/physics-for-the-lazy/" target="_blank" rel='noopener noreferrer'>PlayfulJS</a></p>
                 <p><a href="https://github.com/CptDoraemon/oneplus7pro" target="_blank" rel='noopener noreferrer'>OnePlus 7 pro advertisement page</a>: Wanted to try some cool animations.</p>
                 <p><a href="https://s3.us-east-2.amazonaws.com/xiaoxihome/webprojects/BandWebsite/index.html" target="_blank" rel='noopener noreferrer'>DOM practise</a>: This is the practice project in the book DOM Scripting: Web Design with JavaScript and the Document Object Model by Jeremy Keith, I followed the book step by step.</p>
             `

@@ -219,7 +219,7 @@ class Frontpage extends React.Component {
             'https://s3.us-east-2.amazonaws.com/xiaoxihome/galleryphoto/preview/toronto.png',
             'https://s3.us-east-2.amazonaws.com/xiaoxihome/galleryphoto/preview/canada.jpg',
             'https://s3.us-east-2.amazonaws.com/xiaoxihome/galleryphoto/preview/banff.png',
-            'https://s3.us-east-2.amazonaws.com/xiaoxihome/galleryphoto/preview/hometown.png',
+            'https://s3.us-east-2.amazonaws.com/xiaoxihome/galleryphoto/preview/hometown.jpg',
             'https://s3.us-east-2.amazonaws.com/xiaoxihome/galleryphoto/preview/yorku.png',
             'https://s3.us-east-2.amazonaws.com/xiaoxihome/galleryphoto/preview/astro.png'
         ];

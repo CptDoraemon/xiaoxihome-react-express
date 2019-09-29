@@ -117,7 +117,43 @@ const galleryData = [
         }],
     ['Hometown',
         {
-            description: 'First road and rail bridge on Yangtze River',
+            description: 'Wuhan Yangtze River Bridge, 2019',
+            link: 'https://xiaoxihome.s3.us-east-2.amazonaws.com/galleryphoto/hometown/wuhan-2019-1.jpg'
+        },
+        {
+            description: 'Wuhan Yangtze River Bridge and the old Wuchang downtown',
+            link: 'https://xiaoxihome.s3.us-east-2.amazonaws.com/galleryphoto/hometown/wuhan-2019-2.jpg'
+        },
+        {
+            description: 'Yellow Crane Tower, it\'s said to be built initially in AD 223',
+            link: 'https://xiaoxihome.s3.us-east-2.amazonaws.com/galleryphoto/hometown/wuhan-2019-3.jpg'
+        },
+        {
+            description: 'Yellow Crane Tower',
+            link: 'https://xiaoxihome.s3.us-east-2.amazonaws.com/galleryphoto/hometown/wuhan-2019-4.jpg'
+        },
+        {
+            description: 'Yellow Crane Tower',
+            link: 'https://xiaoxihome.s3.us-east-2.amazonaws.com/galleryphoto/hometown/wuhan-2019-5.jpg'
+        },
+        {
+            description: 'Yingwuzhou Yangtze River Bridge',
+            link: 'https://xiaoxihome.s3.us-east-2.amazonaws.com/galleryphoto/hometown/wuhan-2019-6.jpg'
+        },
+        {
+            description: 'Yingwuzhou Yangtze River Bridge',
+            link: 'https://xiaoxihome.s3.us-east-2.amazonaws.com/galleryphoto/hometown/wuhan-2019-7.jpg'
+        },
+        {
+            description: 'Yingwuzhou Yangtze River Bridge',
+            link: 'https://xiaoxihome.s3.us-east-2.amazonaws.com/galleryphoto/hometown/wuhan-2019-8.jpg'
+        },
+        {
+            description: 'Yingwuzhou Yangtze River Bridge',
+            link: 'https://xiaoxihome.s3.us-east-2.amazonaws.com/galleryphoto/hometown/wuhan-2019-9.jpg'
+        },
+        {
+            description: 'Wuhan Yangtze River Bridge, first road and rail bridge on Yangtze River, 2014',
             link: 'https://s3.us-east-2.amazonaws.com/xiaoxihome/galleryphoto/hometown/hometown1.jpg'
         },
         {
