@@ -65,11 +65,11 @@ class Hud extends React.Component {
             thumbnailLeft: null,
             thumbnailText: null,
             thumbnailLink: null,
-            hudClassName: 'hud-on',
         };
         this.dataArray = [...galleryData];
         this.xDown = null;
         this.yDown = null;
+        this.lastToggleHudTime = Date.now();
         this.toggleHud = this.toggleHud.bind(this);
         this.handleKeyDown = this.handleKeyDown.bind(this);
         this.handleTouchStart = this.handleTouchStart.bind(this);
@@ -97,11 +97,14 @@ class Hud extends React.Component {
         this.setState({thumbnailStyle: 'thumbnail-inactive'});
     };
     toggleHud() {
-        clearTimeout(this.timeout);
-        this.setState({hudClassName: 'hud-on'});
-        this.timeout = setTimeout(() => {
-            this.setState({hudClassName: 'hud-off'})}, 5000
-        )
+        // debounce
+        const now = Date.now();
+        if (now - this.lastToggleHudTime < 500) {
+            return;
+        } else {
+            this.lastToggleHudTime = now;
+        }
+        this.props.toggleHud();
     }
     handleKeyDown(e) {
         this.toggleHud();
@@ -153,9 +156,6 @@ class Hud extends React.Component {
 
 
     componentDidMount() {
-        this.timeout = setTimeout(() => {
-            this.setState({hudClassName: 'hud-off'})}, 5000
-        );
         window.addEventListener('mousemove', this.toggleHud);
         window.addEventListener('keydown', this.handleKeyDown);
         // mobile
@@ -163,9 +163,6 @@ class Hud extends React.Component {
         window.addEventListener('touchmove', this.handleTouchMove);
     }
     componentWillUnmount() {
-        clearTimeout(this.timeout);
-        this.timeout = null;
-        //
         window.removeEventListener('mousemove', this.toggleHud);
         window.removeEventListener('keydown', this.handleKeyDown);
         // mobile
@@ -203,7 +200,7 @@ class Hud extends React.Component {
             }
         }));
         return (
-            <div className={this.state.hudClassName}>
+            <div className={this.props.isHudDimmed ? 'hud-off' : 'hud-on'}>
                 <div className='nav-buttons'>
 
                     <div className='tooltip'>
@@ -264,13 +261,16 @@ class Gallery extends React.Component {
         this.state = {
             album: 0,
             page: 1,
-            autoplay: false
+            autoplay: false,
+            isHudDimmed: false
         };
         this.dataArray = [...galleryData];
+        this.toggleHudTimer = null;
         this.handleClickMenu = this.handleClickMenu.bind(this);
         this.handleClickLeft = this.handleClickLeft.bind(this);
         this.handleClickRight = this.handleClickRight.bind(this);
         this.handleClickAutoplay = this.handleClickAutoplay.bind(this);
+        this.toggleHud = this.toggleHud.bind(this);
     }
     handleClickMenu(album, page){
         this.setState({
@@ -313,21 +313,50 @@ class Gallery extends React.Component {
         }
     }
     handleClickAutoplay() {
-        this.state.autoplay ? this.setState({autoplay: false}) : this.setState({autoplay: true});
-        // setState is bulk!!
         if(!this.state.autoplay) {
+            // enable autoplay
             this.handleClickRight();
-            this.interval = setInterval(() => this.handleClickRight(), 5000)
+            this.interval = setInterval(() => this.handleClickRight(), 5000);
+            this.setState({autoplay: true});
+            //
+            clearTimeout(this.toggleHudTimer);
+            this.setState({isHudDimmed: false});
         } else {
+            // disable autoplay
+            this.setState({autoplay: false});
             clearInterval(this.interval);
+            this.interval = null;
+            //
+            this.setToggleHudTimer();
         }
     }
+
+    setToggleHudTimer() {
+        this.toggleHudTimer = setTimeout(() => {
+            this.setState({isHudDimmed: true})}, 5000
+        )
+    }
+    toggleHud() {
+        // do not dim hud when autoplaying
+        if (this.state.autoplay) return;
+        //
+        clearTimeout(this.toggleHudTimer);
+        this.setState({isHudDimmed: false});
+        this.setToggleHudTimer();
+    }
+
     componentDidMount() {
         this.setState(
             {
                 album: this.props.album
             }
-        )
+        );
+        this.setToggleHudTimer();
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
+        clearTimeout(this.toggleHudTimer);
     }
 
     render() {
@@ -347,7 +376,10 @@ class Gallery extends React.Component {
                     handleClickLeft={this.handleClickLeft}
                     handleClickRight={this.handleClickRight}
                     handleClickAutoplay={this.handleClickAutoplay}
-                    autoplay={this.state.autoplay}/>
+                    autoplay={this.state.autoplay}
+                    toggleHud = {this.toggleHud}
+                    isHudDimmed = {this.state.isHudDimmed}
+                />
             </div>
             )
     }
