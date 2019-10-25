@@ -1,11 +1,12 @@
-import React, {useRef} from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 
 import { HeaderCover } from "../component/header";
 import { Footer } from "../component/footer";
 import { MouseIcon } from "../component/mouseIcon";
 import { withFlyInAnimation } from '../animations/fly-in';
+import { SpinLoader } from "../animations/spin-loader";
 import { myScrollTo } from "../tools/myScrollTo";
-import { useScrollOpacityAnimation, useGetContainerPosition, parallaxWrapper } from "../animations/parallax";
+import { useScrollOpacityAnimation, useGetContainerPosition } from "../animations/parallax";
 
 import { Link } from 'react-router-dom';
 import './frontpage.css';
@@ -17,13 +18,39 @@ function Cover(props){
     const containerRef = useRef();
     const containerPosition = useGetContainerPosition(containerRef);
     const scrolledPercentage = useScrollOpacityAnimation(containerPosition.offsetTop, containerPosition.offsetTop + containerPosition.offsetHeight, 0.8);
-    //
+    // load cover image state
+    const [imageOrder, setImageOrder] = useState(Math.floor((Math.random() * 4)) + 1);
+    const [isCoverLoaded, setIsCoverLoaded] = useState(false);
+    const [coverSrc, setCoverSrc] = useState(null);
+    const [isCoverAnimationBegin, setIsCoverAnimationBegin] = useState(false);
+    // load cover image effect
+    const loadImage = (src) => {
+        return new Promise((resolve, reject) => {
+            const image = new Image();
+            image.onload = () => resolve(image);
+            image.onerror = err => reject(err);
+            image.src = src;
+        });
+    };
+    useEffect(() => {
+        const src = IS_MOBILE
+            ? `https://xiaoxihome.s3.us-east-2.amazonaws.com/galleryphoto/cover/cover-${imageOrder}-mobile.jpg`
+            : `https://xiaoxihome.s3.us-east-2.amazonaws.com/galleryphoto/cover/cover-${imageOrder}-5k.jpg`;
+        loadImage(src)
+            .then((image) => {
+                console.log(image); // LOADED TWICE, SOLVE IT!!
+                setIsCoverLoaded(true);
+                setCoverSrc(image.src);
+                setTimeout(() => setIsCoverAnimationBegin(true), 20)
+            })
+            .catch((err) => console.log(err));
+    }, [imageOrder]);
+
     return (
         <>
             <div className='cover-wrapper' ref={containerRef}>
-                <div
-                    className={props.bgIsLoaded ? 'cover-bg-loaded' : 'cover-bg'}
-                >
+                <div className={isCoverAnimationBegin ? 'cover-loaded' : 'cover-loading'}>
+                    { !isCoverLoaded ? null : <img src={coverSrc} width='100%' height='100%' style={{objectFit: 'cover'}} alt='cover'/> }
                 </div>
             </div>
             <div className='cover-intro parallax-container'>
@@ -36,6 +63,9 @@ function Cover(props){
                     <MouseIcon onClickMouseIcon={props.onClickMouseIcon}/>
                 </div>
             </div>
+            {
+                isCoverLoaded ? null : <div className='loader-wrapper'><SpinLoader size={20}/></div>
+            }
         </>
     )
 }
@@ -212,7 +242,6 @@ class Frontpage extends React.Component {
         this.academicRef = React.createRef();
         this.webRef = React.createRef();
         this.state = {
-            bgIsLoaded: false,
             imgIsLoaded: false
         };
         this.imgUrls = [
@@ -233,14 +262,6 @@ class Frontpage extends React.Component {
     scrollToWorkRef() {
         myScrollTo(this.academicRef.current.offsetTop, this.parallelBoxRef.current);
     };
-    loadImage(src) {
-        return new Promise((resolve, reject) => {
-            const image = new Image();
-            image.onload = () => resolve(image);
-            image.onerror = err => reject(err);
-            image.src = src;
-        });
-    }
     galleryLazyLoad() {
         const viewpointHeight = window.innerHeight;
         const galleryTop = this.galleryRef.current.getBoundingClientRect().top;
@@ -277,12 +298,6 @@ class Frontpage extends React.Component {
         window.addEventListener('scroll', this.galleryLazyLoad);
         if (!IS_MOBILE) {
             this.prepareParallelBoxScrollEvent();
-            this.loadImage('https://s3.us-east-2.amazonaws.com/xiaoxihome/cover-5k.jpg')
-                .then(() => {
-                    this.setState({bgIsLoaded: true})
-                })
-        } else {
-            this.loadImage('https://s3.us-east-2.amazonaws.com/xiaoxihome/cover-mobile.jpg').then(() => this.setState({bgIsLoaded: true}));
         }
     }
     componentWillUnmount() {
@@ -294,7 +309,7 @@ class Frontpage extends React.Component {
         return (
             <div className='frontpage-main' ref={this.parallelBoxRef}>
                 <HeaderCover listAndLink={this.props.listAndLink} />
-                <Cover onClickMouseIcon={this.scrollToWorkRef} bgIsLoaded={this.state.bgIsLoaded}/>
+                <Cover onClickMouseIcon={this.scrollToWorkRef}/>
 
                 <div className={'academic-and-web'}>
                     <div ref={this.academicRef}/>

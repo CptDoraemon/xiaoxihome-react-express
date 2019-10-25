@@ -4,15 +4,8 @@ import './gallery.css'
 import { galleryData } from './galleryData';
 
 import { IoIosArrowDropleft,  IoIosArrowDropright, IoIosPower, IoMdRadioButtonOff, IoMdRadioButtonOn, IoMdAlbums, IoIosPause, IoIosPlay} from "react-icons/io";
+import { SpinLoader } from "../../animations/spin-loader";
 
-function GalleryLoader(props) {
-    return (
-            <div className='gallery-loader'>
-                <div className='gallery-loader-inner'>
-                </div>
-            </div>
-    )
-}
 class Show extends React.Component {
     constructor(props) {
         super(props);
@@ -49,7 +42,7 @@ class Show extends React.Component {
                     className='show'
                     style={styleSwitcher}>
                 </div>
-                { this.state.isLoading ? <GalleryLoader /> : null}
+                { this.state.isLoading ? <SpinLoader size={100} /> : null}
             </div>
         )
     }

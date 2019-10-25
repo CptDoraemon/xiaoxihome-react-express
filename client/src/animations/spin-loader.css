@@ -1,0 +1,15 @@
+/* loader */
+.spin-loader {
+    position: absolute;
+    top: calc(50% - 50px);
+    left: calc(50% - 50px);
+    background-color: transparent;
+    border: 4px solid;
+    border-color: white transparent transparent transparent;
+    z-index: 98;
+    animation: spin-loader-spin 1s linear infinite;
+}
+@keyframes spin-loader-spin {
+    0%{transform: rotate(0deg)}
+    100%{transform: rotate(360deg)}
+}
