@@ -8,25 +8,25 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: calc(100% - 70px);
     z-index: 9999;
     color: rgba(255, 255, 255, 0.5);
-    padding: 50px 35px;
+    padding: 0 35px;
+    margin: 50px 0;
 }
 .header-cover::after{
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 136px;
     content: " ";
     background-color: rgb(37, 41, 45);
     z-index: -1;
-    transform: translateY(-100%);
+    transform: translateY(-186px);
     transition: 0.3s;
 }
 .header-cover:hover::after{
-    transform: translateY(0);
+    transform: translateY(-50px);
     transition: 0.3s;
 }
 .header-cover:hover {
@@ -61,7 +61,7 @@
     text-align: left;
     z-index: 99;
     padding-bottom: 28px; /* add some safe zone at bottom */
-    top: 90px;
+    top: 40px;
 }
 .work-drop-down-cover-active h5{
     text-transform: capitalize;
