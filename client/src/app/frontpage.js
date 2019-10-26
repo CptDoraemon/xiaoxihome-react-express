@@ -18,7 +18,6 @@ function Cover(props){
     const containerRef = useRef();
     const containerPosition = useGetContainerPosition(containerRef);
     const scrolledPercentage = useScrollOpacityAnimation(containerPosition.offsetTop, containerPosition.offsetTop + containerPosition.offsetHeight, 1.0);
-    console.log(scrolledPercentage);
     // init imageOrder state
     const initImageOrder = () => {
         const isReturningViewer = window.localStorage.getItem('isReturningViewer') === 'true';
