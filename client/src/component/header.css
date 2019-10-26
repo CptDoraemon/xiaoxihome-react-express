@@ -6,17 +6,36 @@
     list-style: none;
     text-transform: uppercase;
     position: absolute;
-    top: 35px; /* ul has padding for better accessibility */
-    left: 50px;
+    top: 0;
+    left: 0;
+    width: calc(100% - 70px);
     z-index: 9999;
+    color: rgba(255, 255, 255, 0.5);
+    padding: 50px 35px;
+}
+.header-cover::after{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    content: " ";
+    background-color: rgb(37, 41, 45);
+    z-index: -1;
+    transform: translateY(-100%);
+    transition: 0.3s;
+}
+.header-cover:hover::after{
+    transform: translateY(0);
+    transition: 0.3s;
+}
+.header-cover:hover {
+    color: rgba(255, 255, 255, 1);
 }
 .header-cover ul{
     margin: 0;
     padding: 0;
-    color: rgba(255, 255, 255, 0.5);
-}
-.header-cover ul:hover {
-    color: rgba(255, 255, 255, 1);
+    user-select: none;
 }
 .header-cover li{
     display: inline-block;
@@ -34,6 +53,7 @@
 
 /* DORP DOWN LIST */
 .work-drop-down-cover-active {
+    user-select: none;
     position: absolute;
     color: white;
     margin: 10px 0 0 150px;
@@ -41,6 +61,7 @@
     text-align: left;
     z-index: 99;
     padding-bottom: 28px; /* add some safe zone at bottom */
+    top: 90px;
 }
 .work-drop-down-cover-active h5{
     text-transform: capitalize;
@@ -170,6 +191,9 @@
         left: 35px;
         padding: 0;
     }
+    .header-cover::after{
+        display: none;
+    }
     .mobile-menu-icon {
         display: block;
         color: white;
@@ -187,6 +211,7 @@
         padding: 35px 35px;
         transition: padding-top 0.3s; /* the menu pulled down animation */
         z-index: 99;
+        user-select: none;
     }
     .header-cover-mobile ul{
         margin: 0;
@@ -210,6 +235,7 @@
         z-index: 99;
         padding-bottom: 0; /* add some safe zone at bottom */
         background-color: inherit;
+        top: 0;
     }
     .work-drop-down-cover-active h5{
         text-transform: capitalize;
