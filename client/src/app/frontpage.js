@@ -18,8 +18,21 @@ function Cover(props){
     const containerRef = useRef();
     const containerPosition = useGetContainerPosition(containerRef);
     const scrolledPercentage = useScrollOpacityAnimation(containerPosition.offsetTop, containerPosition.offsetTop + containerPosition.offsetHeight, 0.8);
+    // init imageOrder state
+    const initImageOrder = () => {
+        console.log(window.localStorage.getItem('isReturningViewer'));
+        const isReturningViewer = window.localStorage.getItem('isReturningViewer') === 'true';
+        let imageOrder;
+        if (isReturningViewer) {
+            imageOrder = Math.floor((Math.random() * 4)) + 1;
+        } else {
+            window.localStorage.setItem('isReturningViewer', 'true');
+            imageOrder = 1;
+        }
+        return imageOrder;
+    };
     // load cover image state
-    const [imageOrder, setImageOrder] = useState(Math.floor((Math.random() * 4)) + 1);
+    const [imageOrder, setImageOrder] = useState(initImageOrder());
     const [isCoverLoaded, setIsCoverLoaded] = useState(false);
     const [coverSrc, setCoverSrc] = useState(null);
     const [isCoverAnimationBegin, setIsCoverAnimationBegin] = useState(false);
