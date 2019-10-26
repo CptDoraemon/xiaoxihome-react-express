@@ -20,7 +20,6 @@ function Cover(props){
     const scrolledPercentage = useScrollOpacityAnimation(containerPosition.offsetTop, containerPosition.offsetTop + containerPosition.offsetHeight, 0.8);
     // init imageOrder state
     const initImageOrder = () => {
-        console.log(window.localStorage.getItem('isReturningViewer'));
         const isReturningViewer = window.localStorage.getItem('isReturningViewer') === 'true';
         let imageOrder;
         if (isReturningViewer) {
@@ -51,7 +50,6 @@ function Cover(props){
             : `https://xiaoxihome.s3.us-east-2.amazonaws.com/galleryphoto/cover/cover-${imageOrder}-5k.jpg`;
         loadImage(src)
             .then((image) => {
-                console.log(image); // LOADED TWICE, SOLVE IT!!
                 setIsCoverLoaded(true);
                 setCoverSrc(image.src);
                 setTimeout(() => setIsCoverAnimationBegin(true), 20)
