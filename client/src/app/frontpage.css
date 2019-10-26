@@ -22,6 +22,7 @@
     top: 0;
     left: 0;
     backface-visibility: visible;
+    overflow: hidden;
 }
 .cover-wrapper{
     width: 100%;
@@ -82,13 +83,44 @@
     text-align: center;
     margin: 0;
 }
-.mouse-icon-parallax {
-    /* parallel box related */
-    transform-origin: 0 0; /* together with perspective-origin can ensure exact center when scrollbar takes space */
-    transform: translateZ(-0.2px) scale(1.2);
-    z-index: -1;
-    /**/
+.scroll-down-indicator-wrapper {
+    width: 70%;
+    height: 100px;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 25px;
+    transform: translateY(90px);
+    transition: transform 0.3s, background-color 0.3s;
+    color: white;
 }
+.scroll-down-indicator-wrapper:hover {
+    transform: translateY(25px);
+    background-color: rgba(37, 41, 45, 1);
+    transition: transform 0.3s, background-color 0.3s;
+}
+.scroll-down-indicator-wrapper-disappear{
+    width: 70%;
+    height: 100px;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 25px;
+    transform: translateY(100px);
+    transition: transform 0.3s;
+    color: white;
+}
+.scroll-down-indicator-wrapper-animating {
+    width: 100%;
+    height: 100px;
+    background-color: white;
+    border-radius: 0;
+    transform: translateY(95px);
+    color: white;
+}
+/*.mouse-icon-parallax {*/
+    /*!* parallel box related *!*/
+    /*transform-origin: 0 0; !* together with perspective-origin can ensure exact center when scrollbar takes space *!*/
+    /*transform: translateZ(-0.2px) scale(1.2);*/
+    /*z-index: -1;*/
+    /*!**!*/
+/*}*/
 .mouse-icon {
     margin-bottom: 20px;
 }
@@ -286,6 +318,9 @@
         z-index: 3;
     }
     .mouse-icon-parallax {
+        display: none;
+    }
+    .scroll-down-indicator-wrapper {
         display: none;
     }
     /* */

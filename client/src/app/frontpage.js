@@ -17,7 +17,8 @@ function Cover(props){
     // scroll opacity animation
     const containerRef = useRef();
     const containerPosition = useGetContainerPosition(containerRef);
-    const scrolledPercentage = useScrollOpacityAnimation(containerPosition.offsetTop, containerPosition.offsetTop + containerPosition.offsetHeight, 0.8);
+    const scrolledPercentage = useScrollOpacityAnimation(containerPosition.offsetTop, containerPosition.offsetTop + containerPosition.offsetHeight, 1.0);
+    console.log(scrolledPercentage);
     // init imageOrder state
     const initImageOrder = () => {
         const isReturningViewer = window.localStorage.getItem('isReturningViewer') === 'true';
@@ -44,6 +45,18 @@ function Cover(props){
             image.src = src;
         });
     };
+    // cover exiting animation related
+    const isCoverExitingAnimationOne = 0.3 <= scrolledPercentage && scrolledPercentage < 0.5;
+    const isCoverExitingAnimationTwo = 0.5 <= scrolledPercentage && scrolledPercentage <= 1.0;
+    const coverExitingAnimationOne = (scrolledPercentage - 0.3) / 0.2;
+    const coverExitingAnimationTwo = (scrolledPercentage - 0.5) / 0.5;
+    let coverExitingAnimationTranslate = 0;
+    if (isCoverExitingAnimationOne) {
+        coverExitingAnimationTranslate = `translateX(0)`;
+    } else if (isCoverExitingAnimationTwo) {
+        coverExitingAnimationTranslate = `translateX(${-100 + coverExitingAnimationTwo * 100}%)`;
+    }
+    //
     useEffect(() => {
         const src = IS_MOBILE
             ? `https://xiaoxihome.s3.us-east-2.amazonaws.com/galleryphoto/cover/cover-${imageOrder}-mobile.jpg`
@@ -69,9 +82,24 @@ function Cover(props){
                     <h1 style={{opacity: 1 - scrolledPercentage, willChange: 'opacity'}}>Welcome To Xiaoxi's Home!</h1>
                 </div>
             </div>
-            <div className='mouse-icon-parallax parallax-container flexbox-col-center-bottom'>
-                <div className='mouse-icon'>
-                    <MouseIcon onClickMouseIcon={props.onClickMouseIcon}/>
+            {/*<div className='mouse-icon-parallax parallax-container flexbox-col-center-bottom'>*/}
+                {/*<div className='mouse-icon'>*/}
+                    {/*<MouseIcon onClickMouseIcon={props.onClickMouseIcon}/>*/}
+                {/*</div>*/}
+            {/*</div>*/}
+            <div
+                className='parallax-container flexbox-col-center-bottom'
+                style={isCoverExitingAnimationTwo ? {
+                    transform: coverExitingAnimationTranslate,
+                } : null}>
+                <div className={ isCoverExitingAnimationOne
+                    ? 'scroll-down-indicator-wrapper-disappear flexbox-col-center-center'
+                    : isCoverExitingAnimationTwo
+                        ? 'scroll-down-indicator-wrapper-animating flexbox-col-center-center'
+                        : 'scroll-down-indicator-wrapper flexbox-col-center-center'}>
+                    <div className='mouse-icon'>
+                        <MouseIcon onClickMouseIcon={props.onClickMouseIcon}/>
+                    </div>
                 </div>
             </div>
             {

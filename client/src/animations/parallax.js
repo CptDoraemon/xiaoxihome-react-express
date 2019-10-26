@@ -29,6 +29,7 @@ function useScrollOpacityAnimation(startInPixel, endInPixel, animationFinishPoin
     function scrollHandler() {
         if (window.scrollY > endInPixel || window.scrollY < startInPixel) return;
         const containerHeight = endInPixel - startInPixel;
+        // debounced by 2 decimal places.
         const returnPercentage = Math.min(Math.max(Math.ceil(100 * (window.scrollY / (animationFinishPoint0to1 * containerHeight))) / 100, 0), 1);
         setScrolledPercentage(returnPercentage);
     }
