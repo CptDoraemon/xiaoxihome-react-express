@@ -42,38 +42,52 @@ function myScrollTo(targetY, targetElement) {
     if (targetElement === undefined) targetElement = window;
 
     const distance = targetY - scrolled;
+    const isScrollingDown = distance >= 0;
     const time = 2;
     const alpha = 0.2; // % of accelerate.
     const beta = 0.6; // % of decelerating.
     // acceleration and deceleration per second
-    const aPerS = (2 * distance) / (time * time * (-alpha * alpha + 2 * alpha - alpha * beta));
-    const dPerS = alpha / beta * aPerS;
-    // per tick
-    const a = aPerS / 3600;
-    const d = dPerS / 3600; // unsigned!
+    const a = (2 * distance) / (time * time * (-alpha * alpha + 2 * alpha - alpha * beta));
+    const d = alpha / beta * a;
+    //
+    const t1 = time * alpha; // decelerating
+    const t2 = (1 - alpha - beta) * time; // constant v, tick 3 is decelerating and omitted here.
 
-    const tick1 = time * 60 * alpha; // decelerating
-    const tick2 = (1 - alpha - beta) * time * 60; // constant v, tick 3 is decelerating and omitted here.
-    const totalTick = time * 60;
-
-    let tick = 0;
     let v = 0;
     let s = scrolled;
+    let lastTimeStamp = Date.now();
+    const startTimeStamp = Date.now();
+    let isFinished = false;
     function scrolling() {
-        let step;
-        if (0 <= tick && tick < tick1) {
-            step = v + 0.5 * a;
-            v += a;
-        } else if (tick1 <= tick && tick < (tick1 + tick2)) {
-            step = v;
-        } else if ((tick1 + tick2) <= tick && tick <= totalTick) {
-            step = v - 0.5 * d;
-            v -= d;
+        const currentTimeStamp = Date.now();
+        const accumT = (currentTimeStamp - startTimeStamp) / 1000;
+        const deltaT = (currentTimeStamp - lastTimeStamp) / 1000;
+        let step = 0;
+        if (0 <= accumT && accumT < t1) {
+            step = v * deltaT + 0.5 * a * deltaT * deltaT;
+            v += a * deltaT;
+        } else if (t1 <= accumT && accumT < (t1 + t2)) {
+            step = v * deltaT;
+        } else {
+            // need update calculation in real time otherwise error in distance may occur due to rounding and framerate.
+            isFinished = (isScrollingDown && (s >= targetY)) || (!isScrollingDown && (s <= targetY));
+            const remainingDistance = isFinished ? 0 : targetY - s;
+            if (!isFinished) {
+                const remainingTime = time - accumT;
+                const updatedD = (2 * v * remainingTime - 2 * remainingDistance) / (remainingTime * remainingTime);
+                step = v * deltaT - 0.5 * updatedD * deltaT * deltaT;
+                v -= updatedD * deltaT;
+            }
+
+            // step = v * deltaT - 0.5 * d * deltaT * deltaT;
+            // v -= d * deltaT;
         }
+        // clean up
+        lastTimeStamp = currentTimeStamp;
+        step = Math.round(step);
         s += step;
-        tick++;
         targetElement.scrollTop = s;
-        if (tick <= totalTick) {
+        if (!isFinished) {
             requestAnimationFrame(scrolling);
         }
     }
