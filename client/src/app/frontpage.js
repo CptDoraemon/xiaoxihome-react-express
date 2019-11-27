@@ -10,6 +10,7 @@ import { useScrollOpacityAnimation, useGetContainerPosition } from "../animation
 
 import { Link } from 'react-router-dom';
 import './frontpage.css';
+import {setTitle} from "../tools/set-title";
 
 const IS_MOBILE = window.innerWidth < 800;
 
@@ -131,7 +132,7 @@ function Tile(props) {
             <Link to={props.link}>
                 <div
                     className={props.className}>
-                    { props.tileName.split(' ').map(name => <h3 key={name}> { name } </h3>) }
+                    <h3> { props.tileName } </h3>
                 </div>
             </Link>
         )
@@ -333,6 +334,8 @@ class Frontpage extends React.Component {
         document.dispatchEvent(this.parallelBoxScrollEvent);
     }
     componentDidMount() {
+        setTitle(null, true);
+
         window.addEventListener('scroll', this.galleryLazyLoad);
         if (!IS_MOBILE) {
             this.prepareParallelBoxScrollEvent();

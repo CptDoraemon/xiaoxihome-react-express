@@ -203,8 +203,9 @@
     cursor: pointer;
 }
 .tile-big h3, .tile-sm h3 {
-    width: fit-content;
+    word-spacing: 100vw;
     color: white;
+    text-align: center;
 }
 .tile-gallery {
     width: 390px;
@@ -364,17 +365,17 @@
         align-items: center;
         justify-content: center;
     }
-    .flexbox-wrapper-800 a { /* TILES ARE IN THE LINK */
-        width: calc(100% - 20px);
+    .flexbox-wrapper-800 a {
+        width: calc(100% - 10px);
     }
     .tile-big, .tile-sm {
         height: auto;
         background-color: rgba(255,255,255,0.2);;
-        margin: 5px 0;
+        margin: 5px 0px;
         padding: 15px 0;
         transition: 0s;
         text-transform: capitalize;
-        width: 100%; /* inherit flexbox-wrapper-800 */
+        width: 100%;
     }
     .tile-big:hover, .tile-sm:hover {
         background-color: rgba(0,0,0,0.1);

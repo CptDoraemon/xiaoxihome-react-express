@@ -3,6 +3,7 @@ import { HeaderSticky } from '../component/header';
 import { Footer } from '../component/footer';
 import academicProjectsData from './academicProjectData'
 import './academicProjects.css'
+import {setTitle} from "../tools/set-title";
 
 function AcademicProjectTemplate(props) {
     // It receives two props: name and projectDataArray: the subject's name; the projects array under this subject.
@@ -35,6 +36,11 @@ function AcademicProjectBox(props) {
 class AcademicProject extends React.Component{
     // It receives a name props as the subject name. name is in the form of "aaa bbb"
     // It receives prop listAndArray
+
+    componentDidMount() {
+        setTitle(this.props.name, false);
+    }
+
     render() {
         let name = this.props.name;
         const project = academicProjectsData.filter((i) => i.title === name);

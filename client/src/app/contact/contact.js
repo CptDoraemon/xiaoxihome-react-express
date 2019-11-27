@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import './contact.css'
 import { IoIosClose, IoMdListBox } from "react-icons/io";
 import Loader from 'react-loader-spinner';
+import {setTitle} from "../../tools/set-title";
 
 class Contact extends React.Component {
     constructor(props){
@@ -202,6 +203,7 @@ class Contact extends React.Component {
         }
     }
     componentDidMount() {
+        setTitle('Contact me', false);
         if (window.innerWidth > 800) this.letItSnow();
         this.setState({
             name: this.nameDefault,

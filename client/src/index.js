@@ -85,23 +85,6 @@ class App extends React.Component {
             return ('/').concat(item);
         });
     }
-    componentDidMount(){
-        const title = [
-            '⊂(˃̶͈̀ε ˂̶͈́ ⊂ )))Σ≡=─',
-            '( ⸝⸝⸝°_°⸝⸝⸝ )',
-            'ฅʕ•̫͡•ʔฅ',
-            '(ง •̀_•́)ง',
-            'Zzz...(¦3ꇤ[▓▓]',
-            '୧(˶‾᷄ ⁻̫ ‾᷅˵)୨',
-            'ᕕ( ᐛ )ᕗ',
-            'ᶘ ᵒᴥᵒᶅ',
-            '┌|°з°|┘└|°ε°|┐┌|°э°|┘',
-            'ヽ(‘ ∇‘ )ノ',
-            '₍˄·͈༝·͈˄₎ฅ˒˒',
-        ];
-        const pickOne = Math.floor(Math.random() * title.length );
-        document.title = 'Xiaoxi\'s Home' + title[pickOne];
-    }
 
     render() {
         return (

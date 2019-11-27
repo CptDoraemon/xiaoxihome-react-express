@@ -2,6 +2,7 @@ import React from 'react';
 import './aboutPage.css';
 import { data } from './data';
 import { MdRadioButtonUnchecked, MdRadioButtonChecked, MdPowerSettingsNew } from "react-icons/md";
+import {setTitle} from "../../tools/set-title";
 
 const myWheelTo = require('../../tools/myScrollTo').myWheelTo;
 
@@ -176,6 +177,7 @@ class AboutPage extends React.Component {
         setTimeout(() => this.isScrolling = false, 2000)
     }
     componentDidMount() {
+        setTitle('About me', false);
         this.loadResources();
         window.scrollY = 0;
 

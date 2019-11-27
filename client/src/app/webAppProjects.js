@@ -3,6 +3,7 @@ import { HeaderSticky } from '../component/header';
 import { Footer } from '../component/footer';
 import webAppProjectData from './webAppProjectData';
 import './webAppProjects.css';
+import {setTitle} from "../tools/set-title";
 
 
 function WebAppProjectTemplate(props) {
@@ -27,6 +28,10 @@ function WebAppProjectTemplate(props) {
     )
 }
 class WebAppProject extends React.Component {
+    componentDidMount() {
+        setTitle(this.props.name, false);
+    }
+
     render() {
         return (
             <div>

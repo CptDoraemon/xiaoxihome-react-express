@@ -5,6 +5,7 @@ import { galleryData } from './galleryData';
 
 import { IoIosArrowDropleft,  IoIosArrowDropright, IoIosPower, IoMdRadioButtonOff, IoMdRadioButtonOn, IoMdAlbums, IoIosPause, IoIosPlay} from "react-icons/io";
 import { SpinLoader } from "../../animations/spin-loader";
+import {setTitle} from "../../tools/set-title";
 
 class Show extends React.Component {
     constructor(props) {
@@ -336,6 +337,12 @@ class Gallery extends React.Component {
         clearTimeout(this.toggleHudTimer);
         this.setState({isHudDimmed: false});
         this.setToggleHudTimer();
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevState.album !== this.state.album) {
+            setTitle(this.dataArray[this.state.album][0], false);
+        }
     }
 
     componentDidMount() {
