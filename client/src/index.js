@@ -35,8 +35,8 @@ class App extends React.Component {
         this.galleryArray = galleryData.map(arr => arr[0]);
         //
         this.academicProjectLinkArray = this.academicProjectArray.map(title => titleConvertToLink(title));
-        this.webAppProjectLinkArray = this.academicProjectArray.map(title => titleConvertToLink(title));
-        this.galleryLinkArray = this.academicProjectArray.map(title => titleConvertToLink(title));
+        this.webAppProjectLinkArray = this.webAppProjectArray.map(title => titleConvertToLink(title));
+        this.galleryLinkArray = this.galleryArray.map(title => titleConvertToLink(title));
         //
         this.listAndLink = {
             academicProjectArray: this.academicProjectArray,
