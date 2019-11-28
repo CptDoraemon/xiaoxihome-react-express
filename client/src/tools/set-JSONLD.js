@@ -1,30 +1,62 @@
 import webAppProjectData from "../app/webAppProjectData";
 
-function setJSONLD() {
+function setSummaryPageJSONLD(index) {
     const el = document.getElementById('dynamicJSONLD');
     const JSONLD = {
         '@context': 'https://schema.org',
         '@type': 'ItemList'
     };
-    const listArray = webAppProjectData.map((i, index) => {
-        return {
+    const listArray = [];
+    // listItems
+    webAppProjectData.map((i, index) => {
+        const obj = {
             '@type': 'ListItem',
             'position': index + 1,
-            'item' : {
-                '@type': 'NewsArticle',
-                'author': {
-                    "@type": "Organization",
-                    "name": "Xiaoxihome"
-                },
-                'headline': i.title,
-                'description': i.summary,
-                'url': i.link
-            }
-        }
+            'url': i.link ? i.link : 'https://www.xiaoxihome.com/'
+        };
+        listArray.push(obj);
+        return false;
     });
 
     JSONLD.itemListElement = listArray;
     el.innerHTML = JSON.stringify(JSONLD);
 }
 
-export { setJSONLD };
+function setDetailPageJSONLD(index) {
+    const el = document.getElementById('dynamicJSONLD');
+    const data = webAppProjectData[index];
+    const JSONLD = {
+        '@context': 'https://schema.org',
+        '@type': 'NewsArticle',
+        'author': {
+            "@type": "Organization",
+            "name": "Xiaoxihome"
+        },
+        'publisher': {
+            '@type': 'Organization',
+            'name': 'Xiaoxihome',
+            'logo': {
+                '@type': 'ImageObject',
+                'url': 'https://www.xiaoxihome.com/favicon.ico'
+            }
+        },
+        'mainEntityOfPage': {
+            '@type': 'WebPage',
+            '@id': webAppProjectData[0].link,
+        },
+        'image': [
+            'https://xiaoxihome.s3.us-east-2.amazonaws.com/galleryphoto/astro/astro2.jpg'
+        ],
+        'datePublished': '2019-07-01',
+        'headline': data.title,
+        'description': data.summary,
+    };
+    el.innerHTML = JSON.stringify(JSONLD);
+}
+
+function resetJSONLD() {
+    const el = document.getElementById('dynamicJSONLD');
+    el.innerHTML = '';
+}
+
+export { setSummaryPageJSONLD, setDetailPageJSONLD, resetJSONLD };

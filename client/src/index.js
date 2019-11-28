@@ -9,7 +9,6 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import ScrollToTop from './component/scrolltotop'
 import { Frontpage } from './app/frontpage';
-import { setJSONLD } from "./tools/set-JSONLD";
 // import { Missing404 } from './component/missing404';
 // import { Gallery } from './app/gallery/gallery';
 // import { Contact } from './app/contact/contact';
@@ -70,7 +69,7 @@ class App extends React.Component {
         });
         this.webAppProjectPaths = this.webAppProjectLinkArray.map((i, index) => {
             return (
-                <Route path={i} render={(props) => <WebAppProject {...props} name={this.webAppProjectArray[index]} listAndLink={this.listAndLink} />} key={index}/>
+                <Route path={i} render={(props) => <WebAppProject {...props} name={this.webAppProjectArray[index]} listAndLink={this.listAndLink} index={index}/>} key={index}/>
             )
         });
         this.galleryPaths = this.galleryLinkArray.map((i, index) => {
@@ -85,10 +84,6 @@ class App extends React.Component {
             let item = i.toLowerCase().split(' ').join('-').replace('/', '');
             return ('/').concat(item);
         });
-    }
-
-    componentDidMount() {
-        setJSONLD();
     }
 
     render() {

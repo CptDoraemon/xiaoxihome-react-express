@@ -11,7 +11,7 @@ import { useScrollOpacityAnimation, useGetContainerPosition } from "../animation
 import { Link } from 'react-router-dom';
 import './frontpage.css';
 import {setTitle} from "../tools/set-title";
-import {setJSONLD} from "../tools/set-JSONLD";
+import {resetJSONLD, setJSONLD, setSummaryPageJSONLD} from "../tools/set-JSONLD";
 
 const IS_MOBILE = window.innerWidth < 800;
 
@@ -336,6 +336,7 @@ class Frontpage extends React.Component {
     }
     componentDidMount() {
         setTitle(null, true);
+        setSummaryPageJSONLD();
 
         window.addEventListener('scroll', this.galleryLazyLoad);
         if (!IS_MOBILE) {
@@ -345,6 +346,7 @@ class Frontpage extends React.Component {
     componentWillUnmount() {
         window.removeEventListener('scroll', this.galleryLazyLoad);
         this.parallelBoxRef.current.removeEventListener('scroll', this.parallelBoxScrollHandler);
+        resetJSONLD();
     }
     render() {
         //It receives props: listAndLink

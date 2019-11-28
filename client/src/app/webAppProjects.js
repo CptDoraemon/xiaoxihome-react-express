@@ -4,6 +4,7 @@ import { Footer } from '../component/footer';
 import webAppProjectData from './webAppProjectData';
 import './webAppProjects.css';
 import {setTitle} from "../tools/set-title";
+import {resetJSONLD, setDetailPageJSONLD} from "../tools/set-JSONLD";
 
 
 function WebAppProjectTemplate(props) {
@@ -30,13 +31,18 @@ function WebAppProjectTemplate(props) {
 class WebAppProject extends React.Component {
     componentDidMount() {
         setTitle(this.props.name, false);
+        setDetailPageJSONLD(this.props.index);
+    }
+
+    componentWillUnmount() {
+        resetJSONLD();
     }
 
     render() {
         return (
             <div>
                 <HeaderSticky headerTitle='Web App Project' listAndLink={this.props.listAndLink} />
-                <WebAppProjectTemplate name={this.props.name}  />
+                <WebAppProjectTemplate name={this.props.name} />
                 <Footer listAndLink={this.props.listAndLink} />
             </div>
         );
