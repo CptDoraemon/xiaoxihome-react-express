@@ -11,6 +11,7 @@ import { useScrollOpacityAnimation, useGetContainerPosition } from "../animation
 import { Link } from 'react-router-dom';
 import './frontpage.css';
 import {setTitle} from "../tools/set-title";
+import {setJSONLD} from "../tools/set-JSONLD";
 
 const IS_MOBILE = window.innerWidth < 800;
 

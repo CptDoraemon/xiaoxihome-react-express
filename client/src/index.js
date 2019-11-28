@@ -9,6 +9,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import ScrollToTop from './component/scrolltotop'
 import { Frontpage } from './app/frontpage';
+import { setJSONLD } from "./tools/set-JSONLD";
 // import { Missing404 } from './component/missing404';
 // import { Gallery } from './app/gallery/gallery';
 // import { Contact } from './app/contact/contact';
@@ -84,6 +85,10 @@ class App extends React.Component {
             let item = i.toLowerCase().split(' ').join('-').replace('/', '');
             return ('/').concat(item);
         });
+    }
+
+    componentDidMount() {
+        setJSONLD();
     }
 
     render() {
