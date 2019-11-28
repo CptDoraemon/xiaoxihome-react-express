@@ -3,10 +3,9 @@ const webAppProjectData = [
         title: 'Reddit-like Website',
         link: 'https://riddet.xiaoxihome.com',
         description:
-            '<p>This is a Redit like discussion website.</p>' +
+            '<p>This is a Reddit like discussion website.</p>' +
             '<p>Please open in new window and allow up to half minute for server to wake up.</p>',
-        summary: 'A Redit like discussion website.'
-
+        summary: 'A Redit like discussion website.',
     },
     {
         title: 'Youtube Downloader',
@@ -15,8 +14,7 @@ const webAppProjectData = [
             '<p>An app to download mp3 from Youtube playlist</p>' +
             '<p>For legal reasons only the frontend is hosted</p>' +
             '<p>https://github.com/CptDoraemon/youtube-downloader</p>',
-        summary: 'An app to download youtube videos.'
-
+        summary: 'An app to download youtube videos.',
     },
     {
         title: 'Weather App',

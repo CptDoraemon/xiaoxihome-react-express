@@ -1,4 +1,5 @@
 import webAppProjectData from "../app/webAppProjectData";
+import {titleConvertToLink} from "./title-convert-to-link";
 
 function setSummaryPageJSONLD(index) {
     const el = document.getElementById('dynamicJSONLD');
@@ -12,7 +13,7 @@ function setSummaryPageJSONLD(index) {
         const obj = {
             '@type': 'ListItem',
             'position': index + 1,
-            'url': i.link ? i.link : 'https://www.xiaoxihome.com/'
+            'url': `https://www.xiaoxihome.com${titleConvertToLink(i.title)}`
         };
         listArray.push(obj);
         return false;
