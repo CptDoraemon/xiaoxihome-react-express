@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 
 import { HeaderCover } from "../component/header";
-import { Footer } from "../component/footer";
+import Footer from "../component/footer";
 import { MouseIcon } from "../component/mouseIcon";
 import { withFlyInAnimation } from '../animations/fly-in';
 import { SpinLoader } from "../animations/spin-loader";
@@ -11,7 +11,7 @@ import { useScrollOpacityAnimation, useGetContainerPosition } from "../animation
 import { Link } from 'react-router-dom';
 import './frontpage.css';
 import {setTitle} from "../tools/set-title";
-import {resetJSONLD, setJSONLD, setSummaryPageJSONLD} from "../tools/set-JSONLD";
+import {resetJSONLD, setSummaryPageJSONLD} from "../tools/set-JSONLD";
 
 const IS_MOBILE = window.innerWidth < 800;
 
@@ -110,172 +110,214 @@ function Cover(props){
     )
 }
 
-function Tile(props) {
-    //receives props: link, className, tileName, imgUrl, imgIsLoaded
-    // tile for gallery
-    if (props.imgUrl) {
-        const image = props.imgIsLoaded ?
-            {style: {backgroundImage: `url(${props.imgUrl})`}}:
-            {style: {}};
-        return (
-            <Link to={props.link}>
-                <div
-                    className={props.className}
-                    {...image}
-                    >
-                    <h5>{props.tileName}</h5>
-                </div>
-            </Link>
-        )
-    } else {
-        // tile for projects
-        return (
-            <Link to={props.link}>
-                <div
-                    className={props.className}>
-                    <h3> { props.tileName } </h3>
-                </div>
-            </Link>
-        )
-    }
+enum TileSize {
+    SMALL = 'tile-sm',
+    BIG = 'tile-big',
+    BIGRIBBONED = 'tile-big ribboned',
+    GALLERY = 'tile-gallery'
 }
 
+interface GalleryTileProps extends  GalleryTileInfo {
+    className: TileSize;
+}
+
+function GalleryTile(props: GalleryTileProps) {
+    const image = props.isImgLoaded ? {style: {backgroundImage: `url(${props.imgUrl})`}} : null;
+    return (
+        <Link to={props.link}>
+            <div
+                className={props.className}
+                {...image}
+            >
+                <h5>{props.title}</h5>
+            </div>
+        </Link>
+    )
+}
+
+interface TextTileProps extends  TextTileInfo{
+    className: string;
+}
+function TextTile(props: TextTileProps) {
+    return (
+        <Link to={props.link}>
+            <div
+                className={props.className}>
+                <h3> { props.title } </h3>
+            </div>
+        </Link>
+    )
+}
+
+interface SectionTitleProps {
+    sectionTitle: string
+}
+function SectionTitle(props: SectionTitleProps) {
+    return (
+        <h2>
+            { props.sectionTitle }
+        </h2>
+    )
+}
 
 // IMPORTANT!! DON'T USE HOC IN RENDER!!
-let WithFlyInAnimationTile = Tile;
-let AcademicTitle = () => <h2>Academic Project</h2>;
-let WebTitle = () => <h2>Web App Project</h2>;
-let GalleryTitle = () => <h2>Photography</h2>;
-// No animation on small screen
-if (!IS_MOBILE) {
-    WithFlyInAnimationTile = withFlyInAnimation(Tile);
-    AcademicTitle = withFlyInAnimation(AcademicTitle);
-    WebTitle = withFlyInAnimation(WebTitle);
-    GalleryTitle = withFlyInAnimation(GalleryTitle);
+const WithFlyInAnimationGalleryTile = withFlyInAnimation(GalleryTile);
+const WithFlyInAnimationTextTile = withFlyInAnimation(TextTile);
+const WithFlyInAnimationSectionTitle = withFlyInAnimation(SectionTitle);
+
+interface TextTileInfo {
+    link: string;
+    title: string
 }
 
-class ProjectList extends React.Component {
-    constructor(props) {
+interface ProjectListTextProps {
+    tileInfo: Array<TextTileInfo>;
+    sectionTitle: string;
+    projectListType: ProjectListType;
+}
+
+interface ProjectListTextStates {
+    animationTriggerPoint: number
+}
+
+enum ProjectListType {
+    ONE = 0,
+    TWO
+}
+
+class ProjectListText extends React.Component<ProjectListTextProps, ProjectListTextStates> {
+
+    containerRef = React.createRef<HTMLDivElement>();
+    typeRelatedParams = {
+        [ProjectListType.ONE]: {
+            flyInDelayRemap: [0.2, 0.1, 0, 0.1, 0.2, 0.3],
+            flyInDirectionRemap: ['left', 'left', 'left', 'right', 'right', 'right'],
+            bigTileIndex: [1, 3]
+        },
+        [ProjectListType.TWO]: {
+            flyInDelayRemap: [0, 0.1, 0.2, 0.3, 0.2, 0.1],
+            flyInDirectionRemap: ['right', 'right', 'right', 'left', 'left', 'left'],
+            bigTileIndex: [0, 5]
+        }
+    };
+
+    constructor(props: ProjectListTextProps) {
         super(props);
         this.state = {
             animationTriggerPoint: 9999
         };
-        this.containerRef = React.createRef();
     }
     componentDidMount() {
-        this.setState({
-            animationTriggerPoint: this.containerRef.current.offsetTop + this.containerRef.current.offsetHeight * 0.2
-        })
+        if (this.containerRef.current) {
+            this.setState({
+                animationTriggerPoint: this.containerRef.current.offsetTop + this.containerRef.current.offsetHeight * 0.2
+            })
+        }
     }
     render() {
-        //props: type: academic, webApp, gallery
-        //props: listAndLink
-        //props: if(gallery) imgUrls
+        const typeRelatedParams = this.typeRelatedParams[this.props.projectListType];
+        return (
+            <div className='project-container' ref={this.containerRef}>
+                <WithFlyInAnimationSectionTitle
+                    flyInDirection={'down'}
+                    flyInDelay={0}
+                    animationTriggerPoint={this.state.animationTriggerPoint}
+                    sectionTitle={this.props.sectionTitle}
+                />
+                <div className='flexbox-wrapper-800'>
+                    { this.props.tileInfo.map((i, index) => {
 
+                        const tileSize = (typeRelatedParams.bigTileIndex.indexOf(index)) !== -1 ?
+                            TileSize.BIG :
+                            this.props.projectListType === ProjectListType.TWO ?
+                                TileSize.BIGRIBBONED :
+                                TileSize.SMALL;
 
-        // Academic Project List
-        if (this.props.type === 'academic') {
-            const array = [...this.props.listAndArray.academicProjectArray];
-            const linkArray = [...this.props.listAndArray.academicProjectLinkArray];
-            const flyInDelayRemap = [0.2, 0.1, 0, 0.1, 0.2, 0.3];
-            const flyInDirectionRemap = ['left', 'left', 'left', 'right', 'right', 'right'];
-            return (
-                <div className='project-container' ref={this.containerRef}>
-                    <AcademicTitle
-                        flyInDirection={'down'}
-                        flyInDelay={0}
-                        animationTriggerPoint={this.state.animationTriggerPoint}
-                    />
-                    <div className='flexbox-wrapper-800' id='academic'>
-                        {array.map((i, index) => {
-                            const tileSize = (index === 1 || index === 3) ? 'tile-big' : 'tile-sm';
-                            return <WithFlyInAnimationTile
-                                link={linkArray[index]}
-                                tileName={i}
-                                className={tileSize}
-                                key={`academic${index}`}
-                                flyInDirection={flyInDirectionRemap[index]}
-                                flyInDelay={flyInDelayRemap[index]}
-                                animationTriggerPoint={this.state.animationTriggerPoint}
-                                wrapperClassName={'fly-in-wrapper'}
-                            />
-                        })}
-                    </div>
+                        return <WithFlyInAnimationTextTile
+                            link={i.link}
+                            tileName={i.title}
+                            className={tileSize}
+                            key={index}
+                            flyInDirection={typeRelatedParams.flyInDirectionRemap[index]}
+                            flyInDelay={typeRelatedParams.flyInDelayRemap[index]}
+                            animationTriggerPoint={this.state.animationTriggerPoint}
+                            wrapperClassName={'fly-in-wrapper'}
+                        />
+                    })}
                 </div>
-            )
-        }
+            </div>
+        )
+    }
+}
 
-        // Web App Project List
-        if (this.props.type === 'webApp') {
-            const array = [...this.props.listAndArray.webAppProjectArray];
-            const linkArray = [...this.props.listAndArray.webAppProjectLinkArray];
-            const flyInDelayRemap = [0, 0.1, 0.2, 0.3, 0.2, 0.1];
-            const flyInDirectionRemap = ['right', 'right', 'right', 'left', 'left', 'left'];
-            return (
-                <div className='project-container' ref={this.containerRef}>
-                    <WebTitle
-                        flyInDirection={'down'}
-                        flyInDelay={0}
-                        animationTriggerPoint={this.state.animationTriggerPoint}
-                    />
-                    <div className='flexbox-wrapper-800' id='web'>
-                        {array.map((i, index) => {
-                            const tileSize = (index === 0 || index === 5) ? 'tile-big ribboned' : 'tile-sm';
-                            return <WithFlyInAnimationTile
-                                link={linkArray[index]}
-                                tileName={i}
-                                className={tileSize}
-                                key={`web${index}`}
-                                flyInDirection={flyInDirectionRemap[index]}
-                                flyInDelay={flyInDelayRemap[index]}
-                                animationTriggerPoint={this.state.animationTriggerPoint}
-                                wrapperClassName={'fly-in-wrapper'}
-                            />
-                        })}
-                    </div>
-                </div>
-            )
-        }
+interface GalleryTileInfo {
+    title: string;
+    isImgLoaded: boolean;
+    imgUrl: string;
+    link: string;
+}
 
-        // Gallery Project List
-        if (this.props.type === 'gallery') {
-            const array = [...this.props.listAndArray.galleryArray];
-            const linkArray = [...this.props.listAndArray.galleryLinkArray];
-            const flyInDelayRemap = [0.2, 0.2, 0.1, 0.1, 0, 0];
-            const flyInDirectionRemap = ['left', 'right', 'left', 'right', 'left', 'right'];
-            return (
-                <div className='project-container' ref={this.containerRef}>
-                    <GalleryTitle
-                        flyInDirection={'down'}
-                        flyInDelay={0}
-                        animationTriggerPoint={this.state.animationTriggerPoint}
-                    />
-                    <div className='flexbox-wrapper-800' id='gallery'>
-                        {array.map((i, index) => {
-                            const tileSize = 'tile-gallery';
-                            const imgUrl = this.props.imgUrls[index];
-                            return <WithFlyInAnimationTile
-                                link={linkArray[index]}
-                                tileName={i}
-                                className={tileSize}
-                                imgUrl={imgUrl}
-                                imgIsLoaded={this.props.imgIsLoaded}
-                                key={`gallery${index}`}
-                                flyInDirection={flyInDirectionRemap[index]}
-                                flyInDelay={flyInDelayRemap[index]}
-                                animationTriggerPoint={this.state.animationTriggerPoint}
-                                wrapperClassName={'fly-in-wrapper'}
-                            />
-                        })}
-                    </div>
-                </div>
-            )
+interface ProjectListGalleryProps {
+    sectionTitle: string;
+    tileInfo: Array<GalleryTileInfo>;
+}
+
+interface ProjectListGalleryStates {
+    animationTriggerPoint: number
+}
+
+class ProjectListGallery extends React.Component<ProjectListGalleryProps, ProjectListGalleryStates> {
+
+    containerRef = React.createRef<HTMLDivElement>();
+    flyInDelayRemap = [0.2, 0.2, 0.1, 0.1, 0, 0];
+    flyInDirectionRemap = ['left', 'right', 'left', 'right', 'left', 'right'];
+
+    constructor(props: ProjectListGalleryProps) {
+        super(props);
+        this.state = {
+            animationTriggerPoint: 9999
+        };
+    }
+    componentDidMount() {
+        if (this.containerRef.current) {
+            this.setState({
+                animationTriggerPoint: this.containerRef.current.offsetTop + this.containerRef.current.offsetHeight * 0.2
+            })
         }
+    }
+    render() {
+        return (
+            <div className='project-container' ref={this.containerRef}>
+                <WithFlyInAnimationSectionTitle
+                    flyInDirection={'down'}
+                    flyInDelay={0}
+                    animationTriggerPoint={this.state.animationTriggerPoint}
+                    sectionTitle={this.props.sectionTitle}
+                />
+                <div className='flexbox-wrapper-800'>
+                    {this.props.tileInfo.map((i, index) => {
+                        const tileSize = TileSize.GALLERY;
+                        return <WithFlyInAnimationGalleryTile
+                            link={i.link}
+                            tileName={i.title}
+                            className={tileSize}
+                            imgUrl={i.imgUrl}
+                            imgIsLoaded={i.isImgLoaded}
+                            key={`gallery${index}`}
+                            flyInDirection={this.flyInDirectionRemap[index]}
+                            flyInDelay={this.flyInDelayRemap[index]}
+                            animationTriggerPoint={this.state.animationTriggerPoint}
+                            wrapperClassName={'fly-in-wrapper'}
+                        />
+                    })}
+                </div>
+            </div>
+        )
     }
 }
 
 // const ParallaxFooter = parallaxWrapper(Footer, 0.83);
-class Frontpage extends React.Component {
+class Frontpage extends React.Component<FrontpageProps, FrontpageStates> {
     constructor(props) {
         super(props);
         this.galleryRef = React.createRef();
@@ -377,13 +419,12 @@ class Frontpage extends React.Component {
                         imgIsLoaded={this.state.imgIsLoaded}
                     />
                 </div>
-                {/*<ParallaxFooter listAndLink={this.props.listAndLink}/>*/}
-                <Footer listAndLink={this.props.listAndLink}/>
+                <Footer />
             </div>
         )
     }
 }
 
-export { Frontpage };
+export default Frontpage;
 
 

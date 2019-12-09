@@ -1,4 +1,4 @@
-import webAppProjectData from "../app/webAppProjectData";
+import appData from "../data";
 import {titleConvertToLink} from "./title-convert-to-link";
 
 function setSummaryPageJSONLD(index) {
@@ -9,7 +9,7 @@ function setSummaryPageJSONLD(index) {
     };
     const listArray = [];
     // listItems
-    webAppProjectData.map((i, index) => {
+    appData.webAppProjectData.map((i, index) => {
         const obj = {
             '@type': 'ListItem',
             'position': index + 1,
@@ -25,7 +25,7 @@ function setSummaryPageJSONLD(index) {
 
 function setDetailPageJSONLD(index) {
     const el = document.getElementById('dynamicJSONLD');
-    const data = webAppProjectData[index];
+    const data = appData.webAppProjectData[index];
     const JSONLD = {
         '@context': 'https://schema.org',
         '@type': 'NewsArticle',
@@ -43,7 +43,7 @@ function setDetailPageJSONLD(index) {
         },
         'mainEntityOfPage': {
             '@type': 'WebPage',
-            '@id': webAppProjectData[0].link,
+            '@id': appData.webAppProjectData[0].link,
         },
         'image': [
             'https://xiaoxihome.s3.us-east-2.amazonaws.com/galleryphoto/astro/astro2.jpg'
