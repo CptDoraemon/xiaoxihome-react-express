@@ -28,7 +28,7 @@ export const galleryPreviewData: Array<AlbumPreview> = [
     },
     {
         albumName: 'Hometown',
-        link: 'https://s3.us-east-2.amazonaws.com/xiaoxihome/galleryphoto/preview/hometown.png'
+        link: 'https://s3.us-east-2.amazonaws.com/xiaoxihome/galleryphoto/preview/hometown.jpg'
     },
     {
         albumName: 'YorkU',

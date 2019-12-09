@@ -1,5 +1,5 @@
 import React from 'react';
-import { HeaderSticky } from '../component/header';
+// import { HeaderSticky } from '../component/header';
 import Footer from '../component/footer';
 import './academicProjects.css'
 import {setTitle} from "../tools/set-title";
@@ -57,7 +57,7 @@ class AcademicProject extends React.Component<AcademicProject, {}> {
     render() {
         return (
             <div>
-                <HeaderSticky headerTitle='Academic Project'/>
+                {/*<HeaderSticky headerTitle='Academic Project'/>*/}
                 {/*<AcademicProjectTemplate title={this.props.title} projects={this.props.projects}/>*/}
                 <Footer />
             </div>

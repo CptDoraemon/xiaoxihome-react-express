@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 
-import { HeaderCover } from "../component/header";
+import HeaderCover from "../component/header";
 import Footer from "../component/footer";
 import { MouseIcon } from "../component/mouseIcon";
 import { withFlyInAnimation } from '../animations/fly-in';
@@ -11,7 +11,7 @@ import { useScrollOpacityAnimation, useGetContainerPosition } from "../animation
 import { Link } from 'react-router-dom';
 import './frontpage.css';
 import {setTitle} from "../tools/set-title";
-import {resetJSONLD, setSummaryPageJSONLD} from "../tools/set-JSONLD";
+// import {resetJSONLD, setSummaryPageJSONLD} from "../tools/set-JSONLD";
 
 const IS_MOBILE = window.innerWidth < 800;
 
@@ -116,13 +116,14 @@ enum TileSize {
     GALLERY = 'tile-gallery'
 }
 
-interface GalleryTileProps extends  GalleryTileInfo {
+interface GalleryTileProps extends GalleryTileInfo {
     className: TileSize;
     isImgLoaded: boolean;
 }
 
 function GalleryTile(props: GalleryTileProps) {
     const image = props.isImgLoaded ? {style: {backgroundImage: `url(${props.imgUrl})`}} : null;
+    console.log(props);
     return (
         <Link to={props.link}>
             <div
@@ -135,10 +136,11 @@ function GalleryTile(props: GalleryTileProps) {
     )
 }
 
-interface TextTileProps extends  TextTileInfo{
+interface TextTileProps extends  TextTileInfo {
     className: string;
 }
 function TextTile(props: TextTileProps) {
+    console.log(props);
     return (
         <Link to={props.link}>
             <div
@@ -218,29 +220,40 @@ class ProjectListText extends React.Component<ProjectListTextProps, ProjectListT
         return (
             <div className='project-container' ref={this.containerRef}>
                 <WithFlyInAnimationSectionTitle
-                    flyInDirection={'down'}
-                    flyInDelay={0}
-                    animationTriggerPoint={this.state.animationTriggerPoint}
-                    sectionTitle={this.props.sectionTitle}
+                    propsForWrapper={{
+                        flyInDirection: 'down',
+                        flyInDelay: 0,
+                        animationTriggerPoint: this.state.animationTriggerPoint,
+                        wrapperClassName: 'fly-in-wrapper',
+                        customScrollEvent: IS_MOBILE ? '' : 'parallaxScroll',
+                    }}
+                    passOnProps={{
+                        sectionTitle: this.props.sectionTitle
+                    }}
                 />
                 <div className='flexbox-wrapper-800'>
                     { this.props.tileInfo.map((i, index) => {
 
-                        const tileSize = (typeRelatedParams.bigTileIndex.indexOf(index)) !== -1 ?
-                            TileSize.BIG :
+                        const tileSize = (typeRelatedParams.bigTileIndex.indexOf(index)) === -1 ?
+                            TileSize.SMALL :
                             this.props.projectListType === ProjectListType.TWO ?
                                 TileSize.BIGRIBBONED :
-                                TileSize.SMALL;
+                                TileSize.BIG;
 
                         return <WithFlyInAnimationTextTile
-                            link={i.link}
-                            tileName={i.title}
-                            className={tileSize}
-                            key={index}
-                            flyInDirection={typeRelatedParams.flyInDirectionRemap[index]}
-                            flyInDelay={typeRelatedParams.flyInDelayRemap[index]}
-                            animationTriggerPoint={this.state.animationTriggerPoint}
-                            wrapperClassName={'fly-in-wrapper'}
+                            passOnProps={{
+                                link: i.link,
+                                title: i.title,
+                                className: tileSize,
+                            }}
+                            propsForWrapper={{
+                                key: index,
+                                flyInDirection: typeRelatedParams.flyInDirectionRemap[index],
+                                flyInDelay: typeRelatedParams.flyInDelayRemap[index],
+                                animationTriggerPoint: this.state.animationTriggerPoint,
+                                wrapperClassName: 'fly-in-wrapper',
+                                customScrollEvent: IS_MOBILE ? '' : 'parallaxScroll',
+                            }}
                         />
                     })}
                 </div>
@@ -286,25 +299,36 @@ class ProjectListGallery extends React.Component<ProjectListGalleryProps, Projec
         return (
             <div className='project-container' ref={this.containerRef}>
                 <WithFlyInAnimationSectionTitle
-                    flyInDirection={'down'}
-                    flyInDelay={0}
-                    animationTriggerPoint={this.state.animationTriggerPoint}
-                    sectionTitle={this.props.sectionTitle}
+                    propsForWrapper={{
+                        flyInDirection: 'down',
+                        flyInDelay: 0,
+                        animationTriggerPoint: this.state.animationTriggerPoint,
+                        wrapperClassName: 'fly-in-wrapper',
+                        customScrollEvent: IS_MOBILE ? '' : 'parallaxScroll',
+                    }}
+                    passOnProps={{
+                        sectionTitle: this.props.sectionTitle
+                    }}
                 />
                 <div className='flexbox-wrapper-800'>
                     {this.props.tileInfo.map((i, index) => {
                         const tileSize = TileSize.GALLERY;
                         return <WithFlyInAnimationGalleryTile
-                            link={i.link}
-                            tileName={i.title}
-                            className={tileSize}
-                            imgUrl={i.imgUrl}
-                            imgIsLoaded={this.props.isImgLoaded}
-                            key={`gallery${index}`}
-                            flyInDirection={this.flyInDirectionRemap[index]}
-                            flyInDelay={this.flyInDelayRemap[index]}
-                            animationTriggerPoint={this.state.animationTriggerPoint}
-                            wrapperClassName={'fly-in-wrapper'}
+                            passOnProps={{
+                                link: i.link,
+                                title: i.title,
+                                className: tileSize,
+                                imgUrl: i.imgUrl,
+                                isImgLoaded: this.props.isImgLoaded,
+                            }}
+                            propsForWrapper={{
+                                key: index,
+                                flyInDirection: this.flyInDirectionRemap[index],
+                                flyInDelay: this.flyInDelayRemap[index],
+                                animationTriggerPoint: this.state.animationTriggerPoint,
+                                wrapperClassName: 'fly-in-wrapper',
+                                customScrollEvent: IS_MOBILE ? '' : 'parallaxScroll',
+                            }}
                         />
                     })}
                 </div>
@@ -345,7 +369,7 @@ interface FrontpageProps {
 }
 
 interface FrontpageStates {
-    imgIsLoaded: boolean;
+    isImgLoaded: boolean;
 }
 
 class Frontpage extends React.Component<FrontpageProps, FrontpageStates> {
@@ -354,11 +378,12 @@ class Frontpage extends React.Component<FrontpageProps, FrontpageStates> {
     webRef = React.createRef<HTMLDivElement>();
     parallelBoxRef = React.createRef<HTMLDivElement>();
     parallelBoxScrollEvent: any;
+    lastParallaxScrollEventFiredAt: number = Date.now();
 
     constructor(props: FrontpageProps) {
         super(props);
         this.state = {
-            imgIsLoaded: false
+            isImgLoaded: false
         };
         this.galleryLazyLoad = this.galleryLazyLoad.bind(this);
         this.scrollToWorkRef = this.scrollToWorkRef.bind(this);
@@ -372,34 +397,42 @@ class Frontpage extends React.Component<FrontpageProps, FrontpageStates> {
         const viewpointHeight = window.innerHeight;
         if (this.galleryRef.current) {
             const galleryTop = this.galleryRef.current.getBoundingClientRect().top;
+            console.log(galleryTop);
             const galleryIsVisible = galleryTop - 200 < viewpointHeight;
             if (galleryIsVisible) {
-                this.setState({imgIsLoaded: true});
+                this.setState({isImgLoaded: true});
                 window.removeEventListener('scroll', this.galleryLazyLoad);
             }
         }
     }
     prepareParallelBoxScrollEvent() {
         if (this.parallelBoxRef.current) this.parallelBoxRef.current.addEventListener('scroll', this.parallelBoxScrollHandler);
-        this.parallelBoxScrollEvent = new CustomEvent('scroll', { bubbles: true, cancelable: false, detail: null });
+        this.parallelBoxScrollEvent = new CustomEvent('parallaxScroll', { bubbles: true, cancelable: false, detail: {scrollTop:{}} });
     }
     parallelBoxScrollHandler() {
-        if (this.parallelBoxRef.current) window.scroll(0, this.parallelBoxRef.current.scrollTop);
-        document.dispatchEvent(this.parallelBoxScrollEvent);
+        const now = Date.now();
+        if (now - this.lastParallaxScrollEventFiredAt > 100) {
+            if (this.parallelBoxRef.current) {
+                this.parallelBoxScrollEvent.detail.scrollTop = this.parallelBoxRef.current.scrollTop;
+                document.dispatchEvent(this.parallelBoxScrollEvent);
+            }
+            this.lastParallaxScrollEventFiredAt = now;
+        }
     }
     componentDidMount() {
         setTitle(null, true);
-        setSummaryPageJSONLD();
-
-        window.addEventListener('scroll', this.galleryLazyLoad);
+        // setSummaryPageJSONLD();
         if (!IS_MOBILE) {
             this.prepareParallelBoxScrollEvent();
+            window.addEventListener('parallaxScroll', this.galleryLazyLoad);
+        } else {
+            window.addEventListener('scroll', this.galleryLazyLoad);
         }
     }
     componentWillUnmount() {
         window.removeEventListener('scroll', this.galleryLazyLoad);
         if (this.parallelBoxRef.current) this.parallelBoxRef.current.removeEventListener('scroll', this.parallelBoxScrollHandler);
-        resetJSONLD();
+        // resetJSONLD();
     }
     render() {
         //It receives props: listAndLink
@@ -428,7 +461,7 @@ class Frontpage extends React.Component<FrontpageProps, FrontpageStates> {
                     <ProjectListGallery
                         tileInfo={this.props.allProjectsInfo[2].projects}
                         sectionTitle={this.props.allProjectsInfo[2].sectionTitle}
-                        isImgLoaded={this.state.imgIsLoaded}
+                        isImgLoaded={this.state.isImgLoaded}
                     />
                 </div>
                 <Footer />

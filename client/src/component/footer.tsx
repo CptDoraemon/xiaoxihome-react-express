@@ -1,11 +1,26 @@
 import * as React from 'react';
 import './footer.css';
 import { Link } from "react-router-dom";
-import {allDataLinks, AllDataLinks, DataLinks, DataLink} from '../data';
+import mappedDataForProps from "../data";
 
 enum DropListStyle {
-    ACTIVE = 'drop-list-active',
-    INACTIVE = 'drop-list-inactive'
+    ACTIVE = 'drop-list drop-list-active',
+    INACTIVE = 'drop-list drop-list-inactive'
+}
+
+interface LinkInfo {
+    link: string;
+    title: string;
+}
+
+interface MultiLinkInfo {
+    link: Array<SectionInfo>;
+    title: string;
+}
+
+interface SectionInfo {
+    sectionTitle: string;
+    links: Array<LinkInfo>;
 }
 
 interface FooterProps {
@@ -18,8 +33,7 @@ interface FooterState {
 
 class Footer extends React.Component<FooterProps, FooterState> {
 
-    state: FooterState;
-    allDataLinks: AllDataLinks = allDataLinks;
+    allLinks: Array<MultiLinkInfo | LinkInfo> = mappedDataForProps.footer;
 
     constructor(props: FooterProps){
         super(props);
@@ -45,14 +59,23 @@ class Footer extends React.Component<FooterProps, FooterState> {
             <div className='footer'>
                 <div className='nav-bar'>
                     <ul>
-                        <Link to='/home'><li>home</li></Link>
-                        <li onClick={this.toggleDropList}>work</li>
-                        <Link to='/about'><li>about</li></Link>
-                        <Link to='/contact'><li>contact</li></Link>
+                        {
+                            this.allLinks.map((linkInfo: any, index: number) => {
+                                if (typeof linkInfo.link === 'string') {
+                                    return <Link to={linkInfo.link}><li> {linkInfo.title} </li></Link>
+                                } else {
+                                    return (
+                                        <>
+                                            <li onClick={this.toggleDropList}> {linkInfo.title} </li>
+                                            <div className='footer-flexbox' onMouseLeave={this.setDropListInactive} >
+                                                <FooterDropList allLinks={linkInfo.link} dropListClassName={this.state.dropListClassName}/>
+                                            </div>
+                                        </>
+                                    )
+                                }
+                            })
+                        }
                     </ul>
-                </div>
-                <div className='footer-flexbox' onMouseLeave={this.setDropListInactive} >
-                    <FooterDropList allDataLinks={this.allDataLinks} dropListClassName={this.state.dropListClassName}/>
                 </div>
                 <div className='copyright'>
                     <p>&copy; Xiaoxi 2018-2019</p>
@@ -63,32 +86,29 @@ class Footer extends React.Component<FooterProps, FooterState> {
 }
 
 interface FooterDropListProps {
-    allDataLinks: AllDataLinks,
-    dropListClassName: DropListStyle
+    allLinks: Array<SectionInfo>;
+    dropListClassName: DropListStyle;
 }
 
 function FooterDropList(props: FooterDropListProps) {
-    const list = [];
-    for (let key in allDataLinks) {
-        if (allDataLinks.hasOwnProperty(key)) {
-            const dataLinks: DataLinks = allDataLinks[key];
-            const listOfOneCategory = (
-                    <div className={ props.dropListClassName } key={key}>
-                        <h5> { dataLinks.category } </h5>
-                        { dataLinks.links.map((dataLink: DataLink) => {
-                            return (
-                                <Link to={dataLink.link} key={dataLink.link}>
-                                    <p>{dataLink.name}</p>
-                                </Link>
-                            )
-                        })}
-                    </div>
-                );
-            list.push(listOfOneCategory);
-        }
-    }
+    const dropListClassName = props.dropListClassName;
+    const elements = props.allLinks.map((section: SectionInfo, index: number) => {
+        return (
+            <div className={ dropListClassName } key={index}>
+                <h5> { section.sectionTitle } </h5>
+                { section.links.map((linkInfo: LinkInfo, index: number) => {
+                    return (
+                        <Link to={linkInfo.link} key={index}>
+                            <p>{linkInfo.title}</p>
+                        </Link>
+                    )
+                })}
+            </div>
+        )
+    });
+
     return (
-        <> { list } </>
+        <>{elements}</>
     )
 }
 

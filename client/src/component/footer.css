@@ -4,25 +4,32 @@
     position: relative;
     background-color: rgba(37, 41, 45, 1);
     color: white;
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    justify-content: center;
+    overflow: hidden;
 }
 .nav-bar{
     height: 100%;
-    width: 100px;
-    display: table;
+    width: calc(100% - 150px);
+    display: flex;
     position: relative;
-    float: left;
     text-transform: capitalize;
     font-size: 14px;
 }
 .nav-bar ul {
-    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     margin: 0;
-    padding: 0 0 0 100px;
-    display: table-cell;
-    vertical-align: middle;
-    text-align: left;
+    padding: 0;
+    height: 100%;
+    width: 200px;
 }
 .nav-bar li {
+    width: 50px;
     list-style: none;
     line-height: 3em;
     transition: 0.3s;
@@ -37,115 +44,95 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    height: 300px;
-    width: 600px;
+    height: 100%;
+    width: calc(100% - 200px);
     position: absolute;
-    left: 200px;
+    top: 0;
+    left: 150px;
     flex-direction: row;
 }
-.drop-list-active {
+.drop-list {
+    width: calc(33% - 50px);
+    max-width: 250px;
+    margin: 0 25px;
+    transition: transform 0.3s;
     line-height: 1.5em;
-    width: fit-content;
-    padding: 0 20px;
 }
-.drop-list-active h5 {
+.drop-list h5 {
     font-size: 14px;
+    width: calc(100% - 20px);
     padding: 0 10px;
 }
-.drop-list-active p {
+.drop-list p {
     font-size: 12px;
+    width: calc(100% - 20px);
     padding: 0 10px;
 }
-.drop-list-active p:hover {
+.drop-list p:hover {
     background-color: white;
     color: rgba(37, 41, 45, 1);
 }
-.drop-list-inactive{
-    display: none;
+
+.drop-list-active {
+    transform: translateY(0);
 }
+
+.drop-list-inactive {
+    transform: translateY(200%);
+}
+
 .copyright {
-    position: absolute;
-    right: 100px;
-    bottom: 50px;
+    width: 150px;
+    height: 100%;
+    position: relative;
 }
 .copyright p {
+    width: 100%;
     font-size: 12px;
     color: rgb(100, 100, 100);
+    position: absolute;
+    text-align: center;
+    bottom: 50px;
 }
 
 @media only screen and (max-width: 800px) {
-    .footer{
-        width: 100%;
-        height: 300px;
-        position: relative;
-        background-color: rgba(37, 41, 45, 1);
-        color: white;
-    }
     .nav-bar{
-        height: 100%;
-        width: 50px;
-        display: table;
-        position: absolute;
-        float: left;
-        text-transform: capitalize;
-        font-size: 14px;
+        font-size: 10px;
+        width: 100%;
     }
     .nav-bar ul {
-        height: auto;
-        margin: 0;
-        padding: 0 20px;
-        display: table-cell;
-        vertical-align: middle;
-        text-align: left;
+        width: 100px;
     }
     .nav-bar li {
-        list-style: none;
-        line-height: 3em;
-        transition: 0.3s;
-    }
-    .nav-bar li:hover {
-        transition: 0.3s;
-        cursor: pointer;
-        font-weight: bold;
-        letter-spacing: initial;
+        width: 50px;
     }
     .footer-flexbox {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        height: 300px;
-        width: calc(100vw - 100px); /* navbar width 50px */
-        position: absolute;
-        left: 80px;
-        flex-direction: row;
+        width: calc(100% - 100px);
+        left: 100px;
     }
-    .drop-list-active {
-        line-height: 1.5em;
-        width: fit-content;
-        padding: 0 5px;
+    .drop-list {
+        width: 33%;
+        margin: 0;
+        line-height: 2em;
     }
-    .drop-list-active h5 {
-        font-size: 12px;
-        padding: 0;
-    }
-    .drop-list-active p {
+    .drop-list h5 {
         font-size: 10px;
+        width: 100%;
         padding: 0;
     }
-    .drop-list-active p:hover {
-        background-color: white;
-        color: rgba(37, 41, 45, 1);
-    }
-    .drop-list-inactive{
-        display: none;
+    .drop-list p {
+        font-size: 8px;
+        width: 100%;
+        padding: 0;
     }
     .copyright {
+        width: 100px;
         position: absolute;
-        right: 10px;
-        bottom: 10px;
+        bottom: 0;
+        right: 0;
     }
     .copyright p {
-        font-size: 12px;
-        color: rgb(100, 100, 100);
+        font-size: 10px;
+        bottom: 10px;
     }
 }

@@ -9,9 +9,8 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import ScrollToTop from './component/scrolltotop'
 import Frontpage from './app/frontpage';
-import {titleConvertToLink} from "./tools/title-convert-to-link";
 
-import { dataLinks } from "./data";
+import mappedDataForProps from "./data";
 // import { Missing404 } from './component/missing404';
 // import { Gallery } from './app/gallery/gallery';
 // import { Contact } from './app/contact/contact';
@@ -33,8 +32,8 @@ class App extends React.Component {
                 <ScrollToTop>
                     <Suspense fallback={<div> </div>} >
                         <Switch>
-                            <Route path="/" exact render={(props) => <Frontpage />} />
-                            <Route path="/home" exact render={(props) => <Frontpage />} />
+                            <Route path="/" exact render={(props) => <Frontpage allProjectsInfo={mappedDataForProps.frontpage}/>} />
+                            <Route path="/home" exact render={(props) => <Frontpage allProjectsInfo={mappedDataForProps.frontpage}/>} />
                             <Route path="/contact" render={(props) => <Contact /> } />
                             <Route path="/about" render={(props) => <AboutPage /> } />
 
