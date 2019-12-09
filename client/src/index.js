@@ -26,41 +26,6 @@ const AboutPage = lazy(() => import('./app/about/aboutPage'));
 const Missing404 = lazy(() => import('./component/missing404'));
 
 class App extends React.Component {
-    // constructor(props){
-    //     super(props);
-    //     this.academicProjectArray = academicProjectsData.map(obj => obj.title);
-    //     this.webAppProjectArray = webAppProjectData.map(obj => obj.title);
-    //     this.galleryArray = galleryData.map(arr => arr[0]);
-    //     //
-    //     this.academicProjectLinkArray = this.academicProjectArray.map(title => titleConvertToLink(title));
-    //     this.webAppProjectLinkArray = this.webAppProjectArray.map(title => titleConvertToLink(title));
-    //     this.galleryLinkArray = this.galleryArray.map(title => titleConvertToLink(title));
-    //     //
-    //     this.listAndLink = {
-    //         academicProjectArray: this.academicProjectArray,
-    //         webAppProjectArray: this.webAppProjectArray,
-    //         galleryArray: this.galleryArray,
-    //         academicProjectLinkArray: this.academicProjectLinkArray,
-    //         webAppProjectLinkArray: this.webAppProjectLinkArray,
-    //         galleryLinkArray: this.galleryLinkArray
-    //     };
-    //
-    //     this.academicProjectPaths = this.academicProjectLinkArray.map((link, index) => {
-    //         return (
-    //             <Route path={titleConvertToLink(link)} render={(props) => <AcademicProject {...props} name={this.academicProjectArray[index]} listAndLink={this.listAndLink}/>} key={index}/>
-    //         )
-    //     });
-    //     this.webAppProjectPaths = this.webAppProjectLinkArray.map((link, index) => {
-    //         return (
-    //             <Route path={titleConvertToLink(link)} render={(props) => <WebAppProject {...props} name={this.webAppProjectArray[index]} listAndLink={this.listAndLink} index={index}/>} key={index}/>
-    //         )
-    //     });
-    //     this.galleryPaths = this.galleryLinkArray.map((link, index) => {
-    //         return (
-    //             <Route path={titleConvertToLink(link)} render={(props) => <Gallery {...props} album={index} page={1} /> } key={index}/>
-    //         )
-    //     });
-    // }
 
     render() {
         return (
@@ -70,8 +35,8 @@ class App extends React.Component {
                         <Switch>
                             <Route path="/" exact render={(props) => <Frontpage />} />
                             <Route path="/home" exact render={(props) => <Frontpage />} />
-                            <Route path="/contact" render={(props) => <Contact {...props}/> } />
-                            <Route path="/about" render={(props) => <AboutPage {...props}/> } />
+                            <Route path="/contact" render={(props) => <Contact /> } />
+                            <Route path="/about" render={(props) => <AboutPage /> } />
 
                             {/*{ this.academicProjectPaths }*/}
 

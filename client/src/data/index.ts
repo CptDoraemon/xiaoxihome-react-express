@@ -2,6 +2,13 @@ import academicProjectsData, { AcademicProject } from "./academicProjectData";
 import webAppProjectData, {WebAppProject, WebAppProjectCollections} from "./webAppProjectData";
 import galleryData, {Album, galleryPreviewData} from "./galleryData";
 import { titleConvertToLink } from "../tools/title-convert-to-link";
+// import { AllProjectsInfo } from "../app/frontpage";
+
+enum Sections {
+    ACADEMIC = 'ACADEMIC PROJECTS',
+    WEB = 'WEB APP PROJECTS',
+    ALBUMS = 'ALBUMS',
+}
 
 const appData = {
     academicProjectsData:  academicProjectsData,
@@ -64,6 +71,8 @@ export const allDataLinks: AllDataLinks = {
         links: gallery
     }
 };
+
+
 
 
 export default appData;

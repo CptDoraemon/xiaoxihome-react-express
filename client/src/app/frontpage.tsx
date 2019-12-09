@@ -15,9 +15,13 @@ import {resetJSONLD, setSummaryPageJSONLD} from "../tools/set-JSONLD";
 
 const IS_MOBILE = window.innerWidth < 800;
 
-function Cover(props){
+interface CoverProps {
+    onClickMouseIcon: Function
+}
+
+function Cover(props: CoverProps){
     // scroll opacity animation
-    const containerRef = useRef();
+    const containerRef: any = useRef();
     const containerPosition = useGetContainerPosition(containerRef);
     const scrolledPercentage = useScrollOpacityAnimation(containerPosition.offsetTop, containerPosition.offsetTop + containerPosition.offsetHeight, 1.0);
     // init imageOrder state
@@ -35,10 +39,10 @@ function Cover(props){
     // load cover image state
     const [imageOrder, setImageOrder] = useState(initImageOrder());
     const [isCoverLoaded, setIsCoverLoaded] = useState(false);
-    const [coverSrc, setCoverSrc] = useState(null);
+    const [coverSrc, setCoverSrc] = useState('');
     const [isCoverAnimationBegin, setIsCoverAnimationBegin] = useState(false);
     // load cover image effect
-    const loadImage = (src) => {
+    const loadImage = (src: string) => {
         return new Promise((resolve, reject) => {
             const image = new Image();
             image.onload = () => resolve(image);
@@ -51,7 +55,7 @@ function Cover(props){
     const isCoverExitingAnimationTwo = 0.5 <= scrolledPercentage && scrolledPercentage <= 1.0;
     const coverExitingAnimationOne = (scrolledPercentage - 0.3) / 0.2;
     const coverExitingAnimationTwo = (scrolledPercentage - 0.5) / 0.5;
-    let coverExitingAnimationTranslate = 0;
+    let coverExitingAnimationTranslate = `translateX(0)`;
     if (isCoverExitingAnimationOne) {
         coverExitingAnimationTranslate = `translateX(0)`;
     } else if (isCoverExitingAnimationTwo) {
@@ -63,7 +67,7 @@ function Cover(props){
             ? `https://xiaoxihome.s3.us-east-2.amazonaws.com/galleryphoto/cover/cover-${imageOrder}-mobile.jpg`
             : `https://xiaoxihome.s3.us-east-2.amazonaws.com/galleryphoto/cover/cover-${imageOrder}-5k.jpg`;
         loadImage(src)
-            .then((image) => {
+            .then((image: any) => {
                 setIsCoverLoaded(true);
                 setCoverSrc(image.src);
                 setTimeout(() => setIsCoverAnimationBegin(true), 20)
@@ -83,16 +87,11 @@ function Cover(props){
                     <h1 style={{opacity: 1 - scrolledPercentage, willChange: 'opacity'}}>Welcome To Xiaoxi's Home!</h1>
                 </div>
             </div>
-            {/*<div className='mouse-icon-parallax parallax-container flexbox-col-center-bottom'>*/}
-                {/*<div className='mouse-icon'>*/}
-                    {/*<MouseIcon onClickMouseIcon={props.onClickMouseIcon}/>*/}
-                {/*</div>*/}
-            {/*</div>*/}
             <div
                 className='parallax-container flexbox-col-center-bottom'
                 style={isCoverExitingAnimationTwo ? {
                     transform: coverExitingAnimationTranslate,
-                } : null}>
+                } : {}}>
                 <div className={ isCoverExitingAnimationOne
                     ? 'scroll-down-indicator-wrapper-disappear flexbox-col-center-center'
                     : isCoverExitingAnimationTwo
@@ -119,6 +118,7 @@ enum TileSize {
 
 interface GalleryTileProps extends  GalleryTileInfo {
     className: TileSize;
+    isImgLoaded: boolean;
 }
 
 function GalleryTile(props: GalleryTileProps) {
@@ -165,9 +165,8 @@ const WithFlyInAnimationGalleryTile = withFlyInAnimation(GalleryTile);
 const WithFlyInAnimationTextTile = withFlyInAnimation(TextTile);
 const WithFlyInAnimationSectionTitle = withFlyInAnimation(SectionTitle);
 
-interface TextTileInfo {
-    link: string;
-    title: string
+interface TextTileInfo extends ProjectInfo {
+
 }
 
 interface ProjectListTextProps {
@@ -250,15 +249,13 @@ class ProjectListText extends React.Component<ProjectListTextProps, ProjectListT
     }
 }
 
-interface GalleryTileInfo {
-    title: string;
-    isImgLoaded: boolean;
-    imgUrl: string;
-    link: string;
+interface GalleryTileInfo extends AlbumInfo{
+
 }
 
 interface ProjectListGalleryProps {
     sectionTitle: string;
+    isImgLoaded: boolean;
     tileInfo: Array<GalleryTileInfo>;
 }
 
@@ -302,7 +299,7 @@ class ProjectListGallery extends React.Component<ProjectListGalleryProps, Projec
                             tileName={i.title}
                             className={tileSize}
                             imgUrl={i.imgUrl}
-                            imgIsLoaded={i.isImgLoaded}
+                            imgIsLoaded={this.props.isImgLoaded}
                             key={`gallery${index}`}
                             flyInDirection={this.flyInDirectionRemap[index]}
                             flyInDelay={this.flyInDelayRemap[index]}
@@ -316,64 +313,78 @@ class ProjectListGallery extends React.Component<ProjectListGalleryProps, Projec
     }
 }
 
-// const ParallaxFooter = parallaxWrapper(Footer, 0.83);
+interface ProjectInfo {
+    link: string;
+    title: string;
+}
+
+interface AlbumInfo {
+    title: string;
+    imgUrl: string;
+    link: string;
+}
+
+interface TextSectionInfo {
+    sectionTitle: string
+    projects: Array<ProjectInfo>;
+}
+
+interface GallerySectionInfo {
+    sectionTitle: string
+    projects: Array<AlbumInfo>;
+}
+
+interface AllProjectsInfo {
+    0: TextSectionInfo
+    1: TextSectionInfo;
+    2: GallerySectionInfo;
+}
+
+interface FrontpageProps {
+    allProjectsInfo: AllProjectsInfo
+}
+
+interface FrontpageStates {
+    imgIsLoaded: boolean;
+}
+
 class Frontpage extends React.Component<FrontpageProps, FrontpageStates> {
-    constructor(props) {
+    galleryRef = React.createRef<HTMLDivElement>();
+    academicRef = React.createRef<HTMLDivElement>();
+    webRef = React.createRef<HTMLDivElement>();
+    parallelBoxRef = React.createRef<HTMLDivElement>();
+    parallelBoxScrollEvent: any;
+
+    constructor(props: FrontpageProps) {
         super(props);
-        this.galleryRef = React.createRef();
-        this.academicRef = React.createRef();
-        this.webRef = React.createRef();
         this.state = {
             imgIsLoaded: false
         };
-        this.imgUrls = [
-            'https://s3.us-east-2.amazonaws.com/xiaoxihome/galleryphoto/preview/toronto.png',
-            'https://s3.us-east-2.amazonaws.com/xiaoxihome/galleryphoto/preview/canada.jpg',
-            'https://s3.us-east-2.amazonaws.com/xiaoxihome/galleryphoto/preview/banff.png',
-            'https://s3.us-east-2.amazonaws.com/xiaoxihome/galleryphoto/preview/hometown.jpg',
-            'https://s3.us-east-2.amazonaws.com/xiaoxihome/galleryphoto/preview/yorku.png',
-            'https://s3.us-east-2.amazonaws.com/xiaoxihome/galleryphoto/preview/astro.png'
-        ];
         this.galleryLazyLoad = this.galleryLazyLoad.bind(this);
         this.scrollToWorkRef = this.scrollToWorkRef.bind(this);
-
-        this.parallelBoxRef = React.createRef();
         this.parallelBoxScrollHandler = this.parallelBoxScrollHandler.bind(this);
         this.prepareParallelBoxScrollEvent = this.prepareParallelBoxScrollEvent.bind(this);
     }
     scrollToWorkRef() {
-        myScrollTo(this.academicRef.current.offsetTop, this.parallelBoxRef.current);
+        if (this.academicRef.current && this.parallelBoxRef.current) myScrollTo(this.academicRef.current.offsetTop, this.parallelBoxRef.current);
     };
     galleryLazyLoad() {
         const viewpointHeight = window.innerHeight;
-        const galleryTop = this.galleryRef.current.getBoundingClientRect().top;
-        const galleryIsVisible = galleryTop - 200 < viewpointHeight;
-        if (galleryIsVisible) {
-            this.setState({imgIsLoaded: true});
-            window.removeEventListener('scroll', this.galleryLazyLoad);
+        if (this.galleryRef.current) {
+            const galleryTop = this.galleryRef.current.getBoundingClientRect().top;
+            const galleryIsVisible = galleryTop - 200 < viewpointHeight;
+            if (galleryIsVisible) {
+                this.setState({imgIsLoaded: true});
+                window.removeEventListener('scroll', this.galleryLazyLoad);
+            }
         }
     }
     prepareParallelBoxScrollEvent() {
-        this.parallelBoxRef.current.addEventListener('scroll', this.parallelBoxScrollHandler);
-        // polyfill
-        (function () {
-
-            if ( typeof window.CustomEvent === "function" ) return false;
-
-            function CustomEvent ( event, params ) {
-                params = params || { bubbles: false, cancelable: false, detail: null };
-                const evt = document.createEvent( 'CustomEvent' );
-                evt.initCustomEvent( event, params.bubbles, params.cancelable, params.detail );
-                return evt;
-            }
-
-            window.CustomEvent = CustomEvent;
-        })();
-        //
+        if (this.parallelBoxRef.current) this.parallelBoxRef.current.addEventListener('scroll', this.parallelBoxScrollHandler);
         this.parallelBoxScrollEvent = new CustomEvent('scroll', { bubbles: true, cancelable: false, detail: null });
     }
     parallelBoxScrollHandler() {
-        window.scrollY = this.parallelBoxRef.current.scrollTop;
+        if (this.parallelBoxRef.current) window.scroll(0, this.parallelBoxRef.current.scrollTop);
         document.dispatchEvent(this.parallelBoxScrollEvent);
     }
     componentDidMount() {
@@ -387,36 +398,37 @@ class Frontpage extends React.Component<FrontpageProps, FrontpageStates> {
     }
     componentWillUnmount() {
         window.removeEventListener('scroll', this.galleryLazyLoad);
-        this.parallelBoxRef.current.removeEventListener('scroll', this.parallelBoxScrollHandler);
+        if (this.parallelBoxRef.current) this.parallelBoxRef.current.removeEventListener('scroll', this.parallelBoxScrollHandler);
         resetJSONLD();
     }
     render() {
         //It receives props: listAndLink
         return (
             <div className='frontpage-main' ref={this.parallelBoxRef}>
-                <HeaderCover listAndLink={this.props.listAndLink} />
+                <HeaderCover  />
                 <Cover onClickMouseIcon={this.scrollToWorkRef}/>
 
                 <div className={'academic-and-web'}>
                     <div ref={this.academicRef}/>
-                    <ProjectList
-                        type='academic'
-                        listAndArray={this.props.listAndLink}
+                    <ProjectListText
+                        tileInfo={this.props.allProjectsInfo[0].projects}
+                        sectionTitle={this.props.allProjectsInfo[0].sectionTitle}
+                        projectListType={ProjectListType.ONE}
                     />
 
                     <div ref={this.webRef}/>
-                    <ProjectList
-                        type='webApp'
-                        listAndArray={this.props.listAndLink}
+                    <ProjectListText
+                        tileInfo={this.props.allProjectsInfo[1].projects}
+                        sectionTitle={this.props.allProjectsInfo[1].sectionTitle}
+                        projectListType={ProjectListType.TWO}
                     />
                 </div>
 
                 <div className={'gallery'} ref={this.galleryRef}>
-                    <ProjectList
-                        type='gallery'
-                        listAndArray={this.props.listAndLink}
-                        imgUrls={this.imgUrls}
-                        imgIsLoaded={this.state.imgIsLoaded}
+                    <ProjectListGallery
+                        tileInfo={this.props.allProjectsInfo[2].projects}
+                        sectionTitle={this.props.allProjectsInfo[2].sectionTitle}
+                        isImgLoaded={this.state.imgIsLoaded}
                     />
                 </div>
                 <Footer />
