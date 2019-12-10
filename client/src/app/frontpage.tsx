@@ -123,7 +123,6 @@ interface GalleryTileProps extends GalleryTileInfo {
 
 function GalleryTile(props: GalleryTileProps) {
     const image = props.isImgLoaded ? {style: {backgroundImage: `url(${props.imgUrl})`}} : null;
-    console.log(props);
     return (
         <Link to={props.link}>
             <div

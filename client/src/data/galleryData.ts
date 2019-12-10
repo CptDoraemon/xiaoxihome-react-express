@@ -3,7 +3,7 @@ export interface Album {
     photos: Array<Photo>
 }
 
-interface Photo {
+export interface Photo {
     description: string,
     link: string
 }

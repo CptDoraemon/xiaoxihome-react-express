@@ -34,9 +34,9 @@ const webAppProjectData: Array<WebAppProject | WebAppProjectCollections> = [
         githubLink: 'https://github.com/CptDoraemon/riddet',
         description:
             `
-            This is a Reddit like discussion website. \n
-            It was built with React, NodeJS, Express and MongoDB. \n
-            For security reasons, this site is not allowed to be loaded in an iFrame, therefore please open it in a new window.
+            <p>This is a Reddit like discussion website. </p>
+            <p>It was built with React, NodeJS, Express and MongoDB. </p>
+            <p>For security reasons, this site does not allow to be loaded in an iFrame, therefore please open it in a new window.<p>
             `,
         summary: 'A Reddit like discussion website.',
     },
@@ -90,7 +90,7 @@ const webAppProjectData: Array<WebAppProject | WebAppProjectCollections> = [
                 demoLink: 'https://cptdoraemon.github.io/firework/',
                 githubLink: 'https://github.com/CptDoraemon/firework',
                 description: `
-                    Inspired by href="http://www.playfuljs.com/physics-for-the-lazy/" PlayfulJS. The fireworks are affected by gravity and air friction (which is linear to the squared velocity). A floor in Green value ensures the fireworks have bright colors.
+                    <p>Inspired by <a href="http://www.playfuljs.com/physics-for-the-lazy/" target="_blank" rel='noopener noreferrer'>PlayfulJS</a>. The fireworks are affected by gravity and air friction (which is linear to the squared velocity). A floor in Green value ensures the fireworks have bright colors.</p>
                 `
             },
             {
@@ -98,32 +98,32 @@ const webAppProjectData: Array<WebAppProject | WebAppProjectCollections> = [
                 demoLink: 'https://cptdoraemon.github.io/shopping/',
                 githubLink: 'https://github.com/CptDoraemon/shopping',
                 description: `
-                    A simple shopping app that allows user to add merchandises into shopping carts. It uses Redux and Typescript.
+                    <p>A simple shopping app that allows user to add merchandises into shopping carts. It uses Redux and Typescript.</p>
                 `
             },
             {
                 title: 'Tetris',
                 demoLink: 'https://cptdoraemon.github.io/tetris/',
                 githubLink: 'https://github.com/CptDoraemon/tetris',
-                description: `You know what's Tetris`
+                description: `<p>You know what's Tetris.</p>`
             },
             {
                 title: 'Snakey',
                 demoLink: 'https://xiaoxihome.s3.us-east-2.amazonaws.com/webprojects/snake_beta.html',
                 githubLink: null,
-                description: `You know what's Snakey`
+                description: `<p>You know what's Snakey.</p>`
             },
             {
                 title: 'OnePlus 7 pro advertisement page',
                 demoLink: 'https://cptdoraemon.github.io/oneplus7pro/',
                 githubLink: 'https://github.com/CptDoraemon/oneplus7pro',
-                description: 'Wanted to try some cool animations.'
+                description: '<p>Wanted to try some cool animations.</p>'
             },
             {
                 title: 'DOM practise',
                 demoLink: 'https://s3.us-east-2.amazonaws.com/xiaoxihome/webprojects/BandWebsite/index.html',
                 githubLink: null,
-                description: 'This is the practice project in the book DOM Scripting: Web Design with JavaScript and the Document Object Model by Jeremy Keith, I followed the book step by step. It was a really good beginner project to practice native DOM APIs.'
+                description: '<p>This is the practice project in the book DOM Scripting: Web Design with JavaScript and the Document Object Model by Jeremy Keith, I followed the book step by step. It was a really good beginner project to practice native DOM APIs.</p>'
             }
         ],
         summary: 'A collection of smaller web projects.'

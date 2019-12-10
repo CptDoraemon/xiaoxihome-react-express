@@ -14,14 +14,18 @@ interface AcademicProjectsSubProjects {
     link: string
 }
 
-function AcademicProjectTemplate(props: AcademicProject) {
+interface AcademicProjectTemplateProps {
+    data: AcademicProject
+}
+
+function AcademicProjectTemplate(props: AcademicProjectTemplateProps) {
     // let name = props.name;
     // name = name.replace(/(^|\s)\w/g, (i) => i.toUpperCase());
     return (
         <div className='academic-project-template-wrapper color1'>
-            <h1> { props.title } </h1>
+            <h1> { props.data.title } </h1>
             {
-                props.projects.map((project: AcademicProjectsSubProjects, index: number) => {
+                props.data.projects.map((project: AcademicProjectsSubProjects, index: number) => {
                     return (
                         <AcademicProjectBox index={index} description={project.description} link={project.link} key={index}/>
                     )
@@ -42,23 +46,27 @@ function AcademicProjectBox(props: AcademicProjectBoxProps) {
         <a href={props.link} target="_blank" rel='noopener noreferrer'>
             <div className='AcademicProjectBox'>
                 <h2>project {props.index + 1}</h2>
-                <p> {props.description} </p>
+                <div dangerouslySetInnerHTML={{__html: props.description }}></div>
             </div>
         </a>
     )
 }
 
-class AcademicProject extends React.Component<AcademicProject, {}> {
+interface AcademicProjectProps {
+    data: AcademicProject
+}
+
+class AcademicProject extends React.Component<AcademicProjectProps, {}> {
 
     componentDidMount() {
-        setTitle(this.props.title, false);
+        setTitle(this.props.data.title, false);
     }
 
     render() {
         return (
             <div>
                 {/*<HeaderSticky headerTitle='Academic Project'/>*/}
-                {/*<AcademicProjectTemplate title={this.props.title} projects={this.props.projects}/>*/}
+                <AcademicProjectTemplate data={this.props.data}/>
                 <Footer />
             </div>
         )

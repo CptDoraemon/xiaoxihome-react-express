@@ -25,14 +25,20 @@
     margin: 0 0 30px 0;
     text-indent: 30px;
 }
-.web-app-project-template-wrapper a {
-    border-bottom: dotted 1px white;
+.web-app-project-template-button-wrapper {
+    height: 200px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 .web-app-project-template-button {
-    margin: 50px;
-    width: fit-content;
+    margin: 0 20px;
+    width: 200px;
+    text-align: center;
     background-color: rgba(255, 255, 255, 0.3);
-    padding: 10px 50px;
+    padding: 10px 30px;
     transition: 0.3s;
     font-weight: bold;
     border: none !important;
@@ -48,6 +54,73 @@
     height: 480px;
 }
 
+.web-app-collection-wrapper {
+    line-height: 1.5em;
+}
+.web-app-collection-item {
+    margin: 50px 0;
+}
+.web-app-collection-item-title {
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    justify-content: start;
+    font-weight: bold;
+    flex-wrap: wrap;
+}
+.web-app-collection-item-github {
+    margin: 0 20px;
+    transform: scale(0.8);
+    padding: 0 5px;
+    border-radius: 5px;
+    transition: 0.3s;
+    cursor: pointer;
+}
+.web-app-collection-item-github:hover {
+    background-color: white;
+    color: #24292e;
+}
+
+/*
+ 1. z-index is ordered in its own stacking context
+ 2. <a> tag by default is inline element which has no width
+ 3. The vertical-align CSS property sets vertical alignment of an inline, inline-block or table-cell box
+ 4. default for vertical-align is baseline
+ */
+.web-app-link-animation a {
+    border-bottom: dotted 1px white;
+    position: relative;
+    transition: color 0.3s, transform 0.3s;
+    overflow: hidden;
+    z-index: 1;
+    display: inline-block;
+    vertical-align: top;
+}
+.web-app-link-animation a:after {
+    z-index: -1;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translateX(-110%);
+    background-color: white;
+    width: 100%;
+    height: 100%;
+    transition: 0.3s;
+}
+
+.web-app-link-animation a:hover:after {
+    transform: translateX(0);
+}
+
+.web-app-link-animation a:hover {
+    color: black;
+}
+.web-app-no-indent p {
+    text-indent: 0;
+}
+
+
 
 @media only screen and (max-width: 800px) {
     .web-app-project-template-body {
@@ -58,8 +131,8 @@
     }
     .web-app-project-template-wrapper {
         margin: 0 auto;
-        width: calc(100vw - 120px);
-        padding: 80px 50px;
+        width: calc(100vw - 30px * 2 - 20px);
+        padding: 80px 30px;
         background-color: rgba(0, 0, 0, 0.5);
         display: flex;
         justify-content: flex-start;
@@ -67,7 +140,7 @@
         flex-direction: column;
     }
     .web-app-project-template-wrapper h1 {
-        margin-bottom: 50px;
+        margin-bottom: 20px;
         width: 100%;
         text-align: center;
         font-size: 24px;
@@ -80,15 +153,13 @@
         font-size: 14px;
     }
     .web-app-project-template-button {
-        margin: 20px;
         padding: 10px 10px;
         font-size: 14px;
-        text-align: center;
     }
     .web-app-project-template-wrapper iframe{
-        border: none;
-        width: 800px;
-        height: 480px;
         display: none;
+    }
+    .web-app-no-indent p {
+        text-indent: 0;
     }
 }

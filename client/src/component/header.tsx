@@ -53,8 +53,9 @@ class DropdownList extends  React.Component<DropdownListProps, DropdownListState
                                 <>
                                     <h5 key={index}> {section.sectionTitle} </h5>
                                     { section.links.map((linkInfo: LinkInfo, index:number) => {
+                                        console.log(linkInfo.link);
                                         return (
-                                            <Link to={linkInfo.link} key={index}>
+                                            <Link to={`${linkInfo.link}`} key={index}>
                                                 <p>{linkInfo.title}</p>
                                             </Link>
                                         )

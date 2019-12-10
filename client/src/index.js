@@ -26,6 +26,20 @@ const Missing404 = lazy(() => import('./component/missing404'));
 
 class App extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.academicRouters = mappedDataForProps.routers.academic.map((academicPageData, index) => {
+            return <Route path={`${academicPageData.link}`} render={() => <AcademicProject data={academicPageData.data} key={index}/> } />
+        })
+        this.webRouters = mappedDataForProps.routers.web.map((webPageData, index) => {
+            return <Route path={`${webPageData.link}`} render={() => <WebAppProject data={webPageData.data} key={index}/> } />
+        })
+        this.albumRouters = mappedDataForProps.routers.web.map((link) => {
+            return <Route path={`${link}`} render={() => <Gallery /> } />
+        })
+    }
+
+
     render() {
         return (
             <Router>
@@ -37,14 +51,12 @@ class App extends React.Component {
                             <Route path="/contact" render={(props) => <Contact /> } />
                             <Route path="/about" render={(props) => <AboutPage /> } />
 
-                            {/*{ this.academicProjectPaths }*/}
+                            { this.academicRouters }
+                            { this.webRouters }
 
-                            {/*{ this.webAppProjectPaths }*/}
-
-                            {/*{ this.galleryPaths }*/}
+                            <Route path={`/album/:albumName/:id`} render={(props) => <Gallery albumName={props.match.params.albumName} id={parseInt(props.match.params.id)}/> } />
 
                             <Route render={ () => <Missing404/> } />
-
                         </Switch>
                     </Suspense>
                 </ScrollToTop>
