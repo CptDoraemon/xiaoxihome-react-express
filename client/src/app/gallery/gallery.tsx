@@ -7,6 +7,8 @@ import { IoIosArrowDropleft,  IoIosArrowDropright, IoIosPower, IoMdRadioButtonOf
 import { SpinLoader } from "../../animations/spin-loader";
 import {setTitle} from "../../tools/set-title";
 
+//TODO: event types and eventHandler types
+
 interface ShowProps {
     link: string
 }

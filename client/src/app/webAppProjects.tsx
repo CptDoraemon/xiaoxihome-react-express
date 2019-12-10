@@ -37,6 +37,23 @@ interface WebAppProjectTemplateProps {
     data: WebAppProject
 }
 
+interface FlipButtonProps {
+    link: string;
+    text: string
+}
+
+function FlipButton(props: FlipButtonProps) {
+    return (
+        <div className={'flip-button-wrapper'}>
+            <div className='flip-button-front'><div>{props.text}</div></div>
+            <div className='flip-button-back'><div>{props.text}</div></div>
+            <a href={props.link} target="_blank" rel='noopener noreferrer' className='flip-button-click-front'> </a>
+            <a href={props.link} target="_blank" rel='noopener noreferrer' className='flip-button-click-back'> </a>
+            {/*duplicate for better touch response*/}
+        </div>
+    )
+}
+
 function WebAppProjectTemplate(props: WebAppProjectTemplateProps) {
 
     return (
@@ -45,8 +62,8 @@ function WebAppProjectTemplate(props: WebAppProjectTemplateProps) {
                 <h1> { props.data.title } </h1>
                 <div dangerouslySetInnerHTML={{__html: props.data.description }} />
                 <div className={'web-app-project-template-button-wrapper'}>
-                    <a href={props.data.demoLink} target="_blank" rel='noopener noreferrer' className='web-app-project-template-button'>Open in a new window</a>
-                    <a href={props.data.githubLink} target="_blank" rel='noopener noreferrer' className='web-app-project-template-button'>Github</a>
+                    <FlipButton link={props.data.demoLink} text={'Open in a new window'}/>
+                    <FlipButton link={props.data.githubLink} text={'Github'}/>
                 </div>
                 <iframe src={props.data.demoLink} title='web project'/>
 

@@ -47,10 +47,10 @@ const webAppProjectData: Array<WebAppProject | WebAppProjectCollections> = [
         githubLink: 'https://github.com/CptDoraemon/youtube-downloader',
         description:
             `
-            An app to download mp3 from Youtube playlist. \n
-            For legal reasons only the frontend is hosted. \n
-            This app is Node ready and it relies on ytdl package to actually download assets from Youtube, in case it's not working, please update ytdl to latest version. \n
-            https://github.com/CptDoraemon/youtube-downloader
+            <p>An app to download mp3 from Youtube playlist.</p>
+            <p>For legal reasons only the frontend is hosted. </p>>
+            <p>This app is Node ready and it relies on ytdl package to actually download assets from Youtube, in case it's not working, please update ytdl to latest version. </p>
+            <p>https://github.com/CptDoraemon/youtube-downloader</p>
             `,
         summary: 'An app to download youtube videos.',
     },
@@ -61,10 +61,10 @@ const webAppProjectData: Array<WebAppProject | WebAppProjectCollections> = [
         githubLink: 'https://github.com/CptDoraemon/weather-app-flutter',
         description:
             `
-                A Google like weather app. \n
-                Weather API is provided by DarkSky. \n
-                Reverse geocoding API is provided by LocationIQ. \n
-                A mobile version written with Dart/Flutter is also available. To lookup cities, a PostgreSQL database is attached to this version instead of using third party API.
+                <p>A Google like weather app. </p>
+                <p>Weather API is provided by DarkSky. </p>
+                <p>Reverse geocoding API is provided by LocationIQ. </p>
+                <p>A mobile version written with Dart/Flutter is also available. To lookup cities, a PostgreSQL database is attached to this version instead of using third party API. </p>
             `,
         summary: 'A app for currently, hourly and daily weather forecasts.'
     },
@@ -75,9 +75,9 @@ const webAppProjectData: Array<WebAppProject | WebAppProjectCollections> = [
         githubLink: 'https://github.com/CptDoraemon/waterfall-gallery',
         description:
         `
-            A Pinterest like gallery. \n
-            It uses AWS S3 storage to store the uploaded photos. \n
-            It's hosted on a free server, therefore please allow up to half minutes for server to wake up.
+            <p>A Pinterest like gallery. </p>
+            <p>It uses AWS S3 storage to store the uploaded photos. </p>
+            <p>It's hosted on a free server, therefore please allow up to half minutes for server to wake up. </p>
         `,
         summary: 'A Pinterest like gallery.'
     },
@@ -134,10 +134,10 @@ const webAppProjectData: Array<WebAppProject | WebAppProjectCollections> = [
         demoLink: 'https://raycaster.xiaoxihome.com',
         githubLink: 'https://github.com/CptDoraemon/raycasterJS',
         description: `
-            Raycaster was a very popular game engine in the 80s and 90s, the computer was not powerful enough to handle real time 3D rendering, but players were getting tired of 2D games and wanted to see something new. \n
-            Raycaster is able to give audience a 3D feeling only by doing geometry calculation and drawing vertical lines on the screen. \n
-            The most famous game using this engine must be Wolfenstein 3D. \n
-            Press "I" in game for instructions.
+            <p>Raycaster was a very popular game engine in the 80s and 90s, the computer was not powerful enough to handle real time 3D rendering, but players were getting tired of 2D games and wanted to see something new. </p>
+            <p>Raycaster is able to give audience a 3D feeling only by doing geometry calculation and drawing vertical lines on the screen. </p>
+            <p>The most famous game using this engine must be Wolfenstein 3D. </p>
+            <p>Press "I" in game for instructions.</p>
             `,
         summary: 'A FPS game built with Raycaster algorithm.'
     }
