@@ -44,18 +44,18 @@ class DropdownList extends  React.Component<DropdownListProps, DropdownListState
                     <span> { this.props.dropdownTitle } </span>
                     <div style={this.state.isDropdownActive ? {} : {display: 'none'}} onMouseLeave={this.closeDropdownList} className={this.props.dropdownClassName}>
                         {
-                            this.props.allLinks.map((section: SectionInfo, index: number) => {
+                            this.props.allLinks.map((section: SectionInfo, i: number) => {
                                 return (
-                                    <>
-                                        <h5 key={index}> {section.sectionTitle} </h5>
-                                        { section.links.map((linkInfo: LinkInfo, index:number) => {
+                                    <React.Fragment key={i}>
+                                        <h5> {section.sectionTitle} </h5>
+                                        { section.links.map((linkInfo: LinkInfo, j:number) => {
                                             return (
-                                                <Link to={`${linkInfo.link}`} key={index}>
+                                                <Link to={`${linkInfo.link}`} key={`${i}-${j}`}>
                                                     <p>{linkInfo.title}</p>
                                                 </Link>
                                             )
                                         })}
-                                    </>
+                                    </React.Fragment>
                                 )
                             })
                         }
@@ -78,13 +78,13 @@ function List(props: ListProps) {
                 props.headerLists.map((linkInfo, index: number) => {
                     if (typeof linkInfo.link === "string") {
                         return (
-                            <Link to={linkInfo.link}>
+                            <Link to={linkInfo.link} key={index}>
                                 <li> <span>{linkInfo.title}</span> </li>
                             </Link>
                         )
                     } else {
                         return (
-                            <DropdownList dropdownTitle={linkInfo.title} allLinks={linkInfo.link} dropdownClassName={props.dropdownClassName}/>
+                            <DropdownList key={index} dropdownTitle={linkInfo.title} allLinks={linkInfo.link} dropdownClassName={props.dropdownClassName}/>
                         )
                     }
                 })

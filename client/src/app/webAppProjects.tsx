@@ -94,6 +94,20 @@ function WebAppProjectCollectionTemplate(props: WebAppProjectCollectionTemplateP
     )
 }
 
+interface GitHubButtonProps {
+    link: string
+    className: string
+}
+
+export function GitHubButton(props: GitHubButtonProps) {
+    return (
+        <div
+            className={props.className}
+            onClick={() => window.open(props.link, '_blank')}
+        >GitHub</div>
+    )
+}
+
 interface ProjectInCollectionProps {
     data: WebAppProjectInCollections
 }
@@ -105,10 +119,7 @@ function ProjectInCollection(props: ProjectInCollectionProps) {
                 <a href={props.data.demoLink} target="_blank" rel='noopener noreferrer'>{ props.data.title }</a>
                 <div>: </div>
                 { props.data.githubLink ?
-                    <div
-                        className={'web-app-collection-item-github'}
-                        onClick={() => window.open(props.data.githubLink === null ? '' : props.data.githubLink, '_blank')}
-                    >Github</div> :
+                    <GitHubButton link={props.data.githubLink} className={'web-app-collection-item-github'}/> :
                     null }
             </div>
             <div dangerouslySetInnerHTML={{__html: props.data.description }} className={'web-app-no-indent'} />

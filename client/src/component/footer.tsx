@@ -62,15 +62,15 @@ class Footer extends React.Component<FooterProps, FooterState> {
                         {
                             this.allLinks.map((linkInfo: any, index: number) => {
                                 if (typeof linkInfo.link === 'string') {
-                                    return <Link to={linkInfo.link}><li> {linkInfo.title} </li></Link>
+                                    return <Link key={index} to={linkInfo.link}><li> {linkInfo.title} </li></Link>
                                 } else {
                                     return (
-                                        <>
+                                        <React.Fragment key={index}>
                                             <li onClick={this.toggleDropList}> {linkInfo.title} </li>
                                             <div className='footer-flexbox' onMouseLeave={this.setDropListInactive} >
                                                 <FooterDropList allLinks={linkInfo.link} dropListClassName={this.state.dropListClassName}/>
                                             </div>
-                                        </>
+                                        </React.Fragment>
                                     )
                                 }
                             })
@@ -92,13 +92,13 @@ interface FooterDropListProps {
 
 function FooterDropList(props: FooterDropListProps) {
     const dropListClassName = props.dropListClassName;
-    const elements = props.allLinks.map((section: SectionInfo, index: number) => {
+    const elements = props.allLinks.map((section: SectionInfo, i: number) => {
         return (
-            <div className={ dropListClassName } key={index}>
+            <div className={ dropListClassName } key={i}>
                 <h5> { section.sectionTitle } </h5>
-                { section.links.map((linkInfo: LinkInfo, index: number) => {
+                { section.links.map((linkInfo: LinkInfo, j: number) => {
                     return (
-                        <Link to={linkInfo.link} key={index}>
+                        <Link to={linkInfo.link} key={`${i}-${j}`}>
                             <p>{linkInfo.title}</p>
                         </Link>
                     )

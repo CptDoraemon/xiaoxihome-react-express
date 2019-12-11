@@ -10,7 +10,9 @@ import { useScrollOpacityAnimation, useGetContainerPosition } from "../animation
 
 import { Link } from 'react-router-dom';
 import './frontpage.css';
+import  '../flexbox.css'
 import {setTitle} from "../tools/set-title";
+import {GitHubButton} from "./webAppProjects";
 // import {resetJSONLD, setSummaryPageJSONLD} from "../tools/set-JSONLD";
 
 const IS_MOBILE = window.innerWidth < 800;
@@ -93,13 +95,14 @@ function Cover(props: CoverProps){
                     transform: coverExitingAnimationTranslate,
                 } : {}}>
                 <div className={ isCoverExitingAnimationOne
-                    ? 'scroll-down-indicator-wrapper-disappear flexbox-col-center-center'
+                    ? 'scroll-down-indicator-wrapper-disappear flexbox-row-center-center'
                     : isCoverExitingAnimationTwo
-                        ? 'scroll-down-indicator-wrapper-animating flexbox-col-center-center'
-                        : 'scroll-down-indicator-wrapper flexbox-col-center-center'}>
+                        ? 'scroll-down-indicator-wrapper-animating flexbox-row-center-center'
+                        : 'scroll-down-indicator-wrapper flexbox-row-center-center'}>
                     <div className='mouse-icon'>
                         <MouseIcon onClickMouseIcon={props.onClickMouseIcon}/>
                     </div>
+                    <GitHubButton link={'https://github.com/CptDoraemon'} className={'frontpage-github-button'}/>
                 </div>
             </div>
             {
@@ -139,7 +142,6 @@ interface TextTileProps extends  TextTileInfo {
     className: string;
 }
 function TextTile(props: TextTileProps) {
-    console.log(props);
     return (
         <Link to={props.link}>
             <div
@@ -240,6 +242,7 @@ class ProjectListText extends React.Component<ProjectListTextProps, ProjectListT
                                 TileSize.BIG;
 
                         return <WithFlyInAnimationTextTile
+                            key={index}
                             passOnProps={{
                                 link: i.link,
                                 title: i.title,
@@ -313,6 +316,7 @@ class ProjectListGallery extends React.Component<ProjectListGalleryProps, Projec
                     {this.props.tileInfo.map((i, index) => {
                         const tileSize = TileSize.GALLERY;
                         return <WithFlyInAnimationGalleryTile
+                            key={index}
                             passOnProps={{
                                 link: i.link,
                                 title: i.title,
@@ -396,7 +400,6 @@ class Frontpage extends React.Component<FrontpageProps, FrontpageStates> {
         const viewpointHeight = window.innerHeight;
         if (this.galleryRef.current) {
             const galleryTop = this.galleryRef.current.getBoundingClientRect().top;
-            console.log(galleryTop);
             const galleryIsVisible = galleryTop - 200 < viewpointHeight;
             if (galleryIsVisible) {
                 this.setState({isImgLoaded: true});

@@ -122,7 +122,28 @@
     /*!**!*/
 /*}*/
 .mouse-icon {
-    margin-bottom: 20px;
+    margin-bottom: 20px; /* wrapper has rounded border, bump it up to hide bottom border */
+}
+.frontpage-github-button {
+    width: 100px;
+    height: 30px;
+    transform: scale(0.8);
+    border-radius: 10px;
+    transition: 0.3s;
+    cursor: pointer;
+    color: #fff;
+    font-size: 20px;
+    border: 3px solid #fff;
+    opacity: 0.5;
+    margin: 0 20px 20px 20px; /* wrapper has rounded border, bump it up to hide bottom border */
+    line-height: 30px;
+    text-align: center;
+    font-weight: bold;
+}
+.frontpage-github-button:hover {
+    opacity: 1;
+    color: rgb(37, 41, 45);
+    background-color: #fff;
 }
 .loader-wrapper {
     position: absolute;
