@@ -36,6 +36,25 @@ function useScrollOpacityAnimation(startInPixel, endInPixel, animationFinishPoin
     return scrolledPercentage; /* [0-1] */
 }
 
+function useScrollOpacityAnimationForCustomScrollEvent(startInPixel, endInPixel, animationFinishPoint0to1) {
+    const [scrolledPercentage, setScrolledPercentage] = useState(0);
+    useEffect(() => {
+        document.addEventListener('parallaxScroll', scrollHandler);
+        return () => {
+            document.removeEventListener('parallaxScroll', scrollHandler);
+        }
+    }, [startInPixel, endInPixel]);
+    function scrollHandler(e) {
+        const scrolled = e.detail.scrollTop;
+        if (scrolled > endInPixel || scrolled < startInPixel) return;
+        const containerHeight = endInPixel - startInPixel;
+        // debounced by 2 decimal places.
+        const returnPercentage = Math.min(Math.max(Math.ceil(100 * (scrolled / (animationFinishPoint0to1 * containerHeight))) / 100, 0), 1);
+        setScrolledPercentage(returnPercentage);
+    }
+    return scrolledPercentage; /* [0-1] */
+}
+
 function useGetContainerPosition(ref) {
     const [containerPosition, setContainerPosition] = useState({offsetTop: 0, offsetHeight: 1});
     useEffect(() => {
@@ -82,4 +101,4 @@ function parallaxWrapper(WrappedComponent, parallaxStrength0to1) {
     }
 }
 
-export { useParallax, useScrollOpacityAnimation, useGetContainerPosition, parallaxWrapper };
+export { useParallax, useScrollOpacityAnimation, useGetContainerPosition, parallaxWrapper, useScrollOpacityAnimationForCustomScrollEvent };

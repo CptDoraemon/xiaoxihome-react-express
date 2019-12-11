@@ -6,7 +6,11 @@ import { MouseIcon } from "../component/mouseIcon";
 import { withFlyInAnimation } from '../animations/fly-in';
 import { SpinLoader } from "../animations/spin-loader";
 import { myScrollTo } from "../tools/myScrollTo";
-import { useScrollOpacityAnimation, useGetContainerPosition } from "../animations/parallax";
+import {
+    useScrollOpacityAnimation,
+    useGetContainerPosition,
+    useScrollOpacityAnimationForCustomScrollEvent
+} from "../animations/parallax";
 
 import { Link } from 'react-router-dom';
 import './frontpage.css';
@@ -23,9 +27,12 @@ interface CoverProps {
 
 function Cover(props: CoverProps){
     // scroll opacity animation
-    const containerRef: any = useRef();
+    const containerRef: React.Ref<any> = useRef();
     const containerPosition = useGetContainerPosition(containerRef);
-    const scrolledPercentage = useScrollOpacityAnimation(containerPosition.offsetTop, containerPosition.offsetTop + containerPosition.offsetHeight, 1.0);
+    const scrolledPercentage = IS_MOBILE ?
+        useScrollOpacityAnimation(containerPosition.offsetTop, containerPosition.offsetTop + containerPosition.offsetHeight, 1.0) :
+        useScrollOpacityAnimationForCustomScrollEvent(containerPosition.offsetTop, containerPosition.offsetTop + containerPosition.offsetHeight, 1.0)
+    ;
     // init imageOrder state
     const initImageOrder = () => {
         const isReturningViewer = window.localStorage.getItem('isReturningViewer') === 'true';
