@@ -104,7 +104,7 @@ export function GitHubButton(props: GitHubButtonProps) {
         <div
             className={props.className}
             onClick={() => window.open(props.link, '_blank')}
-        >GitHub</div>
+        ><span>GitHub</span></div>
     )
 }
 
