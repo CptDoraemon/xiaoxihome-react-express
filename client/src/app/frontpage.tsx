@@ -420,7 +420,8 @@ class Frontpage extends React.Component<FrontpageProps, FrontpageStates> {
     }
     parallelBoxScrollHandler() {
         const now = Date.now();
-        if (now - this.lastParallaxScrollEventFiredAt > 100) {
+        if (now - this.lastParallaxScrollEventFiredAt > 20) {
+            // debounce
             if (this.parallelBoxRef.current) {
                 this.parallelBoxScrollEvent.detail.scrollTop = this.parallelBoxRef.current.scrollTop;
                 document.dispatchEvent(this.parallelBoxScrollEvent);

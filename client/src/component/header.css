@@ -10,8 +10,13 @@
     left: 0;
     z-index: 9999;
     color: rgba(255, 255, 255, 0.3);
-    padding: 0 35px;
-    margin: 50px 0;
+    padding: 0;
+    margin: 40px 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
 }
 .header-cover::after{
     position: absolute;
@@ -39,10 +44,14 @@
 }
 .header-cover li{
     display: inline-block;
-    margin: 0 40px;
+    margin: 0 20px;
+    padding: 10px 20px;
     font-size: 18px;
     line-height: 36px;
     transition: 0.3s;
+}
+.header-cover span, .sticky-header-wrapper span {
+    padding: 5px 10px;
 }
 .header-cover span:hover, .sticky-header-wrapper span:hover{
     font-weight: bold;
@@ -94,10 +103,10 @@
 
 .cover-header-dropdown {
     position: absolute;
-    top: 40px;
-    left: 0;
+    top: 50px;
+    left: calc(50% - 150px);
     color: white;
-    margin: 10px 0 0 150px;
+    margin: 0;
     width: fit-content;
     text-align: left;
     z-index: 99;
@@ -159,8 +168,12 @@
         list-style: none;
         text-transform: uppercase;
         position: absolute;
-        top: 35px; /* ul has padding for better accessibility */
         left: 35px;
+        top: 35px;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: flex-start;
         padding: 0;
         margin: 0;
     }
