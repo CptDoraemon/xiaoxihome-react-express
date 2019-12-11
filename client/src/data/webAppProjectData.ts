@@ -48,7 +48,7 @@ const webAppProjectData: Array<WebAppProject | WebAppProjectCollections> = [
         description:
             `
             <p>An app to download mp3 from Youtube playlist.</p>
-            <p>For legal reasons only the frontend is hosted. </p>>
+            <p>For legal reasons only the frontend is hosted. </p>
             <p>This app is Node ready and it relies on ytdl package to actually download assets from Youtube, in case it's not working, please update ytdl to latest version. </p>
             <p>https://github.com/CptDoraemon/youtube-downloader</p>
             `,

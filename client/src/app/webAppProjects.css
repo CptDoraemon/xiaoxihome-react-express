@@ -143,13 +143,21 @@
 .flip-button-wrapper:hover {
     transform: rotateX(-90deg);
 }
-.flip-button-click {
+
+.flip-button-click-front, .flip-button-click-back {
     width: 100%;
     height: 100%;
     display: block;
     position: absolute;
     top: 0;
     left: 0;
+}
+
+.flip-button-click-front {
+    transform: rotateX(0deg) translateZ(20px);
+}
+
+.flip-button-click-back {
     transform: rotateX(90deg) translateZ(20px);
 }
 
@@ -218,15 +226,6 @@
 
     .flip-button-wrapper:hover {
         transform: rotateX(-90deg);
-    }
-
-    .flip-button-click-front, .flip-button-click-back {
-        width: 100%;
-        height: 100%;
-        display: block;
-        position: absolute;
-        top: 0;
-        left: 0;
     }
 
     .flip-button-click-front {

@@ -3,6 +3,7 @@ import React from 'react';
 import Footer from '../component/footer';
 import './academicProjects.css'
 import {setTitle} from "../tools/set-title";
+import {StickyHeader} from "../component/header";
 
 interface AcademicProject {
     title: string,
@@ -65,7 +66,7 @@ class AcademicProject extends React.Component<AcademicProjectProps, {}> {
     render() {
         return (
             <div>
-                {/*<HeaderSticky headerTitle='Academic Project'/>*/}
+                <StickyHeader headerTitle={'Academic Project'}/>
                 <AcademicProjectTemplate data={this.props.data}/>
                 <Footer />
             </div>

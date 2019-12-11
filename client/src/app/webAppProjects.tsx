@@ -1,5 +1,5 @@
 import React from 'react';
-// import { HeaderSticky } from '../component/header';
+import { StickyHeader } from "../component/header";
 import Footer from '../component/footer';
 import './webAppProjects.css';
 import {setTitle} from "../tools/set-title";
@@ -134,7 +134,7 @@ class WebAppProject extends React.Component<WebAppProjectProps, {}> {
     render() {
         return (
             <div>
-                {/*<HeaderSticky headerTitle='Web App Project' listAndLink={this.props.listAndLink} />*/}
+                <StickyHeader headerTitle={'Web App Project'}/>
                 {
                     this.props.data.pageType === PageType.SINGLE ?
                         <WebAppProjectTemplate data={this.props.data}/> :
