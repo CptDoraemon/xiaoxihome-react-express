@@ -77,7 +77,8 @@ const webAppProjectData: Array<WebAppProject | WebAppProjectCollections> = [
         `
             <p>A Pinterest like gallery. </p>
             <p>It uses AWS S3 storage to store the uploaded photos. </p>
-            <p>It's hosted on a free server, therefore please allow up to half minutes for server to wake up. </p>
+            <p>It's hosted on a free server and will be connected via unencrypted HTTP, therefore it will be refused to be loaded in this page, and it may take up to half minutes for server to wake up.</p>
+            <p>Please open in new window and wait a moment.</p>
         `,
         summary: 'A Pinterest like gallery.'
     },
