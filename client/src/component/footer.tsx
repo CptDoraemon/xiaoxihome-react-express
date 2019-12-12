@@ -45,6 +45,7 @@ class Footer extends React.Component<FooterProps, FooterState> {
         this.stopClickEventPropagation = this.stopClickEventPropagation.bind(this);
     }
     toggleDropList(e: any) {
+        e.stopPropagation();
         this.setState({
             dropListClassName: this.state.dropListClassName === DropListStyle.ACTIVE ? DropListStyle.INACTIVE : DropListStyle.ACTIVE
         })
@@ -70,7 +71,7 @@ class Footer extends React.Component<FooterProps, FooterState> {
     render() {
         return (
             <div className='footer'>
-                <div className='nav-bar' onClick={this.stopClickEventPropagation}>
+                <div className='nav-bar'>
                     <ul>
                         {
                             this.allLinks.map((linkInfo: any, index: number) => {
@@ -80,8 +81,8 @@ class Footer extends React.Component<FooterProps, FooterState> {
                                     return (
                                         <React.Fragment key={index}>
                                             <li onClick={this.toggleDropList}> {linkInfo.title} </li>
-                                            <div className='footer-flexbox' onMouseLeave={this.setDropListInactive}>
-                                                <FooterDropList allLinks={linkInfo.link} dropListClassName={this.state.dropListClassName}/>
+                                            <div className='footer-flexbox' onMouseLeave={this.setDropListInactive} >
+                                                <FooterDropList allLinks={linkInfo.link} dropListClassName={this.state.dropListClassName} stopClickEventPropagation={this.stopClickEventPropagation}/>
                                             </div>
                                         </React.Fragment>
                                     )
@@ -101,13 +102,14 @@ class Footer extends React.Component<FooterProps, FooterState> {
 interface FooterDropListProps {
     allLinks: Array<SectionInfo>;
     dropListClassName: DropListStyle;
+    stopClickEventPropagation: (e: any) => void;
 }
 
 function FooterDropList(props: FooterDropListProps) {
     const dropListClassName = props.dropListClassName;
     const elements = props.allLinks.map((section: SectionInfo, i: number) => {
         return (
-            <div className={ dropListClassName } key={i}>
+            <div className={ dropListClassName } key={i} onClick={props.stopClickEventPropagation}>
                 <h5> { section.sectionTitle } </h5>
                 { section.links.map((linkInfo: LinkInfo, j: number) => {
                     return (
