@@ -54,7 +54,7 @@ class App extends React.Component {
                             { this.academicRouters }
                             { this.webRouters }
 
-                            <Route path={`/album/:albumName/:id`} render={(props) => <Gallery albumName={props.match.params.albumName} id={parseInt(props.match.params.id)}/> } />
+                            <Route path={`/album/:albumName/:id`} render={(props) => <Gallery albumName={props.match.params.albumName} id={parseInt(props.match.params.id)} history={props.history}/> } />
 
                             <Route render={ () => <Missing404/> } />
                         </Switch>

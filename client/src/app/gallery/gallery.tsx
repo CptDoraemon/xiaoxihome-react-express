@@ -317,6 +317,7 @@ type GalleryData = Array<Album>;
 interface GalleryProps {
     albumName: string;
     id: number;
+    history: any;
 }
 
 interface GalleryStates {
@@ -348,6 +349,7 @@ class Gallery extends React.Component<GalleryProps, GalleryStates> {
         this.browseNext = this.browseNext.bind(this);
         this.toggleAutoplay = this.toggleAutoplay.bind(this);
         this.toggleHud = this.toggleHud.bind(this);
+        this.dimHud = this.dimHud.bind(this);
     }
 
 
@@ -359,40 +361,43 @@ class Gallery extends React.Component<GalleryProps, GalleryStates> {
     }
 
     browsePrevious() {
-        if (this.state.album === 0 && this.state.page === 0) {
-            this.setState({
-                album: this.galleryData.length - 1,
-                page: this.galleryData[this.galleryData.length - 1].photos.length - 1
-            })
-        } else if (this.state.page === 0) {
-            this.setState({
-                album: this.state.album - 1,
-                page: this.galleryData[this.state.album - 1].photos.length - 1
-            })
-        } else {
-            this.setState({
-                page: this.state.page - 1
-            })
-        }
+        this.setState((prevState) => {
+            const newState = {
+                album: 0,
+                page: 0,
+            };
+            if (prevState.album === 0 && prevState.page === 0) {
+                newState.album = this.galleryData.length - 1;
+                newState.page = this.galleryData[this.galleryData.length - 1].photos.length - 1
+            } else if (prevState.page === 0) {
+                newState.album = prevState.album - 1;
+                newState.page = this.galleryData[prevState.album - 1].photos.length - 1
+            } else {
+                newState.album = prevState.album;
+                newState.page = prevState.page - 1;
+            }
+            return newState;
+        });
     }
 
     browseNext() {
-        if (this.state.album === this.galleryData.length - 1 && this.state.page === this.galleryData[this.galleryData.length - 1].photos.length - 1) {
-            this.setState({
+        this.setState((prevState) => {
+            const newState = {
                 album: 0,
-                page: 0
-            })
-        } else if (this.state.page === this.galleryData[this.state.album].photos.length - 1) {
-            this.setState({
-                album: this.state.album + 1,
-                page: 0
-            })
-        } else {
-            this.setState({
-                page: this.state.page + 1
-            })
-        }
+                page: 0,
+            };
+            if (prevState.album === this.galleryData.length - 1 && prevState.page === this.galleryData[this.galleryData.length - 1].photos.length - 1) {
+
+            } else if (prevState.page === this.galleryData[prevState.album].photos.length - 1) {
+                newState.album = prevState.album + 1;
+            } else {
+                newState.album = prevState.album;
+                newState.page = prevState.page + 1;
+            }
+            return newState;
+        });
     }
+
     toggleAutoplay() {
         if(!this.state.isAutoplay) {
             // enable autoplay
@@ -413,18 +418,22 @@ class Gallery extends React.Component<GalleryProps, GalleryStates> {
     }
 
     setToggleHudTimer() {
-        this.toggleHudTimer = setTimeout(() => {
-            this.setState({isHudDimmed: true})}, 5000
-        )
+        this.toggleHudTimer = setTimeout(this.dimHud, 5000);
+    }
+
+    dimHud() {
+        this.setState({isHudDimmed: true})
     }
 
     toggleHud() {
-        // do not dim hud when autoplaying
-        if (this.state.isAutoplay) return;
-        //
-        clearTimeout(this.toggleHudTimer);
-        this.setState({isHudDimmed: false});
-        this.setToggleHudTimer();
+        if (this.state.isAutoplay) {
+            // do not dim hud when autoplaying
+            return;
+        } else {
+            clearTimeout(this.toggleHudTimer);
+            if (this.state.isHudDimmed) this.setState({isHudDimmed: false});
+            this.setToggleHudTimer();
+        }
     }
 
     prepareHudListData() {
@@ -461,7 +470,12 @@ class Gallery extends React.Component<GalleryProps, GalleryStates> {
 
     componentDidUpdate(prevProps: GalleryProps, prevState: GalleryStates) {
         if (prevState.album !== this.state.album) {
+            // update title
             setTitle(this.galleryData[this.state.album].albumName, false);
+        }
+        if (prevState.page !== this.state.page || prevState.album !== this.state.album ) {
+            // push history
+            this.props.history.replace(`/album/${this.galleryData[this.state.album].albumName}/${this.state.page}`);
         }
     }
 
