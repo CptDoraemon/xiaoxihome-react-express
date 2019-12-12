@@ -1,44 +1,68 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+- __client__
+   - [README.md](README.md)
+   - [node\_modules](node_modules)
+   - [package\-lock.json](package-lock.json)
+   - [package.json](package.json)
+   - __public__
+     - [android\-chrome\-192x192.png](public/android-chrome-192x192.png)
+     - [android\-chrome\-512x512.png](public/android-chrome-512x512.png)
+     - [apple\-touch\-icon.png](public/apple-touch-icon.png)
+     - [browserconfig.xml](public/browserconfig.xml)
+     - [favicon\-16x16.png](public/favicon-16x16.png)
+     - [favicon\-32x32.png](public/favicon-32x32.png)
+     - [favicon.ico](public/favicon.ico)
+     - [index.html](public/index.html)
+     - [manifest.json](public/manifest.json)
+     - [mstile\-150x150.png](public/mstile-150x150.png)
+     - [safari\-pinned\-tab.svg](public/safari-pinned-tab.svg)
+   - __src__
+     - __animations__
+       - [fly\-in.js](src/animations/fly-in.js)
+       - [parallax.css](src/animations/parallax.css)
+       - [parallax.js](src/animations/parallax.js)
+       - [spin\-loader.css](src/animations/spin-loader.css)
+       - [spin\-loader.js](src/animations/spin-loader.js)
+     - __app__
+       - __about__
+         - [aboutPage.css](src/app/about/aboutPage.css)
+         - [aboutPage.js](src/app/about/aboutPage.js)
+         - [data.js](src/app/about/data.js)
+       - [academicProjects.css](src/app/academicProjects.css)
+       - [academicProjects.tsx](src/app/academicProjects.tsx)
+       - __contact__
+         - [contact.css](src/app/contact/contact.css)
+         - [contact.js](src/app/contact/contact.js)
+       - [frontpage.css](src/app/frontpage.css)
+       - [frontpage.tsx](src/app/frontpage.tsx)
+       - __gallery__
+         - [gallery.css](src/app/gallery/gallery.css)
+         - [gallery.tsx](src/app/gallery/gallery.tsx)
+       - [webAppProjects.css](src/app/webAppProjects.css)
+       - [webAppProjects.tsx](src/app/webAppProjects.tsx)
+     - __component__
+       - [footer.css](src/component/footer.css)
+       - [footer.tsx](src/component/footer.tsx)
+       - [header.css](src/component/header.css)
+       - [header.tsx](src/component/header.tsx)
+       - [missing404.css](src/component/missing404.css)
+       - [missing404.js](src/component/missing404.js)
+       - [mouseIcon.css](src/component/mouseIcon.css)
+       - [mouseIcon.js](src/component/mouseIcon.js)
+       - [scrolltotop.js](src/component/scrolltotop.js)
+     - __data__
+       - [academicProjectData.ts](src/data/academicProjectData.ts)
+       - [galleryData.ts](src/data/galleryData.ts)
+       - [index.ts](src/data/index.ts)
+       - [webAppProjectData.ts](src/data/webAppProjectData.ts)
+     - [flexbox.css](src/flexbox.css)
+     - [index.css](src/index.css)
+     - [index.js](src/index.js)
+     - [react\-app\-env.d.ts](src/react-app-env.d.ts)
+     - [serviceWorker.js](src/serviceWorker.js)
+     - __tools__
+       - [myScrollTo.js](src/tools/myScrollTo.js)
+       - [set\-JSONLD.js](src/tools/set-JSONLD.js)
+       - [set\-title.js](src/tools/set-title.js)
+       - [title\-convert\-to\-link.js](src/tools/title-convert-to-link.js)
+   - [tsconfig.json](tsconfig.json)
 
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
