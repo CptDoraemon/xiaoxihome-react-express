@@ -249,7 +249,7 @@
     .sticky-header-dropdown {
         color: white;
         left: 0;
-        width: 100%;
+        min-width: 50%;
         text-align: center;
         z-index: 99;
         padding-bottom: 10px; /* add some safe zone at bottom */

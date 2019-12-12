@@ -25,16 +25,27 @@ class DropdownList extends  React.Component<DropdownListProps, DropdownListState
         this.closeDropdownList = this.closeDropdownList.bind(this);
     }
 
-    toggleDropdownList() {
-        this.setState((prevState) => ({
-            isDropdownActive: !prevState.isDropdownActive
-        }))
+    toggleDropdownList(e: any) {
+        e.stopPropagation();
+        this.setState((state) => {
+            return {isDropdownActive: !state.isDropdownActive}
+        })
     }
 
     closeDropdownList() {
         this.setState({
             isDropdownActive: false
         })
+    }
+
+    componentDidMount(): void {
+        window.addEventListener('click', this.closeDropdownList);
+        // React (currently) uses a listener on the document for (almost) all events, so by the time your component receives the event it has already bubbled all the way up to the document and stopping it only stops it from synthetically bubbling up through the React hierarchy.
+        // a workaround, use window.addEventListener() to replace document.addEventListener, event.stopPropagation() can stop event propagate to window.
+    }
+
+    componentWillUnmount(): void {
+        window.removeEventListener('click', this.closeDropdownList);
     }
 
     render() {

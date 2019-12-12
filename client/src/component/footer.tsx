@@ -42,8 +42,9 @@ class Footer extends React.Component<FooterProps, FooterState> {
         };
         this.toggleDropList = this.toggleDropList.bind(this);
         this.setDropListInactive = this.setDropListInactive.bind(this);
+        this.stopClickEventPropagation = this.stopClickEventPropagation.bind(this);
     }
-    toggleDropList() {
+    toggleDropList(e: any) {
         this.setState({
             dropListClassName: this.state.dropListClassName === DropListStyle.ACTIVE ? DropListStyle.INACTIVE : DropListStyle.ACTIVE
         })
@@ -54,10 +55,22 @@ class Footer extends React.Component<FooterProps, FooterState> {
         })
     }
 
+    stopClickEventPropagation(e: any) {
+        e.stopPropagation();
+    }
+
+    componentDidMount(): void {
+        window.addEventListener('click', this.setDropListInactive);
+    }
+
+    componentWillUnmount(): void {
+        window.removeEventListener('click', this.setDropListInactive);
+    }
+
     render() {
         return (
             <div className='footer'>
-                <div className='nav-bar'>
+                <div className='nav-bar' onClick={this.stopClickEventPropagation}>
                     <ul>
                         {
                             this.allLinks.map((linkInfo: any, index: number) => {
@@ -67,7 +80,7 @@ class Footer extends React.Component<FooterProps, FooterState> {
                                     return (
                                         <React.Fragment key={index}>
                                             <li onClick={this.toggleDropList}> {linkInfo.title} </li>
-                                            <div className='footer-flexbox' onMouseLeave={this.setDropListInactive} >
+                                            <div className='footer-flexbox' onMouseLeave={this.setDropListInactive}>
                                                 <FooterDropList allLinks={linkInfo.link} dropListClassName={this.state.dropListClassName}/>
                                             </div>
                                         </React.Fragment>
