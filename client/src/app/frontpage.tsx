@@ -25,6 +25,27 @@ interface CoverProps {
     onClickMouseIcon: Function
 }
 
+function initImageOrder() {
+    const isReturningViewer = window.localStorage.getItem('isReturningViewer') === 'true';
+    let imageOrder;
+    if (isReturningViewer) {
+        imageOrder = (Date.now() % 4) + 1;
+    } else {
+        window.localStorage.setItem('isReturningViewer', 'true');
+        imageOrder = 1;
+    }
+    return imageOrder;
+}
+
+function loadImage (src: string) {
+    return new Promise((resolve, reject) => {
+        const image = new Image();
+        image.onload = () => resolve(image);
+        image.onerror = err => reject(err);
+        image.src = src;
+    });
+}
+
 function Cover(props: CoverProps){
     // scroll opacity animation
     const containerRef: React.Ref<any> = useRef();
@@ -33,32 +54,11 @@ function Cover(props: CoverProps){
         useScrollOpacityAnimation(containerPosition.offsetTop, containerPosition.offsetTop + containerPosition.offsetHeight, 1.0) :
         useScrollOpacityAnimationForCustomScrollEvent(containerPosition.offsetTop, containerPosition.offsetTop + containerPosition.offsetHeight, 1.0)
     ;
-    // init imageOrder state
-    const initImageOrder = () => {
-        const isReturningViewer = window.localStorage.getItem('isReturningViewer') === 'true';
-        let imageOrder;
-        if (isReturningViewer) {
-            imageOrder = Math.floor((Math.random() * 4)) + 1;
-        } else {
-            window.localStorage.setItem('isReturningViewer', 'true');
-            imageOrder = 1;
-        }
-        return imageOrder;
-    };
     // load cover image state
     const [imageOrder, setImageOrder] = useState(initImageOrder());
     const [isCoverLoaded, setIsCoverLoaded] = useState(false);
     const [coverSrc, setCoverSrc] = useState('');
     const [isCoverAnimationBegin, setIsCoverAnimationBegin] = useState(false);
-    // load cover image effect
-    const loadImage = (src: string) => {
-        return new Promise((resolve, reject) => {
-            const image = new Image();
-            image.onload = () => resolve(image);
-            image.onerror = err => reject(err);
-            image.src = src;
-        });
-    };
     // cover exiting animation related
     const isCoverExitingAnimationOne = 0.3 <= scrolledPercentage && scrolledPercentage < 0.5;
     const isCoverExitingAnimationTwo = 0.5 <= scrolledPercentage && scrolledPercentage <= 1.0;
