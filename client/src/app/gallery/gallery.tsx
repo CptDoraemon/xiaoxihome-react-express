@@ -186,10 +186,10 @@ class Hud extends React.Component<HudProps, HudStates> {
         }
         let xUp = e.touches[0].clientX;
         let yUp = e.touches[0].clientY;
-        let xDiff = this.xDown - xUp;
-        let yDiff = this.yDown - yUp;
+        let xDiff = xUp - this.xDown;
+        let yDiff = yUp - this.yDown;
 
-        if ( Math.abs(xDiff) > Math.abs(yDiff)) {
+        if (Math.abs(xDiff) > Math.abs(yDiff)) {
             e.preventDefault();
             if (xDiff > 0) {
                 this.props.browsePrevious();
