@@ -64,6 +64,7 @@ const webAppProjectData: Array<WebAppProject | WebAppProjectCollections> = [
                 <p>A Google like weather app. </p>
                 <p>Weather API is provided by DarkSky. </p>
                 <p>Reverse geocoding API is provided by LocationIQ. </p>
+                <p>The data from third party APIs are then combined in Node.JS server and exposed as my own API.</p>
                 <p>A mobile version written with Dart/Flutter is also available. To lookup cities, a PostgreSQL database is attached to this version instead of using third party API. </p>
             `,
         summary: 'A app for currently, hourly and daily weather forecasts.'
