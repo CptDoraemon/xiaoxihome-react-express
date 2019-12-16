@@ -401,7 +401,7 @@ class Frontpage extends React.Component<FrontpageProps, FrontpageStates> {
         this.prepareParallelBoxScrollEvent = this.prepareParallelBoxScrollEvent.bind(this);
     }
     scrollToWorkRef() {
-        if (this.academicRef.current && this.parallelBoxRef.current) myScrollTo(this.academicRef.current.offsetTop, this.parallelBoxRef.current);
+        if (this.webRef.current && this.parallelBoxRef.current) myScrollTo(this.webRef.current.offsetTop, this.parallelBoxRef.current);
     };
     galleryLazyLoad() {
         const viewpointHeight = window.innerHeight;
@@ -452,12 +452,6 @@ class Frontpage extends React.Component<FrontpageProps, FrontpageStates> {
                 <Cover onClickMouseIcon={this.scrollToWorkRef}/>
 
                 <div className={'academic-and-web'}>
-                    <div ref={this.academicRef}/>
-                    <ProjectListText
-                        tileInfo={this.props.allProjectsInfo[0].projects}
-                        sectionTitle={this.props.allProjectsInfo[0].sectionTitle}
-                        projectListType={ProjectListType.ONE}
-                    />
 
                     <div ref={this.webRef}/>
                     <ProjectListText
@@ -465,6 +459,14 @@ class Frontpage extends React.Component<FrontpageProps, FrontpageStates> {
                         sectionTitle={this.props.allProjectsInfo[1].sectionTitle}
                         projectListType={ProjectListType.TWO}
                     />
+
+                    <div ref={this.academicRef}/>
+                    <ProjectListText
+                        tileInfo={this.props.allProjectsInfo[0].projects}
+                        sectionTitle={this.props.allProjectsInfo[0].sectionTitle}
+                        projectListType={ProjectListType.ONE}
+                    />
+
                 </div>
 
                 <div className={'gallery'} ref={this.galleryRef}>

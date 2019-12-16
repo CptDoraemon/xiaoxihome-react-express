@@ -65,12 +65,12 @@ interface SectionInfo {
 const albumRouters: Array<RouterInfo> = appData.galleryPreviewData.map((obj) => ({title: obj.albumName, link: `/album/${obj.albumName}/0`}));
 const allWorksLink: Array<SectionInfo> = [
     {
-        sectionTitle: Sections.ACADEMIC,
-        links: [...academicProjectsRouters]
-    },
-    {
         sectionTitle: Sections.WEB,
         links: [...webProjectsRouters]
+    },
+    {
+        sectionTitle: Sections.ACADEMIC,
+        links: [...academicProjectsRouters]
     },
     {
         sectionTitle: Sections.ALBUMS,
