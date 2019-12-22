@@ -96,6 +96,14 @@ const webAppProjectData: Array<WebAppProject | WebAppProjectCollections> = [
                 `
             },
             {
+                title: 'Parallax component library for React',
+                demoLink: 'https://cptdoraemon.github.io/parallax-container/',
+                githubLink: 'https://github.com/CptDoraemon/parallax-container',
+                description: `
+                    <p>A parallax effect component library for React. The front page of XiaoxiHome has CSS 3D transforms based parallax effect, it has good performance but with some compatibility issues. This library uses JS approach, with acceptable performance and better consistency across platforms.</p>
+                `
+            },
+            {
                 title: 'Shopping Cart',
                 demoLink: 'https://cptdoraemon.github.io/shopping/',
                 githubLink: 'https://github.com/CptDoraemon/shopping',
