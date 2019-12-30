@@ -1,4 +1,4 @@
-function myScrollTo(targetY, targetElement) {
+function myScrollTo(targetY, targetElement, animationTime) {
     // edge has problem using scrollTo()
     // LINEAR
     // const scrolled = targetElement === undefined ? window.scrollY : targetElement.scrollTop;
@@ -43,7 +43,7 @@ function myScrollTo(targetY, targetElement) {
 
     const distance = targetY - scrolled;
     const isScrollingDown = distance >= 0;
-    const time = 2;
+    const time = animationTime || 2;
     const alpha = 0.2; // % of accelerate.
     const beta = 0.6; // % of decelerating.
     // acceleration and deceleration per second
@@ -86,7 +86,7 @@ function myScrollTo(targetY, targetElement) {
         lastTimeStamp = currentTimeStamp;
         step = Math.round(step);
         s += step;
-        targetElement.scrollTop = s;
+        targetElement.scrollTo(0, s);
         if (!isFinished) {
             requestAnimationFrame(scrolling);
         }
