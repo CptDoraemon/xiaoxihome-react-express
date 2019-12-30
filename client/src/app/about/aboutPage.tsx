@@ -4,7 +4,10 @@ import { data } from './data';
 import { MdRadioButtonUnchecked, MdRadioButtonChecked, MdPowerSettingsNew } from "react-icons/md";
 import { setTitle } from "../../tools/set-title";
 import { myScrollTo } from "../../tools/myScrollTo";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
+import Skeleton from '@material-ui/lab/Skeleton';
+import Grid from '@material-ui/core/Grid';
+import {Box} from "@material-ui/core";
 
 const IS_MOBILE = window.innerWidth <= 800;
 
@@ -337,15 +340,48 @@ function AboutPageLoaded(props: AboutPageLoadedProps) {
     )
 }
 
+function AboutPageLoading() {
+    return (
+        <div className={'about-page-wrapper'}>
+            <div className={'about-page-text-wrapper-loading'}>
+                <Box my={2} width={'50%'}>
+                    <Skeleton variant={'text'} height={40}/>
+                </Box>
+                { [...Array(6)].map((_, i) => {
+                    return (
+                        <Box my={0.5} width={'50%'} key={i}>
+                            <Skeleton variant={'text'}/>
+                        </Box>
+                    )
+                })}
+            </div>
+            <div className={'about-page-image-wrapper'}>
+                <Skeleton variant={'rect'} width={'100%'} height={'100%'}/>
+            </div>
+        </div>
+    )
+}
+
+function useLoadAboutPageData() {
+    const [isLoaded, setIsLoaded] = useState(false);
+    setTimeout(() => setIsLoaded(true), 2000);
+    return isLoaded;
+}
 
 function AboutPage() {
+
+    const isLoaded = useLoadAboutPageData();
 
     useEffect(() => {
         setTitle('About me', false);
     }, []);
 
     return (
-        <AboutPageLoaded pageData={data}/>
+        <>
+            {
+                isLoaded ? <AboutPageLoaded pageData={data}/> : <AboutPageLoading />
+            }
+        </>
     )
 }
 

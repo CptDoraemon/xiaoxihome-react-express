@@ -1,10 +1,21 @@
 const bodyParser = require('body-parser');
+const { Client } = require('pg');
+require('dotenv').config();
 
-module.exports = {
-    searchCityName: searchCityName
-};
 
-function searchCityName(app, cityNameDB) {
+function connectToDB() {
+    const cityNameDB = new Client({
+        connectionString: process.env.DATABASE_URL,
+        ssl: true,
+    });
+    cityNameDB.connect();
+
+    return cityNameDB;
+}
+
+function searchCityName(app) {
+    const cityNameDB = connectToDB();
+
     app.get('/api/searchCityName/', bodyParser.urlencoded({extended: false}), (req, res) => {
         const cityName = req.query.cityName;
         if (cityName === undefined) {
@@ -39,3 +50,7 @@ function searchCityName(app, cityNameDB) {
         // client.end();
     })
 }
+
+module.exports = {
+    searchCityName: searchCityName
+};

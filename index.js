@@ -1,34 +1,13 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const bodyParser = require('body-parser');
-const mongoose = require ("mongoose");
 const helmet = require('helmet');
 require('dotenv').config();
-const { Client } = require('pg');
 
 const weatherAPI = require('./api/weather').weather;
 const reverseGeoCodingAPI = require('./api/geocoding').reverseGeoCoding;
 const searchCityName = require('./api/search-cityname').searchCityName;
-
-// DBs
-    // Mongo
-const uristring = process.env.MONGODB_URI;
-let feedbackSchema = new mongoose.Schema({
-    name: String,
-    email: String,
-    message: String,
-    date: Date
-});
-let Feedback = mongoose.model('Feedback', feedbackSchema);
-    //Postgres
-const cityNameDB = new Client({
-    connectionString: process.env.DATABASE_URL,
-    ssl: true,
-});
-cityNameDB.connect();
-// DB ends
-
+const xiaoxihomeFeedback = require('./api/xiaoxihome-feedback');
 
 
 
@@ -40,7 +19,6 @@ if( process.env.PORT ) {
     });
 }
 app.use(helmet());
-
 app.use(express.static(path.join(__dirname, 'client/build')));
 
 
@@ -50,41 +28,12 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname+'/client/build/index.html'));
 });
 
-app.post('/contact/submit/', bodyParser.json(), (req, res) => {
-    let name = req.body.name;
-    let email = req.body.email;
-    let message = req.body.message;
-    // input validation
-    if (name.match(/^\s*$/) || email.match(/^\s*$/) || message.match(/^\s*$/) || email.indexOf('@') === -1) {
-        res.json({response: 'Ooops: please check inputs'})
-    } else {
-        let date = new Date();
-        let newFeedback = new Feedback({
-            name: name,
-            email: email,
-            message: message,
-            date: date
-        });
-        mongoose.connect(uristring, { useNewUrlParser: true });
-        let db = mongoose.connection;
-        db.on('error', (err) => {
-            res.json({response: 'Ooops: ' + err + ', please try again.'});
-        });
-        db.once('open', () => {
-            newFeedback.save((err) => {
-                if (err) {
-                    res.json({response: 'Ooops: ' + err + ', please try again.'});
-                } else {
-                    res.json({response: 'Thank you for your message, I\'ll get back to you soon.'});
-                }
-            })
-        });
-    }
-});
 
-searchCityName(app, cityNameDB);
+searchCityName(app);
 weatherAPI(app);
 reverseGeoCodingAPI(app);
+xiaoxihomeFeedback(app);
+
 
 app.get('*', (req, res) => {
    res.sendFile(path.join(__dirname+'/client/build/index.html'));
