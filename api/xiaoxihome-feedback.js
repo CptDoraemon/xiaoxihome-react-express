@@ -45,4 +45,4 @@ function xiaoxihomeFeedback(app) {
     });
 }
 
-export default xiaoxihomeFeedback;
+module.exports = xiaoxihomeFeedback;
