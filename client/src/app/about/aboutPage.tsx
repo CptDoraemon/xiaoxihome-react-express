@@ -4,6 +4,7 @@ import { data } from './data';
 import { MdRadioButtonUnchecked, MdRadioButtonChecked, MdPowerSettingsNew } from "react-icons/md";
 import { setTitle } from "../../tools/set-title";
 import { myScrollTo } from "../../tools/myScrollTo";
+import {Link} from "react-router-dom";
 
 const IS_MOBILE = window.innerWidth <= 800;
 
@@ -248,14 +249,14 @@ function useOnePageScroll(initialValue: number, pageCount: number) {
     const [currentAtPage, setCurrentAtPage] = useState(initialValue);
     const [isScrolling, setIsScrolling] = useState(false);
     const DEBOUNCE_TIMER = 2000;
+    let timeoutId: any;
 
     function scrollHandler(e: WheelEvent) {
-        const now = Date.now();
         if (isScrolling) return;
 
         setIsScrolling(true);
-        setTimeout(() => {
-            if (setIsScrolling) setIsScrolling(false)
+        timeoutId = setTimeout(() => {
+            setIsScrolling(false);
         }, DEBOUNCE_TIMER);
 
         if (e.deltaY > 0) {
@@ -278,6 +279,10 @@ function useOnePageScroll(initialValue: number, pageCount: number) {
         }
     });
 
+    useEffect(() => {
+        return () => clearTimeout(timeoutId)
+    }, []);
+
     return {
         currentAtPage,
         setCurrentAtPage
@@ -299,6 +304,15 @@ function AboutPageLoaded(props: AboutPageLoadedProps) {
         useEffect(() => {
             myScrollTo(pageRefs[currentAtPage].current.offsetTop)
         }, [currentAtPage]);
+
+        useEffect(() => {
+            document.body.style.overflow = 'hidden';
+            document.body.style.height = '100vh';
+            return () => {
+                document.body.style.overflow = '';
+                document.body.style.height = '';
+            }
+        }, [])
     }
 
     return (
@@ -314,11 +328,11 @@ function AboutPageLoaded(props: AboutPageLoadedProps) {
                 })
             }
             <NavBar currentAtPage={currentAtPage} length={props.pageData.length} setCurrentAtPage={setCurrentAtPage}/>
-            <a href='/'>
+            <Link to='/'>
                 <div className='about-return-wrapper'>
                     <MdPowerSettingsNew size='25px' />
                 </div>
-            </a>
+            </Link>
         </div>
     )
 }
