@@ -1,10 +1,10 @@
 import React, {Dispatch, SetStateAction, useEffect, useRef, useState} from 'react';
 import './aboutPage.css';
-import { data } from './data';
-import { MdRadioButtonUnchecked, MdRadioButtonChecked, MdPowerSettingsNew } from "react-icons/md";
+import { MdRadioButtonUnchecked, MdRadioButtonChecked, MdPowerSettingsNew , MdDone} from "react-icons/md";
 import { setTitle } from "../../tools/set-title";
 import { myScrollTo } from "../../tools/myScrollTo";
 import { Link } from "react-router-dom";
+import useLoadAboutPageData from "./use-load-about-page-data";
 import Skeleton from '@material-ui/lab/Skeleton';
 import Grid from '@material-ui/core/Grid';
 import {Box} from "@material-ui/core";
@@ -13,61 +13,9 @@ const IS_MOBILE = window.innerWidth <= 800;
 
 interface PageData {
     title: string,
-    content: string,
+    content: Array<string>,
     imageUrl: string
 }
-
-// class Loading extends  React.Component {
-//     constructor(props) {
-//         super(props);
-//         this.state = {
-//             percent: 0
-//         };
-//         this.preloadCacheArray = [];
-//         this.textColorChanged = false;
-//         this.animation = this.animation.bind(this);
-//     }
-//     animation() {
-//         const el = document.getElementById('loading');
-//         let speed = 0.5;
-//         const loop = () => {
-//             if (this.props.isSkip && speed !== 2) {
-//                 speed = 2;
-//             }
-//             if (!this.props.isSkip && this.state.percent >= 20 && this.speed !== 0.2) {
-//                 speed = 0.1;
-//             }
-//             if (this.state.percent >= 50 && !this.textColorChanged) {
-//                 this.textColorChanged = true;
-//             }
-//
-//
-//             if (this.state.percent < 100) {
-//                 this.setState({percent: this.state.percent + speed});
-//                 requestAnimationFrame(loop)
-//             } else {
-//                 this.setState({percent: 100});
-//                 el.style.opacity = 0;
-//                 setTimeout(this.props.finishLoad, 1000)
-//             }
-//         };
-//         requestAnimationFrame(loop)
-//     }
-//     componentDidMount() {
-//         this.animation()
-//     }
-//     render() {
-//         return (
-//             <div className='one-page-section-wrapper-row' id='loading'>
-//                 <div className='loading-gradient' />
-//                 <div className='loading-bg' style={{height: 100 - this.state.percent + '%'}}/>
-//                 <div className='loading-text-wrapper'>
-//                     <span style={{color: this.textColorChanged ? 'white' : 'black'}}>Loading {Math.floor(this.state.percent)}%</span>
-//                 </div>
-//             </div>
-//         )
-//     }
-// }
 
 function ActiveButton () {
     return (
@@ -118,7 +66,7 @@ function Page(props: PageProps) {
         <>
             <div className={'about-page-text-wrapper'} style={IS_MOBILE ? {} : {opacity: props.currentAtPage === props.id ? 1 : 0}}>
                 <h2>{ props.title }</h2>
-                { props.content.split('\n').map((p, i) => <p key={i}>{p}</p>) }
+                { props.content.map((p, i) => <p key={i}>{p}</p>) }
             </div>
 
             { !IS_MOBILE && <div className={'about-page-text-placehoder'}> </div> }
@@ -129,124 +77,6 @@ function Page(props: PageProps) {
         </>
     )
 }
-// class AboutPage extends React.Component {
-//     constructor(props) {
-//         super(props);
-//         this.state = {
-//             isLoadPageFinished: false,
-//             areImagesReady: false,
-//             currentAtPage: 0
-//         };
-//         this.finishLoad = this.finishLoad.bind(this);
-//         this.loadResources = this.loadResources.bind(this);
-//         this.handleScroll = this.handleScroll.bind(this);
-//         this.data = data.slice();
-//         this.checkPoints = [];
-//         this.isScrolling = false;
-//     }
-//     finishLoad() {
-//         this.setState({isLoadPageFinished: true})
-//     }
-//     loadResources() {
-//         const preloadCacheArray = [];
-//         function loadImage(src, key) {
-//             return new Promise((resolve, reject) => {
-//                 const image = new Image();
-//                 image.src = src;
-//                 image.setAttribute('key', key.toString());
-//                 preloadCacheArray.push(image);
-//                 image.onload = () => resolve(image);
-//                 image.onerror = (err) => reject(err);
-//             })
-//         }
-//
-//         const loadImages = this.data.map((data, index) => loadImage(data.imageUrl, index));
-//         this.preloadCacheArray = preloadCacheArray;
-//         Promise.all(loadImages)
-//             .then(() => this.setState({areImagesReady: true}))
-//             .catch(err => console.log(err));
-//     }
-//     handleScroll(e) {
-//         if (!this.state.isLoadPageFinished || this.isScrolling) return;
-//
-//         // set checkPoints:
-//         if (!this.checkPoints.length) {
-//             for (let i=0; i<this.data.length; i++) {
-//                 const top = document.getElementById('page'+i).offsetTop;
-//                 this.checkPoints.push(top);
-//             }
-//         }
-//
-//         this.isScrolling = true;
-//
-//         const scrolled = e.deltaY;
-//         const currentAtPage = this.state.currentAtPage;
-//         const currentPixel = this.checkPoints[currentAtPage];
-//         const last = this.checkPoints.length - 1;
-//         if (scrolled > 0) {
-//             // scroll down
-//             if (currentAtPage !== last) {
-//                 myWheelTo(currentPixel, this.checkPoints[currentAtPage + 1]);
-//                 this.setState({currentAtPage: currentAtPage + 1})
-//             } else {
-//                 myWheelTo(currentPixel, 0);
-//                 this.setState({currentAtPage: 0})
-//             }
-//         } else {
-//             // scroll up
-//             if (currentAtPage !== 0) {
-//                 myWheelTo(currentPixel, this.checkPoints[currentAtPage - 1]);
-//                 this.setState({currentAtPage: currentAtPage - 1})
-//             } else {
-//                 myWheelTo(currentPixel, this.checkPoints[last]);
-//                 this.setState({currentAtPage: last})
-//             }
-//         }
-//
-//         setTimeout(() => this.isScrolling = false, 2000)
-//     }
-//     componentDidMount() {
-//         setTitle('About me', false);
-//         this.loadResources();
-//         window.scrollY = 0;
-//
-//         if (window.innerWidth >= 800) {
-//             const body = document.getElementsByTagName('body')[0];
-//             body.style.overflow = 'hidden';
-//             window.addEventListener('wheel', this.handleScroll);
-//         }
-//     }
-//     componentWillUnmount() {
-//         window.removeEventListener('wheel', this.handleScroll);
-//     }
-//     render() {
-//         const pages = this.data.map((i, index) => {
-//             return (
-//                 <Page id={index} title={i.title} content={i.content} currentAtPage={this.state.currentAtPage} imageUrl={i.imageUrl} key={index}/>
-//             )
-//         });
-//
-//         // RENDER
-//         if(!this.state.isLoadPageFinished) {
-//             return (
-//                 <Loading finishLoad={this.finishLoad} isSkip={this.state.areImagesReady}/>
-//             )
-//         } else {
-//             return (
-//                 <div>
-//                     { pages }
-//                     <NavBar currentAtPage={this.state.currentAtPage} length={this.data.length}/>
-//                     <a href='/'>
-//                         <div className='about-return-wrapper'>
-//                             <MdPowerSettingsNew size='25px' />
-//                         </div>
-//                     </a>
-//                 </div>
-//             )
-//         }
-//     }
-// }
-
 
 function useOnePageScroll(initialValue: number, pageCount: number) {
     const [currentAtPage, setCurrentAtPage] = useState(initialValue);
@@ -339,8 +169,52 @@ function AboutPageLoaded(props: AboutPageLoadedProps) {
         </div>
     )
 }
+interface AboutPageLoadingStatusRowProps {
+    text: string,
+    isFinished: boolean
+}
+function AboutPageLoadingStatusRow(props: AboutPageLoadingStatusRowProps) {
+    return (
+        <Grid container direction={"row"} spacing={2} alignContent={"flex-start"} justify={"flex-start"}>
+            <Grid item>
+                <Box fontSize={'fontSize'}>
+                    { props.text }
+                </Box>
+            </Grid>
+            <Grid item>
+                { props.isFinished && <MdDone/> }
+            </Grid>
+        </Grid>
+    )
+}
 
-function AboutPageLoading() {
+function AboutPageLoadingStatus(props: AboutPageLoadingProps) {
+    if (!props.isGraphQLDataLoaded && !props.isImageLoaded) {
+        return (
+            <AboutPageLoadingStatusRow text={'Pulling Data from GraphQL API'} isFinished={false} />
+        )
+    } else if (props.isGraphQLDataLoaded && !props.isImageLoaded) {
+        return (
+            <>
+                <AboutPageLoadingStatusRow text={'Pulled Data From GraphQL API'} isFinished={true} />
+                <AboutPageLoadingStatusRow text={'Loading Images'} isFinished={false} />
+            </>
+        )
+    } else if (props.isGraphQLDataLoaded && props.isImageLoaded) {
+        return (
+            <>
+                <AboutPageLoadingStatusRow text={'Pulled Data From GraphQL API'} isFinished={true} />
+                <AboutPageLoadingStatusRow text={'Loaded Images'} isFinished={true} />
+            </>
+        )
+    } else return null;
+}
+
+interface AboutPageLoadingProps {
+    isGraphQLDataLoaded: boolean,
+    isImageLoaded: boolean
+}
+function AboutPageLoading(props: AboutPageLoadingProps) {
     return (
         <div className={'about-page-wrapper'}>
             <div className={'about-page-text-wrapper-loading'}>
@@ -358,31 +232,31 @@ function AboutPageLoading() {
             <div className={'about-page-image-wrapper'}>
                 <Skeleton variant={'rect'} width={'100%'} height={'100%'}/>
             </div>
+
+            <Box position={'fixed'} top={10} left={10} zIndex={20} minWidth={.5}>
+                <AboutPageLoadingStatus isGraphQLDataLoaded={props.isGraphQLDataLoaded} isImageLoaded={props.isImageLoaded} />
+            </Box>
         </div>
     )
 }
 
-function useLoadAboutPageData() {
-    const [isLoaded, setIsLoaded] = useState(false);
-    setTimeout(() => setIsLoaded(true), 2000);
-    return isLoaded;
-}
-
 function AboutPage() {
 
-    const isLoaded = useLoadAboutPageData();
+    const {isGraphQLDataLoaded, isImageLoaded, isReady, data} = useLoadAboutPageData();
 
     useEffect(() => {
         setTitle('About me', false);
     }, []);
 
-    return (
-        <>
-            {
-                isLoaded ? <AboutPageLoaded pageData={data}/> : <AboutPageLoading />
-            }
-        </>
-    )
+    if (isReady) {
+        return (
+            <AboutPageLoaded pageData={data}/>
+        )
+    } else {
+        return (
+            <AboutPageLoading isGraphQLDataLoaded={isGraphQLDataLoaded} isImageLoaded={isImageLoaded}/>
+        )
+    }
 }
 
 export default AboutPage;

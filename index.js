@@ -7,7 +7,8 @@ require('dotenv').config();
 const weatherAPI = require('./api/weather').weather;
 const reverseGeoCodingAPI = require('./api/geocoding').reverseGeoCoding;
 const searchCityName = require('./api/search-cityname').searchCityName;
-const xiaoxihomeFeedback = require('./api/xiaoxihome-feedback');
+const xiaoxihomeFeedback = require('./api/xiaoxihome/xiaoxihome-feedback');
+const xiaoxihomeAboutpageData = require('./api/xiaoxihome/aboutpage/xiaoxihome-aboutpage-data');
 
 
 
@@ -33,6 +34,7 @@ searchCityName(app);
 weatherAPI(app);
 reverseGeoCodingAPI(app);
 xiaoxihomeFeedback(app);
+xiaoxihomeAboutpageData(app);
 
 
 app.get('*', (req, res) => {
