@@ -1,6 +1,6 @@
 import React, {Dispatch, SetStateAction, useEffect, useRef, useState} from 'react';
 import './aboutPage.css';
-import { MdRadioButtonUnchecked, MdRadioButtonChecked, MdPowerSettingsNew , MdDone, MdError} from "react-icons/md";
+import { MdRadioButtonUnchecked, MdRadioButtonChecked, MdPowerSettingsNew , MdDone, MdErrorOutline} from "react-icons/md";
 import { setTitle } from "../../tools/set-title";
 import { myScrollTo } from "../../tools/myScrollTo";
 import { Link } from "react-router-dom";
@@ -184,7 +184,7 @@ function AboutPageLoadingStatusRow(props: AboutPageLoadingStatusRowProps) {
             </Grid>
             <Grid item>
                 { props.isFinished && <MdDone/> }
-                { props.isError && <MdError/> }
+                { props.isError && <MdErrorOutline/> }
             </Grid>
         </Grid>
     )
@@ -196,7 +196,7 @@ function AboutPageLoadingStatus(props: AboutPageLoadingProps) {
         graphQLLoaded: props.isGraphQLDataLoaded && !props.isImageLoaded && !props.isGraphQLDataError && !props.isImageLoadingError,
         graphQLError: !props.isGraphQLDataLoaded && !props.isImageLoaded && !props.isGraphQLDataError && !props.isImageLoadingError,
         imageLoaded: props.isGraphQLDataLoaded && props.isImageLoaded && !props.isGraphQLDataError && !props.isImageLoadingError,
-        imageError: props.isGraphQLDataLoaded && !props.isImageLoaded && !props.isGraphQLDataError && props.isImageLoadingError,
+        imageError: props.isGraphQLDataLoaded && !props.isGraphQLDataError && props.isImageLoadingError,
     };
 
     if (LOADING_STATUS.startLoading) {
