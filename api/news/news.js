@@ -10,12 +10,13 @@ const HEAD_LINE_URL = BASE_URL + API_KEY_COMPONENT;
 const CATEGORIES = [`business`, `entertainment`, `health`, `science`, `sports`, `technology`];
 const CATEGORIES_URLS = CATEGORIES.map(_ => BASE_URL + CATEGORY_BASE + _ + API_KEY_COMPONENT);
 
-const CACHE = {};
+let CACHE = {};
 let LAST_UPDATE_AT;
 let SCHEDULED_UPDATE_TIMER;
 const UPDATE_INTERVAL = 60 * 60 * 1000; // 60 minutes
+const CATEGORY_REQUEST_INTERVAL = 10 * 1000; // 10 seconds
 
-function getNews(url, cacheKey) {
+function getNews(url, cacheKey, isLast) {
     https.get(url, (res) => {
         let body = '';
         res.on('data', (data) => {
@@ -24,7 +25,12 @@ function getNews(url, cacheKey) {
         res.on('end', () => {
             body = JSON.parse(body);
             if (body.status === 'ok') {
-                CACHE[cacheKey] = body
+                CACHE = Object.assign({}, CACHE, { [cacheKey]: body} );
+                console.log(`${cacheKey} news last updated at: `, Date.now());
+                if (isLast)  {
+                    LAST_UPDATE_AT = Date.now();
+                    console.log('All news last updated at: ', LAST_UPDATE_AT);
+                }
             }
         });
     })
@@ -34,11 +40,20 @@ function getNews(url, cacheKey) {
 }
 
 function getAllNews() {
-    LAST_UPDATE_AT = Date.now();
-    console.log('news last updated at: ', LAST_UPDATE_AT);
+    let i = 0;
+    const getNewsInQueue = () => {
+        const isLast = i === CATEGORIES.length - 1;
+        getNews(CATEGORIES_URLS[i], CATEGORIES[i], isLast);
+        i++;
+        if (!isLast) {
+            setTimeout(getNewsInQueue, CATEGORY_REQUEST_INTERVAL);
+        } else {
+            SCHEDULED_UPDATE_TIMER = setTimeout(getAllNews, UPDATE_INTERVAL);
+        }
+    };
+
     getNews(HEAD_LINE_URL, 'headline');
-    CATEGORIES_URLS.map((_, i) => getNews(_, CATEGORIES[i]));
-    SCHEDULED_UPDATE_TIMER = setTimeout(getAllNews, UPDATE_INTERVAL)
+    setTimeout(getNewsInQueue, CATEGORY_REQUEST_INTERVAL);
 }
 
 module.exports = {
