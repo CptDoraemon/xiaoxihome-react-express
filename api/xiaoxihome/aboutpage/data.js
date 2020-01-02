@@ -23,7 +23,7 @@ const data = [
         imageUrl: 'https://s3.us-east-2.amazonaws.com/xiaoxihome/about/6.png',
         title: 'About this Page',
         content: [
-            `The one-page-scroll effect in this page is build from scratch and abstracted as React hook.`,
+            `The one-page-scroll effect in this page was built from scratch and abstracted as React hook.`,
             `Data in this page are revoked from a GraphQL api.`,
             `The loading page was built with MaterialUI.`
         ]
@@ -32,7 +32,7 @@ const data = [
         imageUrl: 'https://s3.us-east-2.amazonaws.com/xiaoxihome/about/5.jpg',
         title: 'About this Website',
         content: [
-            ` This website is a showcase of my works, it was one of my first React projects therefore its infrastructure is far away from ideal, but there are many more interesting things I'm excited to try out, so I will just patch it up instead of starting over again for now.`,
+            `This website is a showcase of my works, it was one of my first React projects therefore its infrastructure is far away from ideal, but there are many more interesting things I'm excited to try out, so I will just patch it up instead of starting over again for now.`,
             `This website also serves as my playground: whenever I see some new thrilling techniques, I try to apply them into this website. And for the learning purpose, I attempt to use as few external package as possible.`
         ]
     }
