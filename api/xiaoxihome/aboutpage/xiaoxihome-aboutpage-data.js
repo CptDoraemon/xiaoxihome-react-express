@@ -67,7 +67,7 @@ const schema = new GraphQLSchema({query: QueryType});
 function xiaoxihomeAboutpageData(app) {
     app.use('/aboutpagedata', graphqlHTTP({
         schema: schema,
-        graphiql: true
+        graphiql: false
     }))
 }
 

@@ -1,3 +1,4 @@
+require('dotenv').config();
 const bodyParser = require('body-parser');
 const https = require('https');
 

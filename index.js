@@ -9,6 +9,7 @@ const reverseGeoCodingAPI = require('./api/geocoding').reverseGeoCoding;
 const searchCityName = require('./api/search-cityname').searchCityName;
 const xiaoxihomeFeedback = require('./api/xiaoxihome/xiaoxihome-feedback');
 const xiaoxihomeAboutpageData = require('./api/xiaoxihome/aboutpage/xiaoxihome-aboutpage-data');
+const getNewsGraphQL = require('./api/news/scheme');
 
 
 
@@ -35,6 +36,7 @@ weatherAPI(app);
 reverseGeoCodingAPI(app);
 xiaoxihomeFeedback(app);
 xiaoxihomeAboutpageData(app);
+getNewsGraphQL(app);
 
 
 app.get('*', (req, res) => {
