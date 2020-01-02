@@ -13,7 +13,7 @@ const CATEGORIES_URLS = CATEGORIES.map(_ => BASE_URL + CATEGORY_BASE + _ + API_K
 const CACHE = {};
 let LAST_UPDATE_AT;
 let SCHEDULED_UPDATE_TIMER;
-const UPDATE_INTERVAL = 30 * 60 * 1000; // 30 minutes
+const UPDATE_INTERVAL = 60 * 60 * 1000; // 60 minutes
 
 function getNews(url, cacheKey) {
     https.get(url, (res) => {

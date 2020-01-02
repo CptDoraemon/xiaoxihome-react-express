@@ -12,7 +12,7 @@ const data = [
     {
         imageUrl: 'https://s3.us-east-2.amazonaws.com/xiaoxihome/about/3.jpg',
         title: 'Developer',
-        content: [`I love coding. JavaScript is where I started, it's easy to use and share: a text editor and a web browser are all I need. I also use Python sometimes, it allows me to extend my coding skill outside of web browser. I'm also trying out other languages such as Dart and Python.`]
+        content: [`I love coding. JavaScript is where I started, it's easy to use and share: a text editor and a web browser are all I need. I also use Python sometimes, it allows me to extend my coding skill outside of web browser. I'm also trying out other languages such as Dart.`]
     },
     {
         imageUrl: 'https://s3.us-east-2.amazonaws.com/xiaoxihome/about/4.jpg',
