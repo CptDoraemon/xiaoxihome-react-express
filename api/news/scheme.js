@@ -7,7 +7,7 @@ const corsOptions = {
 };
 
 const getAllNews = require('./news').getAllNews;
-const cache = require('./news').cache;
+const getCache = require('./news').getCache;
 const graphqlHTTP = require('express-graphql');
 const {
     GraphQLObjectType,
@@ -57,7 +57,9 @@ function getNewsGraphQL(app) {
                     category: { type: ArticleCategoryType }
                 },
                 resolve: (source, {category}) => {
-                    const data = cache[category].articles;
+                    console.log(category);
+                    console.log(getCache());
+                    const data = getCache()[category].articles;
                     return data.map(_ => ({
                         source: _.source.name,
                         author: _.author,
@@ -77,7 +79,7 @@ function getNewsGraphQL(app) {
 
     app.use('/api/news', cors(corsOptions), graphqlHTTP({
         schema: schema,
-        graphiql: false
+        graphiql: true
     }))
 }
 

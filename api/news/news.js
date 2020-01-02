@@ -11,6 +11,7 @@ const CATEGORIES = [`business`, `entertainment`, `health`, `science`, `sports`, 
 const CATEGORIES_URLS = CATEGORIES.map(_ => BASE_URL + CATEGORY_BASE + _ + API_KEY_COMPONENT);
 
 let CACHE = {};
+const getCache = () => CACHE;
 let LAST_UPDATE_AT;
 let SCHEDULED_UPDATE_TIMER;
 const UPDATE_INTERVAL = 60 * 60 * 1000; // 60 minutes
@@ -25,8 +26,9 @@ function getNews(url, cacheKey, isLast) {
         res.on('end', () => {
             body = JSON.parse(body);
             if (body.status === 'ok') {
-                CACHE = Object.assign({}, CACHE, { [cacheKey]: body} );
+                CACHE = Object.assign({}, CACHE, { [cacheKey]: body } );
                 console.log(`${cacheKey} news last updated at: `, Date.now());
+                console.log(CACHE);
                 if (isLast)  {
                     LAST_UPDATE_AT = Date.now();
                     console.log('All news last updated at: ', LAST_UPDATE_AT);
@@ -58,5 +60,5 @@ function getAllNews() {
 
 module.exports = {
     getAllNews: getAllNews,
-    cache: CACHE
+    getCache: getCache
 };
