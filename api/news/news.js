@@ -28,7 +28,6 @@ function getNews(url, cacheKey, isLast) {
             if (body.status === 'ok') {
                 CACHE = Object.assign({}, CACHE, { [cacheKey]: body } );
                 console.log(`${cacheKey} news last updated at: `, Date.now());
-                console.log(CACHE);
                 if (isLast)  {
                     LAST_UPDATE_AT = Date.now();
                     console.log('All news last updated at: ', LAST_UPDATE_AT);
