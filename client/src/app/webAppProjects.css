@@ -90,6 +90,7 @@
     z-index: 1;
     display: inline-block;
     vertical-align: top;
+    text-indent: 0;
 }
 .web-app-link-animation a:after {
     z-index: -1;

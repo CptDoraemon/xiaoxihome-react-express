@@ -42,17 +42,16 @@ const webAppProjectData: Array<WebAppProject | WebAppProjectCollections> = [
     },
     {
         pageType: PageType.SINGLE,
-        title: 'Youtube Downloader',
-        demoLink: 'https://cptdoraemon.github.io/youtube-downloader/',
-        githubLink: 'https://github.com/CptDoraemon/youtube-downloader',
+        title: 'News App',
+        demoLink: 'https://cptdoraemon.github.io/news-app/',
+        githubLink: 'https://github.com/CptDoraemon/news-app',
         description:
             `
-            <p>An app to download mp3 from Youtube playlist.</p>
-            <p>For legal reasons only the frontend is hosted. </p>
-            <p>This app is Node ready and it relies on ytdl package to actually download assets from Youtube, in case it's not working, please update ytdl to latest version. </p>
-            <p>https://github.com/CptDoraemon/youtube-downloader</p>
+            <p>A news app built with TypeScript, React, Redux, MaterialUI, GraphQL, and NodeJS. </p>
+            <p>News data courtesy of <a href="https://newsapi.org/" target="_blank" rel='noopener noreferrer'>NewsAPI.org</a>.</p>
+            <p>My NodeJS server request and cache news data from NewsAPI.org every hour, then exposed as GraphQL API for my front end app.</p>
             `,
-        summary: 'An app to download youtube videos.',
+        summary: 'A app to provide Canada news in the categories of headline, business, entertainment, health, science, sports and technology.',
     },
     {
         pageType: PageType.SINGLE,
@@ -101,6 +100,14 @@ const webAppProjectData: Array<WebAppProject | WebAppProjectCollections> = [
                 githubLink: 'https://github.com/CptDoraemon/parallax-container',
                 description: `
                     <p>A parallax effect component library for React. The front page of XiaoxiHome has CSS 3D transforms based parallax effect, it has good performance but with some compatibility issues. This library uses JS approach, with acceptable performance and better consistency across platforms.</p>
+                `
+            },
+            {
+                title: 'Youtube Downloader',
+                demoLink: 'https://cptdoraemon.github.io/youtube-downloader/',
+                githubLink: 'https://github.com/CptDoraemon/youtube-downloader',
+                description: `
+                    <p>An app to download mp3 from Youtube videos, playlists and mixlists. Only the front end is demonstrated for legal reasons, the github repo is ready to be deployed on NodeJS server though.</p>
                 `
             },
             {

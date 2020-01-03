@@ -60,7 +60,7 @@ function WebAppProjectTemplate(props: WebAppProjectTemplateProps) {
         <div className='web-app-project-template-body color1'>
             <div className='web-app-project-template-wrapper'>
                 <h1> { props.data.title } </h1>
-                <div dangerouslySetInnerHTML={{__html: props.data.description }} />
+                <div dangerouslySetInnerHTML={{__html: props.data.description }} className={'web-app-link-animation'}/>
                 <div className={'web-app-project-template-button-wrapper'}>
                     <FlipButton link={props.data.demoLink} text={'Open in a new window'}/>
                     <FlipButton link={props.data.githubLink} text={'Github'}/>
