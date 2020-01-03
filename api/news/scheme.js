@@ -57,8 +57,6 @@ function getNewsGraphQL(app) {
                     category: { type: ArticleCategoryType }
                 },
                 resolve: (source, {category}) => {
-                    console.log(category);
-                    console.log(getCache());
                     const data = getCache()[category].articles;
                     return data.map(_ => ({
                         source: _.source.name,
