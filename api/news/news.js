@@ -16,7 +16,7 @@ const getCache = () => CACHE;
 let LAST_UPDATE_AT;
 let SCHEDULED_UPDATE_TIMER;
 const UPDATE_INTERVAL = 60 * 60 * 1000; // 60 minutes
-const CATEGORY_REQUEST_INTERVAL = 1 * 1000; // 10 seconds
+const CATEGORY_REQUEST_INTERVAL = 10 * 1000; // 10 seconds
 
 function getNews(url, cacheKey, isLast) {
     https.get(url, (res) => {
