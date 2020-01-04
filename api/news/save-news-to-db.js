@@ -68,6 +68,10 @@ function savingNewsCacheObjectToDB(newsCacheObject, requestedAt) {
                                 console.log('News Cache Saved to Database');
                             }
                         })
+                    } else {
+                        if (isLast) {
+                            console.log('News Cache Saved to Database');
+                        }
                     }
                 });
 
