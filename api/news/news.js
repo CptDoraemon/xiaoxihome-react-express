@@ -1,6 +1,7 @@
 require('dotenv').config();
 const bodyParser = require('body-parser');
 const https = require('https');
+const savingNewsCacheObjectToDB = require('./save-news-to-db');
 
 const API_KEY_COMPONENT = `&apiKey=${process.env.NEWS_API_KEY}`;
 const BASE_URL = `https://newsapi.org/v2/top-headlines?country=ca`;
@@ -15,7 +16,7 @@ const getCache = () => CACHE;
 let LAST_UPDATE_AT;
 let SCHEDULED_UPDATE_TIMER;
 const UPDATE_INTERVAL = 60 * 60 * 1000; // 60 minutes
-const CATEGORY_REQUEST_INTERVAL = 10 * 1000; // 10 seconds
+const CATEGORY_REQUEST_INTERVAL = 1 * 1000; // 10 seconds
 
 function getNews(url, cacheKey, isLast) {
     https.get(url, (res) => {
@@ -31,6 +32,7 @@ function getNews(url, cacheKey, isLast) {
                 if (isLast)  {
                     LAST_UPDATE_AT = Date.now();
                     console.log('All news last updated at: ', LAST_UPDATE_AT);
+                    savingNewsCacheObjectToDB(Object.assign({}, CACHE), LAST_UPDATE_AT)
                 }
             }
         });
