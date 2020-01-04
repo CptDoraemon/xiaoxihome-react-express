@@ -79,10 +79,11 @@ function Page(props: PageProps) {
 }
 
 function useOnePageScroll(initialValue: number, pageCount: number) {
-    const [currentAtPage, setCurrentAtPage] = useState(initialValue);
+    const currentAtPageState = useState(initialValue);
+    const [currentAtPage, setCurrentAtPage] = currentAtPageState;
     const [isScrolling, setIsScrolling] = useState(false);
     const DEBOUNCE_TIMER = 2000;
-    let timeoutId: any;
+    let timeoutId: ReturnType<typeof setTimeout>;
 
     function scrollHandler(e: WheelEvent) {
         if (isScrolling) return;
@@ -116,10 +117,7 @@ function useOnePageScroll(initialValue: number, pageCount: number) {
         return () => clearTimeout(timeoutId)
     }, []);
 
-    return {
-        currentAtPage,
-        setCurrentAtPage
-    }
+    return currentAtPageState;
 }
 
 
@@ -131,7 +129,7 @@ function AboutPageLoaded(props: AboutPageLoadedProps) {
 
     const pageRefs = props.pageData.map(() => useRef<HTMLDivElement>(document.createElement("div")));
 
-    const {currentAtPage, setCurrentAtPage} = useOnePageScroll(0, props.pageData.length);
+    const [currentAtPage, setCurrentAtPage] = useOnePageScroll(0, props.pageData.length);
 
     if (!IS_MOBILE) {
         useEffect(() => {
