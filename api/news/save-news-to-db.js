@@ -16,67 +16,155 @@ const newsArticleSchema = new mongoose.Schema({
     requestedAt: String,
     category: String
 });
-const NewsArticle = mongoose.model('News', newsArticleSchema);
+const NewsArticleModel = mongoose.model('News', newsArticleSchema);
+const MAX_COLLECTION_SIZE = 300 * 1024 * 1024; // 300 mb
 
-function savingNewsCacheObjectToDB(newsCacheObject, requestedAt) {
-    mongoose.connect(MONGODB_URI, {
-        useNewUrlParser: true ,
-        useUnifiedTopology: true
-    })
-        .catch((e) => {
-            console.log(e)
-        });
-    const db = mongoose.connection;
+async function savingNewsCacheObjectToDB(newsCacheObject, requestedAt) {
+    try {
+        // 1
+        await connectToDB();
 
-    db.on('error', (err) => {
-        console.log('db connection error when saving news', err);
-    });
-    db.once('open', () => {
-        console.log('Saving News Cache to Database');
-        Object.keys(newsCacheObject).forEach((key, categoryIndex, categoryArray) => {
-            if (!newsCacheObject[key].articles || !newsCacheObject[key].articles.length) return;
-            const newsInCategoryArray = newsCacheObject[key]['articles'];
-            newsInCategoryArray.forEach((article, articleIndex, articlesArray) => {
-                const isLast = (categoryIndex === categoryArray.length - 1) && (articleIndex === articlesArray.length - 1);
-                const query = NewsArticle.where({
-                    title: article.title,
-                    url: article.url,
-                    category: key
-                });
-                query.findOne((err, foundArticle) => {
-                    if (err) {
-                        console.log(`err when saving article to db`, err);
-                    }
-                    if (!foundArticle) {
-                        const nonNullArticle = Object.assign({}, article);
-                        Object.keys(nonNullArticle).forEach((key) => {
-                            if (key === 'source') {
-                                if (!nonNullArticle.source.id) nonNullArticle.source.id = '';
-                                if (!nonNullArticle.source.name) nonNullArticle.source.name = '';
-                            }
-                            if (nonNullArticle[key] === null) nonNullArticle[key] = '';
-                        });
+        // 2
+        const savingNewsArticlePromiseArray = mapNewsCacheObjectToPromiseArray(newsCacheObject, requestedAt);
+        const savingStatus = await Promise.all(savingNewsArticlePromiseArray);
+        const savedArticlesCount = savingStatus.reduce((a, b) => a + b, 0);
+        console.log(`${savedArticlesCount} articles saved to database`);
 
-                        const newNewsArticle = new NewsArticle({
-                            ...nonNullArticle,
-                            requestedAt: requestedAt,
-                            category: key
-                        });
-                        newNewsArticle.save((err) => {
-                            if (err) console.log(err);
-                            if (isLast) {
-                                console.log('News Cache Saved to Database');
-                            }
-                        })
-                    } else {
-                        if (isLast) {
-                            console.log('News Cache Saved to Database');
-                        }
-                    }
-                });
+        // 3
+        await cleanUpAfterSavingToDB();
+        console.log(`news API database operations done`);
+    } catch (e) {
+        console.log(e);
+    }
+}
 
-            })
+function connectToDB() {
+    return new Promise((resolve, reject) => {
+        mongoose.connect(MONGODB_URI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
         })
+            .catch((e) => {
+                console.log(e);
+                reject(e);
+            });
+
+        const db = mongoose.connection;
+        db.on('error', (err) => {
+            console.log('db connection error when saving news', err);
+            reject(err);
+        });
+        db.once('open', () => {
+            resolve();
+        })
+    })
+}
+
+function mapNewsCacheObjectToPromiseArray(newsCacheObject, requestedAt) {
+    const savingNewsArticlePromiseArray = [];
+    Object.keys(newsCacheObject).forEach((category) => {
+        if (!newsCacheObject[category]['articles'] || !newsCacheObject[category]['articles'].length) return;
+        const newsInCategoryArray = newsCacheObject[category]['articles'];
+        newsInCategoryArray.forEach((article) => {
+            savingNewsArticlePromiseArray.push(saveOneArticleToDBWhenNeeded(article, category, requestedAt))
+        });
+    });
+    return savingNewsArticlePromiseArray;
+}
+
+function saveOneArticleToDBWhenNeeded(article, category, requestedAt) {
+    return new Promise(async (resolve, reject) => {
+        const foundArticle = await queryIfArticleExisted(article, category);
+        if (!foundArticle) {
+            await doSaveOneArticleToDB(article, category, requestedAt);
+            resolve(1);
+        }
+        resolve(0);
+    })
+}
+
+function doSaveOneArticleToDB(article, category, requestedAt) {
+    return new Promise((resolve, reject) => {
+        const nonNullArticle = nonNullifyArticleObject(article);
+        const newNewsArticle = new NewsArticleModel({
+            ...nonNullArticle,
+            requestedAt: requestedAt,
+            category: category
+        });
+        newNewsArticle.save((err) => {
+            if (err) console.log(err);
+            resolve();
+        })
+    });
+}
+
+function queryIfArticleExisted(article, category) {
+    return new Promise((resolve, reject) => {
+        const query = NewsArticleModel.where({
+            title: article.title,
+            url: article.url,
+            category: category
+        });
+        query.findOne((err, foundArticle) => {
+            if (err) {
+                console.log(`err when saving article to db`);
+                reject(err);
+            }
+            resolve(foundArticle);
+        })
+    })
+}
+
+function nonNullifyArticleObject(article) {
+    const nonNullArticle = Object.assign({}, article);
+    Object.keys(nonNullArticle).forEach((key) => {
+        if (key === 'source') {
+            if (!nonNullArticle.source.id) nonNullArticle.source.id = '';
+            if (!nonNullArticle.source.name) nonNullArticle.source.name = '';
+        }
+        if (nonNullArticle[key] === null) nonNullArticle[key] = '';
+    });
+    return nonNullArticle;
+}
+
+function cleanUpAfterSavingToDB() {
+    return new Promise(async (resolve, reject) => {
+        const deletedCount = await trimDBtoMaxStorageSizeIfNeeded();
+        console.log (`${deletedCount} documents deleted to restrict collection size`);
+        resolve();
+    });
+}
+
+async function trimDBtoMaxStorageSizeIfNeeded() {
+    return new Promise(async (resolve, reject) => {
+        const currentCollectionSize = await getDBStorageSize();
+        console.log(`current collection size: ${currentCollectionSize}; max allowed collection size: ${MAX_COLLECTION_SIZE}.`);
+        if (currentCollectionSize > MAX_COLLECTION_SIZE) {
+            await removeOldestRecordFromDB();
+            const deleteCount = await trimDBtoMaxStorageSizeIfNeeded();
+            resolve(deleteCount + 1);
+        } else {
+            resolve(0);
+        }
+    })
+}
+
+function removeOldestRecordFromDB() {
+    return new Promise((resolve, reject) => {
+        NewsArticleModel.findOneAndRemove({}, {sort: {'_id': 1}}, (err, doc) => {
+            if (err) reject();
+            console.log('document deleted: ', doc);
+            resolve();
+        });
+    })
+}
+
+function getDBStorageSize() {
+    return new Promise((resolve, reject) => {
+        NewsArticleModel.collection.stats((err, result) => {
+            if (err) reject();
+            resolve(result.size);
+        });
     });
 }
 
