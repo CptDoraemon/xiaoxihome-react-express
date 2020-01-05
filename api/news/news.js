@@ -28,10 +28,10 @@ function getNews(url, cacheKey, isLast) {
             body = JSON.parse(body);
             if (body.status === 'ok') {
                 CACHE = Object.assign({}, CACHE, { [cacheKey]: body } );
-                console.log(`${cacheKey} news last updated at: `, Date.now());
+                console.log(`${cacheKey} news updated at: `, Date.now());
                 if (isLast)  {
                     LAST_UPDATE_AT = Date.now();
-                    console.log('All news last updated at: ', LAST_UPDATE_AT);
+                    console.log('All news updated at: ', LAST_UPDATE_AT);
                     savingNewsCacheObjectToDB(Object.assign({}, CACHE), LAST_UPDATE_AT)
                 }
             }
@@ -55,8 +55,8 @@ function getAllNews() {
         }
     };
 
-    getNews(HEAD_LINE_URL, 'headline');
-    setTimeout(getNewsInQueue, CATEGORY_REQUEST_INTERVAL);
+    setTimeout(() => getNews(HEAD_LINE_URL, 'headline', false), CATEGORY_REQUEST_INTERVAL);
+    setTimeout(getNewsInQueue, 2 * CATEGORY_REQUEST_INTERVAL);
 }
 
 module.exports = {

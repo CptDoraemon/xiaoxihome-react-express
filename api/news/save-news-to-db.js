@@ -138,7 +138,8 @@ function cleanUpAfterSavingToDB() {
 async function trimDBtoMaxStorageSizeIfNeeded() {
     return new Promise(async (resolve, reject) => {
         const currentCollectionSize = await getDBStorageSize();
-        console.log(`current collection size: ${currentCollectionSize}; max allowed collection size: ${MAX_COLLECTION_SIZE}.`);
+        console.log(`current collection size: ${currentCollectionSize}`);
+        console.log(`max collection size allowed: ${MAX_COLLECTION_SIZE}`);
         if (currentCollectionSize > MAX_COLLECTION_SIZE) {
             await removeOldestRecordFromDB();
             const deleteCount = await trimDBtoMaxStorageSizeIfNeeded();
