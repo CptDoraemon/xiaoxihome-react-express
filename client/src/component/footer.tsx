@@ -92,7 +92,7 @@ class Footer extends React.Component<FooterProps, FooterState> {
                     </ul>
                 </div>
                 <div className='copyright'>
-                    <p>&copy; Xiaoxi 2018-2019</p>
+                    <p>&copy; Xiaoxi 2018-2020</p>
                 </div>
             </div>
         )
