@@ -1,7 +1,7 @@
 #!/bin/bash
 # Get directory and file tree in /src
 
-FILE='README.md'
+FILE='README.txt'
 
 find ./src -not -path '*/\.*' > $FILE
 
