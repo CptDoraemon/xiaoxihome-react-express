@@ -1,16 +1,15 @@
 import * as React from 'react';
 import './footer.css';
 import { Link } from "react-router-dom";
-import mappedDataForProps from "../data";
+import mappedDataForProps, {RouterInfo} from "../data";
 
 enum DropListStyle {
     ACTIVE = 'drop-list drop-list-active',
     INACTIVE = 'drop-list drop-list-inactive'
 }
 
-interface LinkInfo {
-    link: string;
-    title: string;
+interface LinkInfo extends RouterInfo {
+
 }
 
 interface MultiLinkInfo {
@@ -76,7 +75,11 @@ class Footer extends React.Component<FooterProps, FooterState> {
                         {
                             this.allLinks.map((linkInfo: any, index: number) => {
                                 if (typeof linkInfo.link === 'string') {
-                                    return <Link key={index} to={linkInfo.link}><li> {linkInfo.title} </li></Link>
+                                    return (
+                                            linkInfo.isExternal ?
+                                                <a key={index} href={linkInfo.link}><li> {linkInfo.title} </li></a> :
+                                                <Link key={index} to={linkInfo.link}><li> {linkInfo.title} </li></Link>
+                                        )
                                 } else {
                                     return (
                                         <React.Fragment key={index}>

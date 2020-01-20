@@ -1,8 +1,8 @@
-import React, {CSSProperties, ReactComponentElement, ReactElement} from 'react';
+import React, {CSSProperties} from 'react';
 import './header.css';
 import { Link } from "react-router-dom";
 import { IoIosList, IoIosClose } from "react-icons/io";
-import mappedDataForProps from "../data";
+import mappedDataForProps, {RouterInfo} from "../data";
 
 
 interface DropdownListProps {
@@ -86,12 +86,16 @@ function List(props: ListProps) {
     return (
         <ul>
             {
-                props.headerLists.map((linkInfo, index: number) => {
+                props.headerLists.map((linkInfo: any, index: number) => {
                     if (typeof linkInfo.link === "string") {
                         return (
-                            <Link to={linkInfo.link} key={index}>
-                                <li> <span>{linkInfo.title}</span> </li>
-                            </Link>
+                            linkInfo.isExternal ?
+                                <a href={linkInfo.link} key={index}>
+                                    <li> <span>{linkInfo.title}</span> </li>
+                                </a> :
+                                <Link to={linkInfo.link} key={index}>
+                                    <li> <span>{linkInfo.title}</span> </li>
+                                </Link>
                         )
                     } else {
                         return (
@@ -109,9 +113,8 @@ enum MobileHeaderCoverClass {
     ACTIVE = 'header-cover-mobile'
 }
 
-interface LinkInfo {
-    link: string;
-    title: string;
+interface LinkInfo extends RouterInfo {
+
 }
 
 interface MultiLinkInfo {

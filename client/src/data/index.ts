@@ -1,6 +1,6 @@
 import academicProjectsData, { AcademicProject } from "./academicProjectData";
 import webAppProjectData, {WebAppProject, WebAppProjectCollections} from "./webAppProjectData";
-import galleryData, {Album, galleryPreviewData, Photo} from "./galleryData";
+import galleryData, {galleryPreviewData} from "./galleryData";
 import { titleConvertToLink } from "../tools/title-convert-to-link";
 
 enum Sections {
@@ -14,6 +14,7 @@ enum HeaderNFooterLists {
     WORK = 'WORK',
     CONTACT = 'CONTACT',
     ABOUT = 'ABOUT',
+    BLOG = 'BLOG'
 }
 
 const appData = {
@@ -24,9 +25,10 @@ const appData = {
 };
 
 // data for Frontpage
-interface RouterInfo {
+export interface RouterInfo {
     title: string;
     link: string;
+    isExternal?: boolean;
 }
 
 interface RouterInfoWithImage extends RouterInfo{
@@ -86,6 +88,11 @@ const mappedDataForHeaderNFooter: Array<MultiLinkInfo | RouterInfo> = [
     {
         title: HeaderNFooterLists.WORK,
         link: allWorksLink
+    },
+    {
+        title: HeaderNFooterLists.BLOG,
+        link: 'https://blog.xiaoxihome.com',
+        isExternal: true
     },
     {
         title: HeaderNFooterLists.ABOUT,
