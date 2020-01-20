@@ -106,7 +106,7 @@
 .cover-header-dropdown {
     position: absolute;
     top: 50px;
-    left: calc(50% - 150px);
+    left: calc(50% - 250px);
     color: white;
     margin: 0;
     width: fit-content;
