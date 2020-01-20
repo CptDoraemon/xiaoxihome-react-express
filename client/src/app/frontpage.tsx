@@ -28,8 +28,9 @@ interface CoverProps {
 function initImageOrder() {
     const isReturningViewer = window.localStorage.getItem('isReturningViewer') === 'true';
     let imageOrder;
+    const imageCount = 3;
     if (isReturningViewer) {
-        imageOrder = (Date.now() % 4) + 1;
+        imageOrder = (Date.now() % imageCount) + 1;
     } else {
         window.localStorage.setItem('isReturningViewer', 'true');
         imageOrder = 1;

@@ -76,10 +76,11 @@
     justify-content: flex-start;
 }
 .cover-intro-inner h1 {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 800;
     color: white;
     font-size: 72px;
     line-height: 144px;
-    font-weight: bold;
     text-align: center;
     margin: 0;
 }
@@ -366,14 +367,11 @@
         height: auto;
         transform: none;
     }
-    .cover-intro-inner {
-        justify-content: center;
-    }
     .cover-intro-inner h1 {
-        font-size: 36px;
-        line-height: 42px;
+        font-size: 60px;
+        line-height: 65px;
         word-spacing: 100vw;
-        letter-spacing: 3px;
+        user-select: none;
     }
     .project-container {
         width: 100%;
