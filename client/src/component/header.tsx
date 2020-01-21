@@ -1,8 +1,9 @@
-import React, {CSSProperties} from 'react';
+import React from 'react';
 import './header.css';
 import { Link } from "react-router-dom";
 import { IoIosList, IoIosClose } from "react-icons/io";
 import mappedDataForProps, {RouterInfo} from "../data";
+import StickyEffect from "../tools/sticky-effect";
 
 
 interface DropdownListProps {
@@ -166,72 +167,6 @@ class HeaderCover extends React.Component<HeaderCoverProps, HeaderCoverStates> {
     }
 }
 
-interface StickyHOCProps {
-    propsForWrapper: {
-        stickyStartHeight: number
-    }
-
-    passOnProps: any
-}
-
-interface StickyHOCStates {
-    isFixed: boolean
-}
-
-function withStickyEffect(WrappedComponent: React.ComponentType<any>) {
-
-    return class extends React.Component<StickyHOCProps, StickyHOCStates> {
-
-        stickyStartHeight: number = this.props.propsForWrapper.stickyStartHeight;
-        isFixedStyle: CSSProperties = {
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100%'
-        };
-        isNotFixedStyle: CSSProperties = {
-            position: 'relative',
-            width: '100%'
-        };
-
-        constructor(props: StickyHOCProps) {
-            super(props);
-            this.state = {
-                isFixed: false
-            };
-            this.scrollHandler = this.scrollHandler.bind(this);
-        }
-
-        scrollHandler() {
-            const scrolled = window.scrollY;
-            if (scrolled >= this.stickyStartHeight && !this.state.isFixed) {
-                this.setState({isFixed: true})
-            } else if (scrolled < this.stickyStartHeight && this.state.isFixed) {
-                this.setState({isFixed: false})
-            }
-        }
-
-        componentDidMount(){
-            document.addEventListener('scroll', this.scrollHandler);
-        };
-
-        componentWillUnmount(){
-            document.removeEventListener('scroll', this.scrollHandler);
-        };
-
-        render() {
-            return (
-                <div style={this.state.isFixed ? {...this.isFixedStyle} : {...this.isNotFixedStyle}}>
-                        <WrappedComponent {...this.props.passOnProps} />
-                </div>
-            )
-        }
-    }
-}
-
-const StickyList: React.ComponentType<StickyHOCProps> = withStickyEffect(List);
-
-
 interface StickyHeader {
     headerTitle: string
 }
@@ -241,7 +176,9 @@ function StickyHeader(props: StickyHeader) {
             <div>
                 <div className={'sticky-header-wrapper'}>
                     <h1 className={'sticky-header-title'}> {props.headerTitle} </h1>
-                    <StickyList propsForWrapper={{stickyStartHeight: 50}} passOnProps={{headerLists: mappedDataForProps.header, dropdownClassName: 'sticky-header-dropdown'}}/>
+                    <StickyEffect stickyStartHeight={50}>
+                        <List headerLists={mappedDataForProps.header} dropdownClassName={'sticky-header-dropdown'}/>
+                    </StickyEffect>
                 </div>
             </div>
     )
