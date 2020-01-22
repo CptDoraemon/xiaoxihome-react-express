@@ -50,13 +50,17 @@
     justify-content: center;
 }
 
+.frontpage-header-list-wrapper span {
+    display: block;
+    padding: 0 50px;
+}
+
 .frontpage-header-list-wrapper li {
     display: inline-block;
     height: 100px;
     width: fit-content;
     line-height: 100px;
     font-weight: 700;
-    padding: 0 50px;
     cursor: pointer;
     transition: opacity 300ms;
     font-size: 0.9rem;

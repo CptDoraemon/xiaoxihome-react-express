@@ -17,17 +17,6 @@
     justify-content: center;
 }
 
-.mobile-nav-bar-list {
-    position: absolute;
-    box-sizing: border-box;
-    top: 0;
-    left: 0;
-    z-index: -1;
-    width: 100%;
-    padding: 80px 16px 40px 16px;
-    background-color: rgba(37, 41, 45, 1);
-}
-
 .mobile-nav-bar-list-github-button {
     position: absolute;
     top: 0;
@@ -46,6 +35,22 @@
     font-weight: 700;
     border: solid 2px white;
     border-radius: 5px;
+}
+
+.mobile-nav-bar-list {
+    position: absolute;
+    box-sizing: border-box;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 100%;
+    padding: 80px 16px 40px 16px;
+    background-color: rgba(37, 41, 45, 1);
+}
+
+.mobile-nav-bar-list span {
+    display: block;
+    width: 100%;
 }
 
 .mobile-nav-bar-list ul {
@@ -73,7 +78,7 @@
 }
 
 .mobile-nav-bar-drop-down-list span {
-    padding: 8px 16px;
+    padding: 0 16px;
     opacity: 0.5;
 }
 

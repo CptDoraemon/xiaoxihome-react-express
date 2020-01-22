@@ -30,7 +30,6 @@
 .nav-bar-list-wrapper li {
     display: inline-block;
     font-weight: 700;
-    padding: 10px 50px;
     cursor: pointer;
     transition: opacity 300ms;
     font-size: 0.9rem;
@@ -42,8 +41,12 @@
     opacity: 1;
 }
 
+.nav-bar-list-wrapper span {
+    padding: 10px 50px;
+}
+
 @media only screen and (max-width: 800px) {
-    .nav-bar-list-wrapper li {
+    .nav-bar-list-wrapper span {
         padding: 10px 10px;
     }
 }

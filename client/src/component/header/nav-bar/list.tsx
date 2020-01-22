@@ -24,7 +24,7 @@ const DropDownButton: React.FC<MultiLinkButtonProps> = ({
     };
 
     return (
-        <li onClick={clickHandler} ref={buttonRef}>{ name }</li>
+        <li onClick={clickHandler} ref={buttonRef}><span>{ name }</span></li>
     )
 };
 
@@ -48,9 +48,9 @@ const List: React.FC<ListProps> = (
                         data.map((button, i) => {
                             if (button.type === ButtonType.LINK) {
                                 if ("isExternal" in button && button.isExternal) {
-                                    return <li key={i}><a href={button.link}>{ button.name }</a></li>
+                                    return <li key={i}><a href={button.link}><span>{ button.name }</span></a></li>
                                 } else {
-                                    return <li key={i}><Link to={button.link}>{ button.name }</Link></li>
+                                    return <li key={i}><Link to={button.link}><span>{ button.name }</span></Link></li>
                                 }
                             } else if (button.type === ButtonType.MULTILINK) {
                                 return <DropDownButton key={i} data={button.data} name={button.name} toggleDropDownList={toggleDropDownList}/>
