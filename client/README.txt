@@ -2,6 +2,8 @@
     ├── tools
         ├── set-JSONLD.js
         ├── set-title.js
+        ├── is-mobile.ts
+        ├── sticky-effect.tsx
         ├── myScrollTo.js
         ├── title-convert-to-link.js
     ├── app
@@ -27,10 +29,29 @@
         ├── footer.tsx
         ├── scrolltotop.js
         ├── missing404.css
-        ├── header.tsx
-        ├── header.css
         ├── mouseIcon.js
         ├── footer.css
+        ├── header
+            ├── index.tsx
+            ├── products
+                ├── frontpage-header.css
+                ├── frontpage-header.tsx
+                ├── post-header.css
+                ├── post-header.tsx
+            ├── nav-bar
+                ├── index.tsx
+                ├── nav-bar.tsx
+                ├── list.css
+                ├── nav-bar.css
+                ├── list.tsx
+                ├── drop-down-list.css
+                ├── drop-down-list.tsx
+            ├── index.css
+            ├── mobile-nav-bar
+                ├── mobile-nav-bar.css
+                ├── menu-button.tsx
+                ├── menu-button.css
+                ├── mobile-nav-bar.tsx
         ├── mouseIcon.css
     ├── index.css
     ├── flexbox.css
