@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
     "heroku-postbuild": "cd client && npm install && npm run build",
-    "deploy": "func() { cd client && npm run get-tree && cd .. & git add . && git commit -m $1 && git push && git push heroku master; }; func"
+    "deploy": "func() { cd client && npm run get-tree && cd .. & git add . && git commit -m $1 && git push; }; func"
   },
   "keywords": [],
   "author": "",
