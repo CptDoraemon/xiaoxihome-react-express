@@ -31,18 +31,20 @@ const DropDownButton: React.FC<MultiLinkButtonProps> = ({
 interface ListProps {
     className?: string,
     data: Array<LinkButton | MultiLinkButton>,
-    toggleDropDownList: ToggleDropDownList
+    toggleDropDownList: ToggleDropDownList,
+    maskHeight?: number
 }
 
 const List: React.FC<ListProps> = (
     {
-       className,
-       data,
-       toggleDropDownList
+        className,
+        data,
+        toggleDropDownList,
+        maskHeight
     }) => {
     return (
         <div className={className ? className : 'nav-bar-list-wrapper'}>
-            <div className={'nav-bar-list-mask'}>
+            <div className={'nav-bar-list-mask'} style={{height: `${maskHeight || 100}px`}}>
                 <ul>
                     {
                         data.map((button, i) => {

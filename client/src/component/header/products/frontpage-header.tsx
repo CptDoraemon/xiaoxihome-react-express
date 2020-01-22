@@ -16,6 +16,7 @@ const FrontpageHeader: React.FC<FrontpageHeaderProps> = ({data}) => {
                     dropDownListClassName={'frontpage-header-dropdown-wrapper'}
                     dropDownListFadeOut={true}
                     dropDownListCloseOnMouseLeave={true}
+                    maskHeight={200}
                 />
             </div>
         </div>

@@ -11,7 +11,8 @@ interface NavBarProps {
     listClassName?: string,
     dropDownListClassName?: string,
     dropDownListFadeOut?: boolean,
-    dropDownListCloseOnMouseLeave?: boolean
+    dropDownListCloseOnMouseLeave?: boolean,
+    maskHeight?: number
 }
 
 const NavBar: React.FC<NavBarProps> = (
@@ -20,7 +21,8 @@ const NavBar: React.FC<NavBarProps> = (
         listClassName,
         dropDownListClassName,
         dropDownListFadeOut,
-        dropDownListCloseOnMouseLeave
+        dropDownListCloseOnMouseLeave,
+        maskHeight
     }) => {
     const [
         isDropDownListActive,
@@ -45,7 +47,7 @@ const NavBar: React.FC<NavBarProps> = (
 
     return (
         <>
-            <List className={listClassName} data={data} toggleDropDownList={toggleDropDownList}/>
+            <List className={listClassName} data={data} toggleDropDownList={toggleDropDownList} maskHeight={maskHeight}/>
             <DropDownList
                 className={dropDownListClassName}
                 data={dropDownListData}
