@@ -17,7 +17,7 @@ import './frontpage.css';
 import  '../flexbox.css'
 import {setTitle} from "../tools/set-title";
 import {GitHubButton} from "./webAppProjects";
-import {FrontpageHeader} from "../component/header";
+import {FrontpageHeader, MobileNavBar} from "../component/header";
 import mappedDataForProps from "../data";
 // import {resetJSONLD, setSummaryPageJSONLD} from "../tools/set-JSONLD";
 
@@ -452,6 +452,7 @@ class Frontpage extends React.Component<FrontpageProps, FrontpageStates> {
         return (
             <div className='frontpage-main' ref={this.parallelBoxRef}>
                 <FrontpageHeader data={mappedDataForProps.header}/>
+                <MobileNavBar data={mappedDataForProps.header}/>
                 <Cover onClickMouseIcon={this.scrollToWorkRef}/>
 
                 <div className={'academic-and-web'}>
