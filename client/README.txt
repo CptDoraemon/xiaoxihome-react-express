@@ -1,70 +1,70 @@
 ├── src
-    ├── tools
-        ├── set-JSONLD.js
-        ├── set-title.js
-        ├── is-mobile.ts
-        ├── sticky-effect.tsx
-        ├── myScrollTo.js
-        ├── title-convert-to-link.js
+    ├── animations
+        ├── fly-in.js
+        ├── parallax.css
+        ├── parallax.js
+        ├── spin-loader.css
+        ├── spin-loader.js
     ├── app
-        ├── webAppProjects.tsx
-        ├── contact
-            ├── contact.css
-            ├── contact.js
-        ├── gallery
-            ├── gallery.tsx
-            ├── gallery.css
         ├── about
             ├── aboutPage.css
             ├── aboutPage.tsx
             ├── use-load-about-page-data.tsx
-        ├── webAppProjects.css
-        ├── academicProjects.tsx
-        ├── frontpage.tsx
-        ├── frontpage.css
         ├── academicProjects.css
-    ├── index.js
+        ├── academicProjects.tsx
+        ├── contact
+            ├── contact.css
+            ├── contact.js
+        ├── frontpage.css
+        ├── frontpage.tsx
+        ├── gallery
+            ├── gallery.css
+            ├── gallery.tsx
+        ├── webAppProjects.css
+        ├── webAppProjects.tsx
     ├── component
-        ├── missing404.js
-        ├── footer.tsx
-        ├── scrolltotop.js
-        ├── missing404.css
-        ├── mouseIcon.js
         ├── footer.css
+        ├── footer.tsx
         ├── header
+            ├── index.css
             ├── index.tsx
+            ├── mobile-nav-bar
+                ├── menu-button.css
+                ├── menu-button.tsx
+                ├── mobile-nav-bar.css
+                ├── mobile-nav-bar.tsx
+            ├── nav-bar
+                ├── drop-down-list.css
+                ├── drop-down-list.tsx
+                ├── index.tsx
+                ├── list.css
+                ├── list.tsx
+                ├── nav-bar.css
+                ├── nav-bar.tsx
             ├── products
                 ├── frontpage-header.css
                 ├── frontpage-header.tsx
                 ├── post-header.css
                 ├── post-header.tsx
-            ├── nav-bar
-                ├── index.tsx
-                ├── nav-bar.tsx
-                ├── list.css
-                ├── nav-bar.css
-                ├── list.tsx
-                ├── drop-down-list.css
-                ├── drop-down-list.tsx
-            ├── index.css
-            ├── mobile-nav-bar
-                ├── mobile-nav-bar.css
-                ├── menu-button.tsx
-                ├── menu-button.css
-                ├── mobile-nav-bar.tsx
+        ├── missing404.css
+        ├── missing404.js
         ├── mouseIcon.css
-    ├── index.css
-    ├── flexbox.css
-    ├── serviceWorker.js
-    ├── react-app-env.d.ts
+        ├── mouseIcon.js
+        ├── scrolltotop.js
     ├── data
-        ├── webAppProjectData.ts
         ├── academicProjectData.ts
-        ├── index.ts
         ├── galleryData.ts
-    ├── animations
-        ├── parallax.css
-        ├── spin-loader.js
-        ├── parallax.js
-        ├── spin-loader.css
-        ├── fly-in.js
+        ├── index.ts
+        ├── webAppProjectData.ts
+    ├── flexbox.css
+    ├── index.css
+    ├── index.js
+    ├── react-app-env.d.ts
+    ├── serviceWorker.js
+    ├── tools
+        ├── is-mobile.ts
+        ├── myScrollTo.js
+        ├── set-JSONLD.js
+        ├── set-title.js
+        ├── sticky-effect.tsx
+        ├── title-convert-to-link.js

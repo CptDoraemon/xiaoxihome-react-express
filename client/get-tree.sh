@@ -3,7 +3,7 @@
 
 FILE='README.txt'
 
-find ./src -not -path '*/\.*' > $FILE
+find ./src -not -path '*/\.*' | sort -n > $FILE
 
 sed -i '' -e '
 s;[^/]*/; /;g;
