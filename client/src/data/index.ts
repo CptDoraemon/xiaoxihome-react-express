@@ -1,7 +1,8 @@
-import academicProjectsData, { AcademicProject } from "./academicProjectData";
+import academicProjectsData, {AcademicProject} from "./academicProjectData";
 import webAppProjectData, {WebAppProject, WebAppProjectCollections} from "./webAppProjectData";
 import galleryData, {galleryPreviewData} from "./galleryData";
-import { titleConvertToLink } from "../tools/title-convert-to-link";
+import {titleConvertToLink} from "../tools/title-convert-to-link";
+import {ButtonType, DropDownListData, NavBarData} from "../component/header/nav-bar";
 
 enum Sections {
     ACADEMIC = 'ACADEMIC PROJECTS',
@@ -104,6 +105,62 @@ const mappedDataForHeaderNFooter: Array<MultiLinkInfo | RouterInfo> = [
     }
 ];
 
+const allWorksLinkForHeader: DropDownListData = [
+    {
+        sectionName: Sections.WEB,
+        data: webProjectsRouters.map((router) => ({
+            name: router.title,
+            link: router.link,
+            type: ButtonType.LINK
+        }))
+    },
+    {
+        sectionName: Sections.ACADEMIC,
+        data: academicProjectsRouters.map((router) => ({
+            name: router.title,
+            link: router.link,
+            type: ButtonType.LINK
+        }))
+    },
+    {
+        sectionName: Sections.ALBUMS,
+        data: albumRouters.map((router) => ({
+            name: router.title,
+            link: router.link,
+            type: ButtonType.LINK
+        }))
+    }
+];
+
+const mappedDataForHeader: NavBarData = [
+    {
+        name: HeaderNFooterLists.HOME,
+        link: '/home',
+        type: ButtonType.LINK
+    },
+    {
+        name: HeaderNFooterLists.WORK,
+        data: allWorksLinkForHeader,
+        type: ButtonType.MULTILINK
+    },
+    {
+        name: HeaderNFooterLists.BLOG,
+        link: 'https://blog.xiaoxihome.com',
+        isExternal: true,
+        type: ButtonType.LINK
+    },
+    {
+        name: HeaderNFooterLists.ABOUT,
+        link: '/about',
+        type: ButtonType.LINK
+    },
+    {
+        name: HeaderNFooterLists.CONTACT,
+        link: '/contact',
+        type: ButtonType.LINK
+    }
+];
+
 // mapped data for routers
 interface AcademicPageData extends RouterInfo {
     data: AcademicProject
@@ -142,7 +199,7 @@ const webPageData: Array<WebPageData> = webProjectsRouters.map((routerInfo: Rout
 const mappedDataForProps = {
     frontpage: mappedDataForFrontpageProps,
     footer: mappedDataForHeaderNFooter,
-    header: mappedDataForHeaderNFooter,
+    header: mappedDataForHeader,
     routers: {
         academic: [...academicPageData],
         web: [...webPageData]

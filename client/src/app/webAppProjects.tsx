@@ -1,8 +1,9 @@
 import React from 'react';
-import { StickyHeader } from "../component/header";
 import Footer from '../component/footer';
 import './webAppProjects.css';
 import {setTitle} from "../tools/set-title";
+import {PostHeader} from "../component/header";
+import mappedDataForProps from "../data";
 // import {resetJSONLD, setDetailPageJSONLD} from "../tools/set-JSONLD";
 
 enum PageType {
@@ -145,7 +146,7 @@ class WebAppProject extends React.Component<WebAppProjectProps, {}> {
     render() {
         return (
             <div>
-                <StickyHeader headerTitle={'Web App Project'}/>
+                <PostHeader title={'Web App Project'} data={mappedDataForProps.header}/>
                 {
                     this.props.data.pageType === PageType.SINGLE ?
                         <WebAppProjectTemplate data={this.props.data}/> :

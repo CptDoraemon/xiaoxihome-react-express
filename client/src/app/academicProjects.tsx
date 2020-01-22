@@ -1,9 +1,9 @@
 import React from 'react';
-// import { HeaderSticky } from '../component/header';
 import Footer from '../component/footer';
 import './academicProjects.css'
 import {setTitle} from "../tools/set-title";
-import {StickyHeader} from "../component/header";
+import {PostHeader} from "../component/header";
+import mappedDataForProps from "../data";
 
 interface AcademicProject {
     title: string,
@@ -66,7 +66,7 @@ class AcademicProject extends React.Component<AcademicProjectProps, {}> {
     render() {
         return (
             <div>
-                <StickyHeader headerTitle={'Academic Project'}/>
+                <PostHeader title={'Web App Project'} data={mappedDataForProps.header}/>
                 <AcademicProjectTemplate data={this.props.data}/>
                 <Footer />
             </div>

@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 
-import HeaderCover from "../component/header";
+// import HeaderCover from "../component/header";
 import Footer from "../component/footer";
 import { MouseIcon } from "../component/mouseIcon";
 import { withFlyInAnimation } from '../animations/fly-in';
@@ -17,6 +17,8 @@ import './frontpage.css';
 import  '../flexbox.css'
 import {setTitle} from "../tools/set-title";
 import {GitHubButton} from "./webAppProjects";
+import {FrontpageHeader} from "../component/header";
+import mappedDataForProps from "../data";
 // import {resetJSONLD, setSummaryPageJSONLD} from "../tools/set-JSONLD";
 
 const IS_MOBILE = window.innerWidth < 800;
@@ -449,7 +451,7 @@ class Frontpage extends React.Component<FrontpageProps, FrontpageStates> {
         //It receives props: listAndLink
         return (
             <div className='frontpage-main' ref={this.parallelBoxRef}>
-                <HeaderCover  />
+                <FrontpageHeader data={mappedDataForProps.header}/>
                 <Cover onClickMouseIcon={this.scrollToWorkRef}/>
 
                 <div className={'academic-and-web'}>
