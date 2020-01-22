@@ -30,7 +30,7 @@ class StickyEffect extends React.Component<StickyEffectProps, StickyEffectStates
             top: 0,
             left: 0,
             width: '100%',
-            zIndex: this.props.zIndex
+            zIndex: this.props.zIndex,
         };
         this.isNotFixedStyle = {
             position: 'relative',

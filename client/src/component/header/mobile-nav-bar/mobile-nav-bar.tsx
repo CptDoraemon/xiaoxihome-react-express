@@ -70,9 +70,9 @@ const MobileNavBar: React.FC<MobileNavBarProps> = ({data}) => {
                 { data.map((listItem, i) => {
                     if (listItem.type === ButtonType.LINK ) {
                         if (listItem.isExternal) {
-                            return <a href={listItem.link}><li key={i}>{ listItem.name }</li></a>
+                            return <a key={i} href={listItem.link}><li>{ listItem.name }</li></a>
                         } else {
-                            return <Link to={listItem.link}><li key={i}>{ listItem.name }</li></Link>
+                            return <Link key={i} to={listItem.link}><li>{ listItem.name }</li></Link>
                         }
                     } else if (listItem.type === ButtonType.MULTILINK ) {
                         return (

@@ -15,7 +15,6 @@ const PostHeader: React.FC<PostHeaderProps> = ({title, data}) => {
             <StickyEffect stickyStartHeight={50} zIndex={1000}>
                 <NavBar data={data} />
             </StickyEffect>
-            {/*<NavBar data={data} />*/}
         </div>
     )
 };
