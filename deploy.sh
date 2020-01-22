@@ -6,10 +6,10 @@ if [ -z "$1" ]
     exit 1
 fi
 
-if [ ! -z "$2" ]
+if [ -n "$2" ]
   then
     echo "Quote commit message"
     exit 1
 fi
 
-cd client && npm run get-tree && cd .. & git add . && git commit -m "$1" && git push
+cd client && npm run get-tree && cd .. & git add . && git commit -m "$1" && git push && git push heroku master
