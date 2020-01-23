@@ -3,8 +3,6 @@
     transition: transform 0.3s;
     z-index: 100;
     background-color: rgba(37, 41, 45, 0.9);
-    overflow-y: scroll;
-    max-height: calc(100vh - 100px);
 }
 
 .drop-down-list-wrapper ul {
@@ -45,6 +43,8 @@
     .drop-down-list-wrapper {
         background-color: rgba(37, 41, 45, 1);
         border-bottom: solid 16px rgba(37, 41, 45, 1);
+        overflow-y: scroll;
+        max-height: calc(100vh - 100px);
     }
 
     .drop-down-list-wrapper span {
