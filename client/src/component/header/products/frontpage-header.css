@@ -23,6 +23,7 @@
     transform: translateY(-100%);
     background-color: rgb(37, 41, 45);
     transition: transform 0.3s;
+    z-index: 110;
 }
 
 .frontpage-header-wrapper-inner:hover::after {
