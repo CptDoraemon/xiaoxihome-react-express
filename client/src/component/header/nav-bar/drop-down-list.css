@@ -44,7 +44,7 @@
         background-color: rgba(37, 41, 45, 1);
         border-bottom: solid 16px rgba(37, 41, 45, 1);
         overflow-y: scroll;
-        max-height: calc(100vh - 100px);
+        max-height: calc(50vh);
     }
 
     .drop-down-list-wrapper span {
