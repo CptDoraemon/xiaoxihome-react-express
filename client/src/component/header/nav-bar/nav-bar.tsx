@@ -43,7 +43,7 @@ const NavBar: React.FC<NavBarProps> = (
     const closeDropDownAfterResized = () => {
         if (isDropDownListActive) setIsDropDownListActive(false);
     };
-    const isMobile = useIsMobile(null, closeDropDownAfterResized);
+    const isMobile = useIsMobile(null, null, closeDropDownAfterResized);
 
     const toggleDropDownList = (data: DropDownListData, left: number) => {
         setDropDownListData(data);

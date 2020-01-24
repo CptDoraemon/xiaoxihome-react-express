@@ -394,6 +394,7 @@ class Frontpage extends React.Component<FrontpageProps, FrontpageStates> {
     parallelBoxRef = React.createRef<HTMLDivElement>();
     parallelBoxScrollEvent: any;
     lastParallaxScrollEventFiredAt: number = Date.now();
+    isMobile: boolean;
 
     constructor(props: FrontpageProps) {
         super(props);
@@ -401,10 +402,12 @@ class Frontpage extends React.Component<FrontpageProps, FrontpageStates> {
             isImgLoaded: false,
             containerKey: 0
         };
+        this.isMobile = IS_MOBILE();
         this.galleryLazyLoad = this.galleryLazyLoad.bind(this);
         this.scrollToWorkRef = this.scrollToWorkRef.bind(this);
         this.parallelBoxScrollHandler = this.parallelBoxScrollHandler.bind(this);
         this.prepareParallelBoxScrollEvent = this.prepareParallelBoxScrollEvent.bind(this);
+        this.reloadOnIsMobileChanged = this.reloadOnIsMobileChanged.bind(this);
     }
     scrollToWorkRef() {
         if (this.webRef.current && this.parallelBoxRef.current) myScrollTo(this.webRef.current.offsetTop, this.parallelBoxRef.current);
@@ -435,6 +438,11 @@ class Frontpage extends React.Component<FrontpageProps, FrontpageStates> {
             this.lastParallaxScrollEventFiredAt = now;
         }
     }
+    reloadOnIsMobileChanged() {
+        if (IS_MOBILE() !== this.isMobile) {
+            location.reload();
+        }
+    }
     componentDidMount() {
         setTitle(null, true);
         // setSummaryPageJSONLD();
@@ -452,7 +460,7 @@ class Frontpage extends React.Component<FrontpageProps, FrontpageStates> {
     }
     render() {
         return (
-            <WithCallBackOnResized callback={() => location.reload()}>
+            <WithCallBackOnResized callback={this.reloadOnIsMobileChanged}>
                 <div className='frontpage-main' ref={this.parallelBoxRef}>
                     <FrontpageHeader data={mappedDataForProps.header}/>
                     <MobileNavBar data={mappedDataForProps.header}/>

@@ -5,10 +5,12 @@ function getIsMobile() {
     return window.innerWidth < 800;
 }
 
+type Callback = () => void;
+
 function useIsMobile(
     resizeEndDelay?: null | number,
-    callbackOnResized?: () => void | null,
-    callbackOnChanged?: () => void | null
+    callbackOnResized?: Callback | null,
+    callbackOnChanged?: Callback | null
 ) {
     const [isMobile, setIsMobile] = useState(getIsMobile());
     useIsResized(setIsMobileIfNeeded, resizeEndDelay);
