@@ -75,13 +75,19 @@ class WithCallBackOnResized extends React.Component<withCallBackOnResizedProps, 
         this.DELAY = this.props.delay || 300;
         this.updateResizeCounter = this.updateResizeCounter.bind(this);
         this.resizeHandler = this.resizeHandler.bind(this);
+        this.updateDebouncer = this.updateDebouncer.bind(this);
     }
 
     resizeHandler() {
-        if (debouncer.lastCalledAt && Date.now() - debouncer.lastCalledAt < this.DELAY) {
-            if (debouncer.timeoutID) window.clearTimeout(debouncer.timeoutID);
+        if (this.lastCalledAt && Date.now() - this.lastCalledAt < this.DELAY) {
+            if (this.timeoutID) window.clearTimeout(this.timeoutID);
         }
-        this.updateResizeCounter();
+        this.updateDebouncer();
+    }
+
+    updateDebouncer() {
+        this.lastCalledAt = Date.now();
+        this.timeoutID = window.setTimeout(this.updateResizeCounter, this.DELAY);
     }
 
     updateResizeCounter() {
