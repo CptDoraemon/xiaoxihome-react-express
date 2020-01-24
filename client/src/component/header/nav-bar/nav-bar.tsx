@@ -5,6 +5,7 @@ import List from "./list";
 import {useState} from "react";
 import DropDownList from "./drop-down-list";
 import useIsMobile from "../../../tools/use-is-mobile";
+import useIsResized from "../../../tools/use-is-resized";
 
 interface NavBarProps {
     data: NavBarData,
@@ -39,7 +40,10 @@ const NavBar: React.FC<NavBarProps> = (
         setDropDownListLeft
     ] = useState(0);
 
-    const isMobile = useIsMobile();
+    const closeDropDownAfterResized = () => {
+        if (isDropDownListActive) setIsDropDownListActive(false);
+    };
+    const isMobile = useIsMobile(null, closeDropDownAfterResized);
 
     const toggleDropDownList = (data: DropDownListData, left: number) => {
         setDropDownListData(data);

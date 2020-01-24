@@ -19,9 +19,10 @@ import {setTitle} from "../tools/set-title";
 import {GitHubButton} from "./webAppProjects";
 import {FrontpageHeader, MobileNavBar} from "../component/header";
 import mappedDataForProps from "../data";
+import {WithCallBackOnResized} from "../tools/use-is-resized";
 // import {resetJSONLD, setSummaryPageJSONLD} from "../tools/set-JSONLD";
 
-const IS_MOBILE = window.innerWidth < 800;
+const IS_MOBILE = () => window.innerWidth < 800;
 
 interface CoverProps {
     onClickMouseIcon: Function
@@ -53,7 +54,7 @@ function Cover(props: CoverProps){
     // scroll opacity animation
     const containerRef: React.Ref<any> = useRef();
     const containerPosition = useGetContainerPosition(containerRef);
-    const scrolledPercentage = IS_MOBILE ?
+    const scrolledPercentage = IS_MOBILE() ?
         useScrollOpacityAnimation(containerPosition.offsetTop, containerPosition.offsetTop + containerPosition.offsetHeight, 1.0) :
         useScrollOpacityAnimationForCustomScrollEvent(containerPosition.offsetTop, containerPosition.offsetTop + containerPosition.offsetHeight, 1.0)
     ;
@@ -75,7 +76,7 @@ function Cover(props: CoverProps){
     }
     //
     useEffect(() => {
-        const src = IS_MOBILE
+        const src = IS_MOBILE()
             ? `https://xiaoxihome.s3.us-east-2.amazonaws.com/galleryphoto/cover/cover-${imageOrder}-mobile.jpg`
             : `https://xiaoxihome.s3.us-east-2.amazonaws.com/galleryphoto/cover/cover-${imageOrder}-5k.jpg`;
         loadImage(src)
@@ -236,7 +237,7 @@ class ProjectListText extends React.Component<ProjectListTextProps, ProjectListT
                         flyInDelay: 0,
                         animationTriggerPoint: this.state.animationTriggerPoint,
                         wrapperClassName: 'fly-in-wrapper',
-                        customScrollEvent: IS_MOBILE ? '' : 'parallaxScroll',
+                        customScrollEvent: IS_MOBILE() ? '' : 'parallaxScroll',
                     }}
                     passOnProps={{
                         sectionTitle: this.props.sectionTitle
@@ -264,7 +265,7 @@ class ProjectListText extends React.Component<ProjectListTextProps, ProjectListT
                                 flyInDelay: typeRelatedParams.flyInDelayRemap[index],
                                 animationTriggerPoint: this.state.animationTriggerPoint,
                                 wrapperClassName: 'fly-in-wrapper',
-                                customScrollEvent: IS_MOBILE ? '' : 'parallaxScroll',
+                                customScrollEvent: IS_MOBILE() ? '' : 'parallaxScroll',
                             }}
                         />
                     })}
@@ -316,7 +317,7 @@ class ProjectListGallery extends React.Component<ProjectListGalleryProps, Projec
                         flyInDelay: 0,
                         animationTriggerPoint: this.state.animationTriggerPoint,
                         wrapperClassName: 'fly-in-wrapper',
-                        customScrollEvent: IS_MOBILE ? '' : 'parallaxScroll',
+                        customScrollEvent: IS_MOBILE() ? '' : 'parallaxScroll',
                     }}
                     passOnProps={{
                         sectionTitle: this.props.sectionTitle
@@ -340,7 +341,7 @@ class ProjectListGallery extends React.Component<ProjectListGalleryProps, Projec
                                 flyInDelay: this.flyInDelayRemap[index],
                                 animationTriggerPoint: this.state.animationTriggerPoint,
                                 wrapperClassName: 'fly-in-wrapper',
-                                customScrollEvent: IS_MOBILE ? '' : 'parallaxScroll',
+                                customScrollEvent: IS_MOBILE() ? '' : 'parallaxScroll',
                             }}
                         />
                     })}
@@ -382,7 +383,8 @@ interface FrontpageProps {
 }
 
 interface FrontpageStates {
-    isImgLoaded: boolean;
+    isImgLoaded: boolean,
+    containerKey: number
 }
 
 class Frontpage extends React.Component<FrontpageProps, FrontpageStates> {
@@ -396,7 +398,8 @@ class Frontpage extends React.Component<FrontpageProps, FrontpageStates> {
     constructor(props: FrontpageProps) {
         super(props);
         this.state = {
-            isImgLoaded: false
+            isImgLoaded: false,
+            containerKey: 0
         };
         this.galleryLazyLoad = this.galleryLazyLoad.bind(this);
         this.scrollToWorkRef = this.scrollToWorkRef.bind(this);
@@ -435,7 +438,7 @@ class Frontpage extends React.Component<FrontpageProps, FrontpageStates> {
     componentDidMount() {
         setTitle(null, true);
         // setSummaryPageJSONLD();
-        if (!IS_MOBILE) {
+        if (!IS_MOBILE()) {
             this.prepareParallelBoxScrollEvent();
             window.addEventListener('parallaxScroll', this.galleryLazyLoad);
         } else {
@@ -448,40 +451,41 @@ class Frontpage extends React.Component<FrontpageProps, FrontpageStates> {
         // resetJSONLD();
     }
     render() {
-        //It receives props: listAndLink
         return (
-            <div className='frontpage-main' ref={this.parallelBoxRef}>
-                <FrontpageHeader data={mappedDataForProps.header}/>
-                <MobileNavBar data={mappedDataForProps.header}/>
-                <Cover onClickMouseIcon={this.scrollToWorkRef}/>
+            <WithCallBackOnResized callback={() => location.reload()}>
+                <div className='frontpage-main' ref={this.parallelBoxRef}>
+                    <FrontpageHeader data={mappedDataForProps.header}/>
+                    <MobileNavBar data={mappedDataForProps.header}/>
+                    <Cover onClickMouseIcon={this.scrollToWorkRef}/>
 
-                <div className={'academic-and-web'}>
+                    <div className={'academic-and-web'}>
 
-                    <div ref={this.webRef}/>
-                    <ProjectListText
-                        tileInfo={this.props.allProjectsInfo[1].projects}
-                        sectionTitle={this.props.allProjectsInfo[1].sectionTitle}
-                        projectListType={ProjectListType.TWO}
-                    />
+                        <div ref={this.webRef}/>
+                        <ProjectListText
+                            tileInfo={this.props.allProjectsInfo[1].projects}
+                            sectionTitle={this.props.allProjectsInfo[1].sectionTitle}
+                            projectListType={ProjectListType.TWO}
+                        />
 
-                    <div ref={this.academicRef}/>
-                    <ProjectListText
-                        tileInfo={this.props.allProjectsInfo[0].projects}
-                        sectionTitle={this.props.allProjectsInfo[0].sectionTitle}
-                        projectListType={ProjectListType.ONE}
-                    />
+                        <div ref={this.academicRef}/>
+                        <ProjectListText
+                            tileInfo={this.props.allProjectsInfo[0].projects}
+                            sectionTitle={this.props.allProjectsInfo[0].sectionTitle}
+                            projectListType={ProjectListType.ONE}
+                        />
 
+                    </div>
+
+                    <div className={'gallery'} ref={this.galleryRef}>
+                        <ProjectListGallery
+                            tileInfo={this.props.allProjectsInfo[2].projects}
+                            sectionTitle={this.props.allProjectsInfo[2].sectionTitle}
+                            isImgLoaded={this.state.isImgLoaded}
+                        />
+                    </div>
+                    <Footer />
                 </div>
-
-                <div className={'gallery'} ref={this.galleryRef}>
-                    <ProjectListGallery
-                        tileInfo={this.props.allProjectsInfo[2].projects}
-                        sectionTitle={this.props.allProjectsInfo[2].sectionTitle}
-                        isImgLoaded={this.state.isImgLoaded}
-                    />
-                </div>
-                <Footer />
-            </div>
+            </WithCallBackOnResized>
         )
     }
 }

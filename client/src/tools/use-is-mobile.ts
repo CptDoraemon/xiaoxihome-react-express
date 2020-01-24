@@ -1,43 +1,25 @@
-import {useEffect, useState} from "react";
-
-let lastResizedAt: number | null = null;
-let timeOut: number | null = null;
-const DEBOUNCER = 500;
+import {useState} from "react";
+import useIsResized from "./use-is-resized";
 
 function getIsMobile() {
     return window.innerWidth < 800;
 }
 
-function useIsMobile() {
+function useIsMobile(
+    resizeEndDelay?: null | number,
+    callbackOnResized?: () => void | null,
+    callbackOnChanged?: () => void | null
+) {
     const [isMobile, setIsMobile] = useState(getIsMobile());
+    useIsResized(setIsMobileIfNeeded, resizeEndDelay);
 
-    const setIsMobileIfNeeded = () => {
-        lastResizedAt = null;
-        timeOut = null;
-
+    function setIsMobileIfNeeded() {
+        if (callbackOnResized) callbackOnResized();
         if (isMobile !== getIsMobile()) {
+            if (callbackOnChanged) callbackOnChanged();
             setIsMobile(getIsMobile());
         }
-    };
-
-    const resizeHandler = () => {
-        const now = Date.now();
-        if (!lastResizedAt || lastResizedAt - now < DEBOUNCER) {
-            if (timeOut) {
-                window.clearTimeout(timeOut);
-                timeOut = null
-            }
-            lastResizedAt = now;
-            timeOut = window.setTimeout(setIsMobileIfNeeded, DEBOUNCER);
-        }
-    };
-
-    useEffect(() => {
-        window.addEventListener('resize', resizeHandler);
-        return () => {
-            window.removeEventListener('resize', resizeHandler);
-        }
-    });
+    }
 
     return isMobile
 }

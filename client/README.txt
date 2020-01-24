@@ -62,9 +62,9 @@
     ├── react-app-env.d.ts
     ├── serviceWorker.js
     ├── tools
-        ├── is-mobile.ts
         ├── myScrollTo.js
         ├── set-JSONLD.js
         ├── set-title.js
         ├── sticky-effect.tsx
         ├── title-convert-to-link.js
+        ├── use-is-mobile.ts
