@@ -5,7 +5,6 @@ import List from "./list";
 import {useState} from "react";
 import DropDownList from "./drop-down-list";
 import useIsMobile from "../../../tools/use-is-mobile";
-import useIsResized from "../../../tools/use-is-resized";
 
 interface NavBarProps {
     data: NavBarData,
@@ -13,7 +12,8 @@ interface NavBarProps {
     dropDownListClassName?: string,
     dropDownListFadeOut?: boolean,
     dropDownListCloseOnMouseLeave?: boolean,
-    maskHeight?: number
+    maskHeight?: number,
+    slideInBackground?: boolean
 }
 
 const NavBar: React.FC<NavBarProps> = (
@@ -23,7 +23,8 @@ const NavBar: React.FC<NavBarProps> = (
         dropDownListClassName,
         dropDownListFadeOut,
         dropDownListCloseOnMouseLeave,
-        maskHeight
+        maskHeight,
+        slideInBackground
     }) => {
     const [
         isDropDownListActive,
@@ -57,7 +58,13 @@ const NavBar: React.FC<NavBarProps> = (
 
     return (
         <>
-            <List className={listClassName} data={data} toggleDropDownList={toggleDropDownList} maskHeight={maskHeight}/>
+            <List
+                className={listClassName}
+                data={data}
+                isDropDownListActive={isDropDownListActive}
+                toggleDropDownList={toggleDropDownList}
+                maskHeight={maskHeight}
+                slideInBackground={slideInBackground}/>
             <DropDownList
                 className={dropDownListClassName}
                 data={dropDownListData}

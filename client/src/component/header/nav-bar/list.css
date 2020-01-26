@@ -11,6 +11,7 @@
     width: 100%;
     overflow-x: scroll;
     overflow-y: hidden;
+    position: relative;
 }
 
 .nav-bar-list-wrapper ul {

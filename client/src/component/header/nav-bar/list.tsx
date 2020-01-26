@@ -2,7 +2,8 @@ import * as React from "react";
 import {ButtonType, DropDownListData, LinkButton, MultiLinkButton} from "./index";
 import {Link} from "react-router-dom";
 import './list.css';
-import {useRef} from "react";
+import {CSSProperties, useRef} from "react";
+import useIsHovering from "../../../tools/use-is-hovering";
 
 type ToggleDropDownList = (data: DropDownListData, left: number) => void
 
@@ -31,20 +32,39 @@ const DropDownButton: React.FC<MultiLinkButtonProps> = ({
 interface ListProps {
     className?: string,
     data: Array<LinkButton | MultiLinkButton>,
+    isDropDownListActive: boolean,
     toggleDropDownList: ToggleDropDownList,
-    maskHeight?: number
+    maskHeight?: number,
+    slideInBackground?: boolean
 }
 
 const List: React.FC<ListProps> = (
     {
         className,
         data,
+        isDropDownListActive,
         toggleDropDownList,
-        maskHeight
+        maskHeight,
+        slideInBackground
     }) => {
+
+    const containerRef = useRef(null);
+    const isHovering = useIsHovering(containerRef);
+    const isBackgroundVisible = isHovering || (!isHovering && isDropDownListActive);
+    const backgroundDIVStyle: CSSProperties = {
+        width: `100%`,
+        height: `100px`,
+        transition: `transform 0.3s`,
+        backgroundColor: `rgb(37, 41, 45)`,
+        position: "absolute",
+        top: `0`,
+        left: `0`
+    };
+
     return (
-        <div className={className ? className : 'nav-bar-list-wrapper'}>
+        <div className={className ? className : 'nav-bar-list-wrapper'} ref={containerRef}>
             <div className={'nav-bar-list-mask'} style={{height: `${maskHeight || 100}px`}}>
+                { slideInBackground && <div style={{...backgroundDIVStyle, transform: isBackgroundVisible ? 'translateY(0)' : 'translateY(-100%)'}}> </div>}
                 <ul>
                     {
                         data.map((button, i) => {

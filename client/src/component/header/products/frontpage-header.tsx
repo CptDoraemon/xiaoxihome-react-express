@@ -9,16 +9,14 @@ interface FrontpageHeaderProps {
 const FrontpageHeader: React.FC<FrontpageHeaderProps> = ({data}) => {
     return (
         <div className={'frontpage-header-wrapper'}>
-            <div className={'frontpage-header-wrapper-inner'}>
                 <NavBar
                     data={data}
                     listClassName={'frontpage-header-list-wrapper'}
                     dropDownListClassName={'frontpage-header-dropdown-wrapper'}
                     dropDownListFadeOut={true}
-                    dropDownListCloseOnMouseLeave={true}
                     maskHeight={200}
+                    slideInBackground={true}
                 />
-            </div>
         </div>
     )
 };

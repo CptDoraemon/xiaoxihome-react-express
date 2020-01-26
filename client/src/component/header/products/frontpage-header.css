@@ -7,29 +7,6 @@
     color: white;
 }
 
-.frontpage-header-wrapper-inner {
-    position: relative;
-    width: 100%;
-    height: 100%;
-}
-
-.frontpage-header-wrapper-inner::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    transform: translateY(-100%);
-    background-color: rgb(37, 41, 45);
-    transition: transform 0.3s;
-    z-index: 110;
-}
-
-.frontpage-header-wrapper-inner:hover::after {
-    transform: translateY(0);
-}
-
 /* List styles Start */
 .frontpage-header-list-wrapper {
     width: 100%;
