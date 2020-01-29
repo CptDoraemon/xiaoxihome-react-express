@@ -67,5 +67,6 @@
         ├── set-title.js
         ├── sticky-effect.tsx
         ├── title-convert-to-link.js
+        ├── use-is-hovering.ts
         ├── use-is-mobile.ts
         ├── use-is-resized.tsx

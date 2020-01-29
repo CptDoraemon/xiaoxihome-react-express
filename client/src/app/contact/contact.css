@@ -7,7 +7,7 @@
 .contact-close-icon{
     position: absolute;
     top: 5%;
-    right: 5%;
+    left: 5%;
     color: white;
     transition: 0.3s;
     z-index: 99;
@@ -16,6 +16,23 @@
     color: #F05408;
     cursor: pointer;
     transition: 0.3s;
+}
+.contact-close-icon::after {
+    content: 'Go Home';
+    position: relative;
+    display: block;
+    width: fit-content;
+    font-weight: 700;
+    color: white;
+    padding: 5px 10px;
+    border: solid 2px white;
+    border-radius: 10px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+.contact-close-icon:hover::after {
+    opacity: 1;
+    color: white;
 }
 .contact-form {
     position: relative;
@@ -109,6 +126,9 @@
         color: #F05408;
         cursor: pointer;
         transition: 0s;
+    }
+    .contact-close-icon::after {
+        display: none;
     }
     .contact-form {
         position: relative;
