@@ -30,8 +30,8 @@ interface InActiveButtonProps{
 }
 function InActiveButton (props: InActiveButtonProps) {
     return (
-        <div className='about-nav-button-wrapper' onClick={() => props.setCurrentAtPage(props.index)}>
-            <MdRadioButtonUnchecked size='15px' color='rgba(0,0,0,0.2)'/>
+        <div className='about-nav-button-wrapper about-nav-button-wrapper-inactive' onClick={() => props.setCurrentAtPage(props.index)}>
+            <MdRadioButtonUnchecked size='15px' color='black'/>
         </div>
     )
 }
