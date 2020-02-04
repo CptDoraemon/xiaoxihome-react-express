@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 import mappedDataForProps, {RouterInfo} from "../data";
 
 enum DropListStyle {
-    ACTIVE = 'drop-list drop-list-active',
-    INACTIVE = 'drop-list drop-list-inactive'
+    ACTIVE = 'footer-drop-list footer-drop-list-active',
+    INACTIVE = 'footer-drop-list footer-drop-list-inactive'
 }
 
 interface LinkInfo extends RouterInfo {
@@ -77,13 +77,15 @@ class Footer extends React.Component<FooterProps, FooterState> {
                                 if (typeof linkInfo.link === 'string') {
                                     return (
                                             linkInfo.isExternal ?
-                                                <a key={index} href={linkInfo.link}><li> {linkInfo.title} </li></a> :
-                                                <Link key={index} to={linkInfo.link}><li> {linkInfo.title} </li></Link>
+                                                <li key={index}><a href={linkInfo.link}> {linkInfo.title}</a></li> :
+                                                <li key={index}><Link to={linkInfo.link}> {linkInfo.title} </Link></li>
                                         )
                                 } else {
                                     return (
                                         <React.Fragment key={index}>
-                                            <li onClick={this.toggleDropList}><button>{linkInfo.title}</button></li>
+                                            <li onClick={this.toggleDropList}>
+                                                <button>{linkInfo.title}</button>
+                                            </li>
                                             <div className='footer-flexbox' onMouseLeave={this.setDropListInactive} >
                                                 <FooterDropList allLinks={linkInfo.link} isActive={this.state.isDropListActive} stopClickEventPropagation={this.stopClickEventPropagation}/>
                                             </div>

@@ -53,7 +53,7 @@ const MobileNavBar: React.FC<MobileNavBarProps> = ({data}) => {
 
     return (
         <div className={'mobile-nav-bar-wrapper'} onClick={(e) => e.stopPropagation()}>
-            <button className={'mobile-nav-bar-button'} onClick={toggleNavBar}>
+            <button className={'mobile-nav-bar-button'} onClick={toggleNavBar} aria-label={'Menu'}>
                 <MenuButton isActive={isNavBarOpen} size={50}/>
             </button>
             <div
@@ -70,9 +70,9 @@ const MobileNavBar: React.FC<MobileNavBarProps> = ({data}) => {
                 { data.map((listItem, i) => {
                     if (listItem.type === ButtonType.LINK ) {
                         if (listItem.isExternal) {
-                            return <a key={i} href={listItem.link}><li>{ listItem.name }</li></a>
+                            return <li key={i}><a href={listItem.link}>{ listItem.name }</a></li>
                         } else {
-                            return <Link key={i} to={listItem.link}><li>{ listItem.name }</li></Link>
+                            return <li key={i}><Link to={listItem.link}>{ listItem.name }</Link></li>
                         }
                     } else if (listItem.type === ButtonType.MULTILINK ) {
                         return (

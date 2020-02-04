@@ -55,7 +55,7 @@ const DropDownList: React.FC<DropDownListProps> = ({
                                 {
                                     section.data.map((button, j) => {
                                         if (j !== 0) {
-                                            return <Link to={button.link} key={j} tabIndex={isActive ? 0 : -1}><li>{ button.name }</li></Link>
+                                            return <li key={j}><Link to={button.link} tabIndex={isActive ? 0 : -1}>{ button.name }</Link></li>
                                         }
                                     })
                                 }

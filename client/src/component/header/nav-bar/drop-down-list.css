@@ -23,8 +23,6 @@
 
 .drop-down-list-wrapper li {
     display: block;
-    margin: 0;
-    padding: 8px 24px;
     font-size: 0.9rem;
     border: solid 1px rgba(255, 255, 255, 0);
 }
@@ -32,6 +30,12 @@
 .drop-down-list-wrapper li:hover {
     background-color: rgba(37, 41, 45, 1);
     border: solid 1px rgba(255, 255, 255, 1);
+}
+
+.drop-down-list-wrapper li a {
+    margin: 0;
+    padding: 8px 24px;
+    display: block;
 }
 
 @media only screen and (max-width: 800px) {

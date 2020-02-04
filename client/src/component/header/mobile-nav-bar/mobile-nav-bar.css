@@ -64,7 +64,7 @@
 
 .mobile-nav-bar-list button {
     width: 100%;
-    padding: 0;
+    padding: 8px 8px;
     margin: 0;
     border: none;
     background-color: inherit;
@@ -87,8 +87,12 @@
     font-size: 0.8rem;
     font-weight: 700;
     line-height: 1rem;
-    padding: 8px 8px;
     border-bottom: solid 1px rgba(255, 255, 255, 0.1);
+}
+
+.mobile-nav-bar-list li a {
+    display: block;
+    padding: 8px 8px;
 }
 
 .mobile-nav-bar-drop-down-list {
@@ -106,10 +110,15 @@
 }
 
 .mobile-nav-bar-drop-down-list li{
-    margin: 0;
-    padding: 8px 32px;
     border-bottom: none;
     font-weight: 500;
+    padding: 0;
+}
+
+.mobile-nav-bar-drop-down-list li a {
+    display: block;
+    margin: 0;
+    padding: 8px 32px;
 }
 
 @media only screen and (max-width: 800px) {

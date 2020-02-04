@@ -36,11 +36,13 @@
     list-style: none;
     transition: 0.3s;
 }
-.footer-nav-bar li:hover {
+.footer-nav-bar li:hover, .footer-nav-bar button:hover {
     transition: 0.3s;
-    cursor: pointer;
     font-weight: bold;
     letter-spacing: 5px;
+}
+.footer-nav-bar li a{
+    display: block;
 }
 .footer-nav-bar button {
     width: 50px;
@@ -56,6 +58,7 @@
     cursor: pointer;
     font-family: inherit;
     text-align: start;
+    transition: 0.3s;
 }
 .footer-flexbox {
     display: flex;
@@ -68,34 +71,36 @@
     left: 150px;
     flex-direction: row;
 }
-.drop-list {
+.footer-drop-list {
     width: calc(33% - 50px);
     max-width: 250px;
     margin: 0 25px;
     transition: transform 0.3s;
     line-height: 1.5em;
 }
-.drop-list h5 {
+.footer-drop-list h5 {
     font-size: 14px;
     width: calc(100% - 20px);
     padding: 0 10px;
 }
-.drop-list span {
-    font-size: 12px;
-    width: fit-content;
-    padding: 0 10px;
+.footer-drop-list a {
     display: block;
 }
-.drop-list span:hover {
+.footer-drop-list span {
+    font-size: 12px;
+    padding: 5px 10px;
+    display: block;
+}
+.footer-drop-list span:hover {
     background-color: white;
     color: rgba(37, 41, 45, 1);
 }
 
-.drop-list-active {
+.footer-drop-list-active {
     transform: translateY(0);
 }
 
-.drop-list-inactive {
+.footer-drop-list-inactive {
     transform: translateY(200%);
 }
 
@@ -133,21 +138,21 @@
         left: 100px;
         justify-content: space-between;
     }
-    .drop-list {
+    .footer-drop-list {
         width: auto;
         margin: 0;
         /*line-height: 2em;*/
     }
-    .drop-list h5 {
+    .footer-drop-list h5 {
         font-size: 10px;
         line-height: 15px;
         padding: 0 5px;
     }
-    .drop-list span {
+    .footer-drop-list span {
         font-size: 8px;
         line-height: 10px;
         margin: 8px 0;
-        padding: 0 5px;
+        padding: 5px;
     }
     .copyright {
         width: 100px;
