@@ -228,12 +228,15 @@ class Contact extends React.Component {
                 </Link>
                 <form className='contact-form' onSubmit={this.handleSubmit} >
                     <div className='contact-form-icon'><IoMdListBox size='3em' /></div>
-                    <input className={this.state.nameClassName} value={this.state.name} name='name' type='text' {...this.handlers()} />
-                    <input className={this.state.emailClassName} value={this.state.email} name='email' type='email' {...this.handlers()}/>
-                    <textarea className={this.state.messageClassName} value={this.state.message} name='message' type='text' {...this.handlers()}/>
+                    <input className={this.state.nameClassName} value={this.state.name} name='name' id='contact-form-name' type='text' {...this.handlers()} />
+                    <input className={this.state.emailClassName} value={this.state.email} name='email' id='contact-form-email' type='email' {...this.handlers()}/>
+                    <textarea className={this.state.messageClassName} value={this.state.message} name='message' id='contact-form-message' {...this.handlers()}/>
                     { button }
                     { loading }
                     { response }
+                    <label htmlFor={'contact-form-name'}>name: </label>
+                    <label htmlFor={'contact-form-email'}>email: </label>
+                    <label htmlFor={'contact-form-message'}>message: </label>
                 </form>
             </div>
         )

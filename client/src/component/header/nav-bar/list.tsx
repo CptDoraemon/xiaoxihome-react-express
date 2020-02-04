@@ -25,7 +25,7 @@ const DropDownButton: React.FC<MultiLinkButtonProps> = ({
     };
 
     return (
-        <li onClick={clickHandler} ref={buttonRef}><span>{ name }</span></li>
+        <li onClick={clickHandler} ref={buttonRef}><button>{ name }</button></li>
     )
 };
 
@@ -62,7 +62,7 @@ const List: React.FC<ListProps> = (
     };
 
     return (
-        <div className={className ? className : 'nav-bar-list-wrapper'} ref={containerRef}>
+        <nav className={className ? className : 'nav-bar-list-wrapper'} ref={containerRef}>
             <div className={'nav-bar-list-mask'} style={{height: `${maskHeight || 100}px`}}>
                 { slideInBackground && <div style={{...backgroundDIVStyle, transform: isBackgroundVisible ? 'translateY(0)' : 'translateY(-100%)'}}> </div>}
                 <ul>
@@ -81,7 +81,7 @@ const List: React.FC<ListProps> = (
                     }
                 </ul>
             </div>
-        </div>
+        </nav>
     )
 };
 

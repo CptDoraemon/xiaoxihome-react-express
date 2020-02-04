@@ -15,6 +15,15 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    /* button reset */
+    padding: 0;
+    margin: 0;
+    border: none;
+    background-color: inherit;
+    color: inherit;
+    font-weight: inherit;
+    font-size: inherit;
+    cursor: pointer;
 }
 
 .mobile-nav-bar-list-github-button {
@@ -51,6 +60,20 @@
 .mobile-nav-bar-list span {
     display: block;
     width: 100%;
+}
+
+.mobile-nav-bar-list button {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    border: none;
+    background-color: inherit;
+    color: inherit;
+    font-weight: inherit;
+    font-size: inherit;
+    cursor: pointer;
+    font-family: inherit;
+    text-align: start;
 }
 
 .mobile-nav-bar-list ul {

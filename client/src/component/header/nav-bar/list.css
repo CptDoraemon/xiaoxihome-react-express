@@ -43,10 +43,26 @@
 
 .nav-bar-list-wrapper span {
     padding: 10px 50px;
+    display: block;
+}
+
+.nav-bar-list-wrapper button {
+    padding: 10px 50px;
+    margin: 0;
+    border: none;
+    background-color: inherit;
+    color: inherit;
+    font-weight: inherit;
+    font-size: inherit;
+    cursor: pointer;
+    font-family: inherit;
 }
 
 @media only screen and (max-width: 800px) {
     .nav-bar-list-wrapper span {
+        padding: 10px 10px;
+    }
+    .nav-bar-list-wrapper button {
         padding: 10px 10px;
     }
 }

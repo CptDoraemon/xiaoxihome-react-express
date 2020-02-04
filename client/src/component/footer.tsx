@@ -27,7 +27,7 @@ interface FooterProps {
 }
 
 interface FooterState {
-    dropListClassName: DropListStyle;
+    isDropListActive: Boolean;
 }
 
 class Footer extends React.Component<FooterProps, FooterState> {
@@ -37,7 +37,7 @@ class Footer extends React.Component<FooterProps, FooterState> {
     constructor(props: FooterProps){
         super(props);
         this.state={
-            dropListClassName: DropListStyle.INACTIVE
+            isDropListActive: false
         };
         this.toggleDropList = this.toggleDropList.bind(this);
         this.setDropListInactive = this.setDropListInactive.bind(this);
@@ -45,13 +45,13 @@ class Footer extends React.Component<FooterProps, FooterState> {
     }
     toggleDropList(e: any) {
         e.stopPropagation();
-        this.setState({
-            dropListClassName: this.state.dropListClassName === DropListStyle.ACTIVE ? DropListStyle.INACTIVE : DropListStyle.ACTIVE
-        })
+        this.setState(prevState => ({
+            isDropListActive: !prevState.isDropListActive
+        }))
     }
     setDropListInactive() {
         this.setState({
-            dropListClassName: DropListStyle.INACTIVE
+            isDropListActive: false
         })
     }
 
@@ -69,8 +69,8 @@ class Footer extends React.Component<FooterProps, FooterState> {
 
     render() {
         return (
-            <div className='footer'>
-                <div className='nav-bar'>
+            <footer className='footer'>
+                <nav className='footer-nav-bar'>
                     <ul>
                         {
                             this.allLinks.map((linkInfo: any, index: number) => {
@@ -83,9 +83,9 @@ class Footer extends React.Component<FooterProps, FooterState> {
                                 } else {
                                     return (
                                         <React.Fragment key={index}>
-                                            <li onClick={this.toggleDropList}> {linkInfo.title} </li>
+                                            <li onClick={this.toggleDropList}><button>{linkInfo.title}</button></li>
                                             <div className='footer-flexbox' onMouseLeave={this.setDropListInactive} >
-                                                <FooterDropList allLinks={linkInfo.link} dropListClassName={this.state.dropListClassName} stopClickEventPropagation={this.stopClickEventPropagation}/>
+                                                <FooterDropList allLinks={linkInfo.link} isActive={this.state.isDropListActive} stopClickEventPropagation={this.stopClickEventPropagation}/>
                                             </div>
                                         </React.Fragment>
                                     )
@@ -93,31 +93,31 @@ class Footer extends React.Component<FooterProps, FooterState> {
                             })
                         }
                     </ul>
-                </div>
+                </nav>
                 <div className='copyright'>
                     <p>&copy; Xiaoxi 2018-2020</p>
                 </div>
-            </div>
+            </footer>
         )
     }
 }
 
 interface FooterDropListProps {
     allLinks: Array<SectionInfo>;
-    dropListClassName: DropListStyle;
+    isActive: Boolean;
     stopClickEventPropagation: (e: any) => void;
 }
 
 function FooterDropList(props: FooterDropListProps) {
-    const dropListClassName = props.dropListClassName;
+    const dropListClassName = props.isActive ? DropListStyle.ACTIVE : DropListStyle.INACTIVE;
     const elements = props.allLinks.map((section: SectionInfo, i: number) => {
         return (
             <div className={ dropListClassName } key={i} onClick={props.stopClickEventPropagation}>
                 <h5> { section.sectionTitle } </h5>
                 { section.links.map((linkInfo: LinkInfo, j: number) => {
                     return (
-                        <Link to={linkInfo.link} key={`${i}-${j}`}>
-                            <p>{linkInfo.title}</p>
+                        <Link to={linkInfo.link} key={`${i}-${j}`} tabIndex={props.isActive ? 0 : -1}>
+                            <span>{linkInfo.title}</span>
                         </Link>
                     )
                 })}

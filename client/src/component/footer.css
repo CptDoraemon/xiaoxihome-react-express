@@ -10,7 +10,7 @@
     justify-content: center;
     overflow: hidden;
 }
-.nav-bar{
+.footer-nav-bar{
     height: 100%;
     width: calc(100% - 150px);
     display: flex;
@@ -19,7 +19,7 @@
     font-size: 14px;
     z-index: 10;
 }
-.nav-bar ul {
+.footer-nav-bar ul {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -29,18 +29,33 @@
     height: 100%;
     width: 200px;
 }
-.nav-bar li {
+.footer-nav-bar li {
     width: 50px;
     height: 40px;
     line-height: 40px;
     list-style: none;
     transition: 0.3s;
 }
-.nav-bar li:hover {
+.footer-nav-bar li:hover {
     transition: 0.3s;
     cursor: pointer;
     font-weight: bold;
     letter-spacing: 5px;
+}
+.footer-nav-bar button {
+    width: 50px;
+    height: 40px;
+    line-height: 40px;
+    padding: 0;
+    margin: 0;
+    border: none;
+    background-color: inherit;
+    color: inherit;
+    font-weight: inherit;
+    font-size: inherit;
+    cursor: pointer;
+    font-family: inherit;
+    text-align: start;
 }
 .footer-flexbox {
     display: flex;
@@ -65,12 +80,13 @@
     width: calc(100% - 20px);
     padding: 0 10px;
 }
-.drop-list p {
+.drop-list span {
     font-size: 12px;
     width: fit-content;
     padding: 0 10px;
+    display: block;
 }
-.drop-list p:hover {
+.drop-list span:hover {
     background-color: white;
     color: rgba(37, 41, 45, 1);
 }
@@ -99,17 +115,17 @@
 }
 
 @media only screen and (max-width: 800px) {
-    .nav-bar{
+    .footer-nav-bar{
         font-size: 10px;
         width: 100%;
     }
-    .nav-bar ul {
+    .footer-nav-bar ul {
         width: 100px;
     }
-    .nav-bar li {
+    .footer-nav-bar li {
 
     }
-    .nav-bar li:hover {
+    .footer-nav-bar li:hover {
         letter-spacing: normal;
     }
     .footer-flexbox {
@@ -127,7 +143,7 @@
         line-height: 15px;
         padding: 0 5px;
     }
-    .drop-list p {
+    .drop-list span {
         font-size: 8px;
         line-height: 10px;
         margin: 8px 0;

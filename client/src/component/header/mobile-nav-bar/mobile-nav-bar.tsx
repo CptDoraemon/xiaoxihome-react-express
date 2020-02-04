@@ -23,7 +23,7 @@ const MobileNavBarDropDownList: React.FC<MobileNavBarDropDownListProps> = ({
 
     return (
         <li>
-            <span onClick={toggleDropDownList}>{ name }</span>
+            <button onClick={toggleDropDownList}>{ name }</button>
             <div style={{
                 display: isDropDownOpen ? 'block' : 'none'
             }}>
@@ -53,9 +53,9 @@ const MobileNavBar: React.FC<MobileNavBarProps> = ({data}) => {
 
     return (
         <div className={'mobile-nav-bar-wrapper'} onClick={(e) => e.stopPropagation()}>
-            <div className={'mobile-nav-bar-button'} onClick={toggleNavBar}>
+            <button className={'mobile-nav-bar-button'} onClick={toggleNavBar}>
                 <MenuButton isActive={isNavBarOpen} size={50}/>
-            </div>
+            </button>
             <div
                 className={'mobile-nav-bar-list'}
                 style={{
