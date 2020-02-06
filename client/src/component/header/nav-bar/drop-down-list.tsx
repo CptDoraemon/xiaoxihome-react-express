@@ -23,7 +23,6 @@ const DropDownList: React.FC<DropDownListProps> = ({
     fadeOut,
     closeOnMouseLeave
 }) => {
-
     useEffect(() => {
        window.addEventListener('click', closeDropDownList);
        return () => {
@@ -54,9 +53,7 @@ const DropDownList: React.FC<DropDownListProps> = ({
                             <ul>
                                 {
                                     section.data.map((button, j) => {
-                                        if (j !== 0) {
-                                            return <li key={j}><Link to={button.link} tabIndex={isActive ? 0 : -1}>{ button.name }</Link></li>
-                                        }
+                                        return <li key={j}><Link to={button.link} tabIndex={isActive ? 0 : -1}>{ button.name }</Link></li>
                                     })
                                 }
                             </ul>
