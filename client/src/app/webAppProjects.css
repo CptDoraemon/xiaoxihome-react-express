@@ -1,12 +1,14 @@
 .web-app-project-template-body {
     padding: 150px 0;
     position: relative;
-    min-height: 1000px;
     color: white;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 }
 .web-app-project-template-wrapper {
-    margin: 0 auto;
-    width: 800px;
+    width: 700px;
     padding: 100px 50px;
     background-color: rgba(0, 0, 0, 0.5);
     display: flex;
@@ -82,6 +84,9 @@
  3. The vertical-align CSS property sets vertical alignment of an inline, inline-block or table-cell box
  4. default for vertical-align is baseline
  */
+.web-app-link-animation, .web-app-link-animation p {
+    width: 100%;
+}
 .web-app-link-animation a {
     border-bottom: dotted 1px white;
     position: relative;
@@ -179,7 +184,6 @@
     .web-app-project-template-body {
         padding: 100px 0;
         position: relative;
-        min-height: 1000px;
         color: white;
     }
 

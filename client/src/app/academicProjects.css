@@ -1,7 +1,7 @@
 .academic-project-template-wrapper {
     padding: 150px 0;
+    width: 100%;
     position: relative;
-    min-height: 1000px;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -9,7 +9,7 @@
     color: white;
 }
 .AcademicProjectBox{
-    width: 800px;
+    width: calc(800px - 160px);
     min-height: 400px;
     text-align: center;
     background-color: rgba(0, 0, 0, 0.2);
