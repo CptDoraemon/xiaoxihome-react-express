@@ -20,7 +20,7 @@ function searchNews(app) {
     app.get('/api/search-news', cors(corsOptions), async (req, res) => {
         try {
             // var keyword
-            const keyword = req.query.keyword.toString();
+            const keyword = req.query.keyword;
             if (!keyword) {
                 res.json({
                     status: 'error',
@@ -39,7 +39,7 @@ function searchNews(app) {
                 return
             }
 
-            const docs = await searchNewsInDB(keyword, skip);
+            const docs = await searchNewsInDB(`${keyword}`, skip);
             const docsCount = docs.length;
             res.json({
                 status: 'ok',
@@ -47,6 +47,7 @@ function searchNews(app) {
                 data: docs
             })
         } catch (e) {
+            console.log(e);
             res.json({
                 status: 'error',
                 message: 'unknown error'
