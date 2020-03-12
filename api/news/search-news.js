@@ -12,8 +12,9 @@ const client = new MongoClient(MONGODB_URI, { useNewUrlParser: true, useUnifiedT
 // DB related ends
 
 // Analytics imports
-const getEarliestDocumentDate = require('./search-news-analytics').getEarliestDocumentDate;
+const getFrequencyLegends = require('./search-news-analytics').getFrequencyLegends;
 const getKeywordFrequencyByWeek = require('./search-news-analytics').getKeywordFrequencyByWeek;
+const matchFrequencyToBin = require('./search-news-analytics').matchFrequencyToBin;
 // Analytics imports end
 
 function searchNews(app) {
@@ -58,11 +59,12 @@ function searchNews(app) {
 
             // Response with frequency
             if (isFrequency) {
+                const frequencyLegends = await getFrequencyLegends(collection);
                 const keywordFrequencyByWeek = await getKeywordFrequencyByWeek(`${keyword}`, collection);
-                const earliestDocumentDate = await getEarliestDocumentDate(collection);
+                const frequencyMatchedToBin = matchFrequencyToBin(frequencyLegends.weeklyBin, keywordFrequencyByWeek);
                 baseResponse.frequency = {
-                    timeOrigin: earliestDocumentDate,
-                    data: keywordFrequencyByWeek
+                    bin: frequencyLegends,
+                    frequency: frequencyMatchedToBin
                 };
             }
 
