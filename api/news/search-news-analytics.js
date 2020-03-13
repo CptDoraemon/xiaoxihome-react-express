@@ -1,31 +1,23 @@
 const ObjectID = require('mongodb').ObjectID;
-const WEEK = 1000 * 60 * 60 * 24 * 7; // a week in ms
+const DAY = 1000 * 60 * 60 * 24; // a day in ms
 let EARLIEST_DOCUMENT_DATE = null;
 let LATEST_DOCUMENT_DATE = null;
-let WEEKLY_BIN = null;
+let DAILY_BIN = null;
 
-function getFrequencyLegends(collection) {
+function getFrequencyBin(collection) {
     return new Promise(async (resolve, reject) => {
         try {
             // use cache if existed
-            if (EARLIEST_DOCUMENT_DATE && LATEST_DOCUMENT_DATE && WEEKLY_BIN) {
-                resolve({
-                    earliest: EARLIEST_DOCUMENT_DATE,
-                    latest: LATEST_DOCUMENT_DATE,
-                    weeklyBin: WEEKLY_BIN
-                })
+            if (EARLIEST_DOCUMENT_DATE && LATEST_DOCUMENT_DATE && DAILY_BIN) {
+                resolve(DAILY_BIN)
             }
 
             await setEarliestDocumentDate(collection);
             await setLatestDocumentDate(collection);
 
-            WEEKLY_BIN = getWeeklyBin(EARLIEST_DOCUMENT_DATE, LATEST_DOCUMENT_DATE);
+            DAILY_BIN = getDailyBin(EARLIEST_DOCUMENT_DATE, LATEST_DOCUMENT_DATE);
 
-            resolve({
-                earliest: EARLIEST_DOCUMENT_DATE,
-                latest: LATEST_DOCUMENT_DATE,
-                weeklyBin: WEEKLY_BIN
-            })
+            resolve(DAILY_BIN)
         } catch (e) {
             reject(e)
         }
@@ -64,7 +56,7 @@ function setLatestDocumentDate(collection) {
     })
 }
 
-function getWeeklyBin(earliest, latest) {
+function getDailyBin(earliest, latest) {
     const bin = [];
     let point = latest;
     //
@@ -76,7 +68,7 @@ function getWeeklyBin(earliest, latest) {
         const now = Date.now();
         if (now - startedAt > maximumAllowedTime) break;
 
-        bin.push(point -= WEEK);
+        bin.push(point -= DAY);
     }
 
     bin.pop();
@@ -86,10 +78,10 @@ function getWeeklyBin(earliest, latest) {
     bin.forEach((ms, i, array) => {
         const date = new Date(ms);
         const year = date.getFullYear();
-        const week = getWeekNumber(date);
+        const dayOfYear = getDayOfYear(date);
         array[i] = {
             year,
-            week,
+            dayOfYear,
             ms
         }
     });
@@ -97,25 +89,17 @@ function getWeeklyBin(earliest, latest) {
     return bin
 }
 
-function getWeekNumber(d) {
-    // Copy date so don't modify original
-    d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
-    // Set to nearest Thursday: current date + 4 - current day number
-    // Make Sunday's day number 7
-    d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
-    // Get first day of year
-    const yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
-    // Calculate full weeks to nearest Thursday
-    return Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
+function getDayOfYear(date){
+    return (Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) - Date.UTC(date.getFullYear(), 0, 0)) / 24 / 60 / 60 / 1000;
 }
 
-function getKeywordFrequencyByWeek(keyword, collection) {
+function getKeywordFrequencyByDay(keyword, collection) {
     const pipeline = [
         { $match: { $text: { $search : keyword } } },
         { $group: {
                 _id: {
                     year: {$year: "$_id"},
-                    week: {$week: "$_id"}
+                    dayOfYear: {$dayOfYear: "$_id"}
                 },
                 count: {
                     $sum: 1
@@ -125,7 +109,7 @@ function getKeywordFrequencyByWeek(keyword, collection) {
         { $project: {
                 _id: 0,
                 year: "$_id.year",
-                week: "$_id.week",
+                dayOfYear: "$_id.dayOfYear",
                 count: 1,
             }
         }
@@ -146,7 +130,7 @@ function matchFrequencyToBin(binArray, frequencyArray) {
         let isFound = false;
         for (let i=0; i<frequencyArray.length; i++) {
             const frequency = frequencyArray[i];
-            if (bin.year === frequency.year && bin.week === frequency.week) {
+            if (bin.year === frequency.year && bin.dayOfYear === frequency.dayOfYear) {
                 matched.push(frequency.count);
                 isFound = true;
                 break;
@@ -159,8 +143,30 @@ function matchFrequencyToBin(binArray, frequencyArray) {
     return matched
 }
 
+async function getFrequency(keyword, collection) {
+    try {
+        const bin = await getFrequencyBin(collection);
+        const rawFrequency = await getKeywordFrequencyByDay(keyword, collection);
+        return matchFrequencyToBin(bin, rawFrequency)
+    } catch (e) {
+        throw(e)
+    }
+}
+
+async function getFrequencyAnalytics(keyword, collection) {
+    try {
+        const bin = await getFrequencyBin(collection);
+        const frequency = await getFrequency(keyword, collection);
+
+        return {
+            bin,
+            frequency
+        }
+    } catch (e) {
+        throw(e)
+    }
+}
+
 module.exports = {
-    getFrequencyLegends,
-    getKeywordFrequencyByWeek,
-    matchFrequencyToBin
+    getFrequencyAnalytics
 };

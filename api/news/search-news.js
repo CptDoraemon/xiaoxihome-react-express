@@ -12,9 +12,7 @@ const client = new MongoClient(MONGODB_URI, { useNewUrlParser: true, useUnifiedT
 // DB related ends
 
 // Analytics imports
-const getFrequencyLegends = require('./search-news-analytics').getFrequencyLegends;
-const getKeywordFrequencyByWeek = require('./search-news-analytics').getKeywordFrequencyByWeek;
-const matchFrequencyToBin = require('./search-news-analytics').matchFrequencyToBin;
+const getFrequencyAnalytics = require('./search-news-analytics').getFrequencyAnalytics;
 // Analytics imports end
 
 function searchNews(app) {
@@ -59,13 +57,9 @@ function searchNews(app) {
 
             // Response with frequency
             if (isFrequency) {
-                const frequencyLegends = await getFrequencyLegends(collection);
-                const keywordFrequencyByWeek = await getKeywordFrequencyByWeek(`${keyword}`, collection);
-                const frequencyMatchedToBin = matchFrequencyToBin(frequencyLegends.weeklyBin, keywordFrequencyByWeek);
-                baseResponse.frequency = {
-                    bin: frequencyLegends,
-                    frequency: frequencyMatchedToBin
-                };
+                const frequencyAnalytics = await getFrequencyAnalytics(keyword, collection);
+                console.log(frequencyAnalytics.bin.length, frequencyAnalytics.frequency.length);
+                baseResponse.frequency = Object.assign({}, frequencyAnalytics);
             }
 
             // Base response
