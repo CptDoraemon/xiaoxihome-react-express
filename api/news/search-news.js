@@ -58,7 +58,6 @@ function searchNews(app) {
             // Response with frequency
             if (isFrequency) {
                 const frequencyAnalytics = await getFrequencyAnalytics(keyword, collection);
-                console.log(frequencyAnalytics.bin.length, frequencyAnalytics.frequency.length);
                 baseResponse.frequency = Object.assign({}, frequencyAnalytics);
             }
 

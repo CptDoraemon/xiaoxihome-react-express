@@ -27,7 +27,6 @@ async function saveNewsCacheToDB(cache) {
         await collection.insertOne(cache);
 
         console.log('Current news cache saved to DB');
-        await client.close();
     } catch (e) {
         console.log('Error occurred when saving current news cache to DB', e);
     }
@@ -39,7 +38,6 @@ async function getNewsCacheFromDB() {
         const cache = await collection.findOne({}, {projection: {_id: 0}});
 
         console.log('Current news cache retrieved from DB');
-        client.close();
         return cache
     } catch (e) {
         console.log('Error occurred when retrieving current news cache from DB', e);
