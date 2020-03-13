@@ -37,7 +37,7 @@ weatherAPI(app);
 reverseGeoCodingAPI(app);
 xiaoxihomeFeedback(app);
 xiaoxihomeAboutpageData(app);
-getNewsGraphQL(app);
+// getNewsGraphQL(app);
 searchNews(app);
 
 

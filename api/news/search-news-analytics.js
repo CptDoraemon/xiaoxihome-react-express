@@ -7,8 +7,13 @@ let WEEKLY_BIN = null;
 function getFrequencyLegends(collection) {
     return new Promise(async (resolve, reject) => {
         try {
-            if (EARLIEST_DOCUMENT_DATE) {
-                resolve(EARLIEST_DOCUMENT_DATE)
+            // use cache if existed
+            if (EARLIEST_DOCUMENT_DATE && LATEST_DOCUMENT_DATE && WEEKLY_BIN) {
+                resolve({
+                    earliest: EARLIEST_DOCUMENT_DATE,
+                    latest: LATEST_DOCUMENT_DATE,
+                    weeklyBin: WEEKLY_BIN
+                })
             }
 
             await setEarliestDocumentDate(collection);
