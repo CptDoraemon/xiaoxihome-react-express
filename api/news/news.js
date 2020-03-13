@@ -3,6 +3,9 @@ const bodyParser = require('body-parser');
 const https = require('https');
 const savingNewsCacheObjectToDB = require('./save-news-to-db');
 
+const saveNewsCacheToDB = require('./handle-current-news-cache-with-db').saveNewsCacheToDB;
+const getNewsCacheFromDB = require('./handle-current-news-cache-with-db').getNewsCacheFromDB;
+
 const API_KEY_COMPONENT = `&apiKey=${process.env.NEWS_API_KEY}`;
 const BASE_URL = `https://newsapi.org/v2/top-headlines?country=ca`;
 const CATEGORY_BASE = `&category=`;
@@ -29,10 +32,15 @@ function getNews(url, cacheKey, isLast) {
             if (body.status === 'ok') {
                 CACHE = Object.assign({}, CACHE, { [cacheKey]: body } );
                 console.log(`${cacheKey} news updated at: `, Date.now());
+
+                // The last category of news is being updated
                 if (isLast)  {
                     LAST_UPDATE_AT = Date.now();
                     console.log('All news updated at: ', LAST_UPDATE_AT);
-                    savingNewsCacheObjectToDB(Object.assign({}, CACHE), LAST_UPDATE_AT)
+                    // collection "currentNews"
+                    saveNewsCacheToDB(CACHE);
+                    // collection "news"
+                    savingNewsCacheObjectToDB(Object.assign({}, CACHE), LAST_UPDATE_AT);
                 }
             }
         });
@@ -42,21 +50,31 @@ function getNews(url, cacheKey, isLast) {
         })
 }
 
-function getAllNews() {
-    let i = 0;
-    const getNewsInQueue = () => {
-        const isLast = i === CATEGORIES.length - 1;
-        getNews(CATEGORIES_URLS[i], CATEGORIES[i], isLast);
-        i++;
-        if (!isLast) {
-            setTimeout(getNewsInQueue, CATEGORY_REQUEST_INTERVAL);
-        } else {
-            SCHEDULED_UPDATE_TIMER = setTimeout(getAllNews, UPDATE_INTERVAL);
-        }
-    };
+async function getAllNews() {
+    try {
+        // get cache from db
+        const cache = await getNewsCacheFromDB();
+        CACHE = Object.assign({}, cache);
 
-    setTimeout(() => getNews(HEAD_LINE_URL, 'headline', false), CATEGORY_REQUEST_INTERVAL);
-    setTimeout(getNewsInQueue, 2 * CATEGORY_REQUEST_INTERVAL);
+        // get latest news from newsapi.org
+        const DELAY = 1000 * 60 * 5; // Start to call api after 5 minutes
+        let i = 0;
+        const getNewsInQueue = () => {
+            const isLast = i === CATEGORIES.length - 1;
+            getNews(CATEGORIES_URLS[i], CATEGORIES[i], isLast);
+            i++;
+            if (!isLast) {
+                setTimeout(getNewsInQueue, CATEGORY_REQUEST_INTERVAL);
+            } else {
+                SCHEDULED_UPDATE_TIMER = setTimeout(getAllNews, UPDATE_INTERVAL);
+            }
+        };
+
+        setTimeout(() => getNews(HEAD_LINE_URL, 'headline', false), DELAY);
+        setTimeout(getNewsInQueue, DELAY + CATEGORY_REQUEST_INTERVAL);
+    } catch (e) {
+        console.log(e);
+    }
 }
 
 module.exports = {
