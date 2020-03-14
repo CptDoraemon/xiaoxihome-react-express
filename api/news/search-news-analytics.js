@@ -74,6 +74,7 @@ function getDailyBin(earliest, latest) {
 
     bin.push(point);
     bin.reverse();
+    // date from earliest to latest now
 
     bin.forEach((ms, i, array) => {
         const date = new Date(ms);
@@ -85,6 +86,10 @@ function getDailyBin(earliest, latest) {
             ms
         }
     });
+
+    if (bin[0].dayOfYear === bin[1].dayOfYear) {
+        bin.unshift()
+    }
 
     return bin
 }
