@@ -68,11 +68,11 @@ function getDailyBin(earliest, latest) {
         const now = Date.now();
         if (now - startedAt > maximumAllowedTime) break;
 
-        bin.push(point -= DAY);
+        bin.push(point);
+        point -= DAY;
     }
 
-    bin.pop();
-    bin.push(earliest);
+    bin.push(point);
     bin.reverse();
 
     bin.forEach((ms, i, array) => {
