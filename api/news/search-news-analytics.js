@@ -72,14 +72,14 @@ function getDailyBin(earliest, latest) {
         point -= DAY;
     }
 
-    bin.push(point);
+    bin.push(earliest);
     bin.reverse();
     // date from earliest to latest now
 
     bin.forEach((ms, i, array) => {
         const date = new Date(ms);
         const year = date.getFullYear();
-        const dayOfYear = getDayOfYear(date);
+        const dayOfYear = getUTCDayOfYear(date);
         array[i] = {
             year,
             dayOfYear,
@@ -88,14 +88,14 @@ function getDailyBin(earliest, latest) {
     });
 
     if (bin[0].dayOfYear === bin[1].dayOfYear) {
-        bin.unshift()
+        bin.shift()
     }
 
     return bin
 }
 
-function getDayOfYear(date){
-    return (Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) - Date.UTC(date.getFullYear(), 0, 0)) / 24 / 60 / 60 / 1000;
+function getUTCDayOfYear(date){
+    return (Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()) - Date.UTC(date.getFullYear(), 0, 0)) / 24 / 60 / 60 / 1000;
 }
 
 function getKeywordFrequencyByDay(keyword, collection) {
@@ -148,9 +148,8 @@ function matchFrequencyToBin(binArray, frequencyArray) {
     return matched
 }
 
-async function getFrequency(keyword, collection) {
+async function getFrequency(keyword, collection, bin) {
     try {
-        const bin = await getFrequencyBin(collection);
         const rawFrequency = await getKeywordFrequencyByDay(keyword, collection);
         return matchFrequencyToBin(bin, rawFrequency)
     } catch (e) {
@@ -161,7 +160,7 @@ async function getFrequency(keyword, collection) {
 async function getFrequencyAnalytics(keyword, collection) {
     try {
         const bin = await getFrequencyBin(collection);
-        const frequency = await getFrequency(keyword, collection);
+        const frequency = await getFrequency(keyword, collection, bin);
 
         return {
             bin,
