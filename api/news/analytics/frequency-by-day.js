@@ -172,5 +172,6 @@ async function getFrequencyAnalytics(keyword, collection) {
 }
 
 module.exports = {
-    getFrequencyAnalytics
+    getFrequencyAnalytics,
+    getUTCDayOfYear
 };

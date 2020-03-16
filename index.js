@@ -10,7 +10,7 @@ const searchCityName = require('./api/search-cityname').searchCityName;
 const xiaoxihomeFeedback = require('./api/xiaoxihome/xiaoxihome-feedback');
 const xiaoxihomeAboutpageData = require('./api/xiaoxihome/aboutpage/xiaoxihome-aboutpage-data');
 const getNewsGraphQL = require('./api/news/scheme');
-const searchNews = require('./api/news/search-news');
+const searchNews = require('./api/news/search-news/search-news');
 
 
 
