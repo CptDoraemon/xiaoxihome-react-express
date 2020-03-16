@@ -1,9 +1,7 @@
 // Collection 'news'
 // Save the new news articles to collection
 
-require('dotenv').config();
 const mongoose = require ("mongoose");
-const MONGODB_URI = process.env.MONGODB_URI;
 const newsArticleSchema = new mongoose.Schema({
     source: {
         id: String,
@@ -25,7 +23,7 @@ const MAX_COLLECTION_SIZE = 300 * 1024 * 1024; // 300 mb
 async function savingNewsCacheObjectToDB(newsCacheObject, requestedAt) {
     try {
         // 1
-        await connectToDB();
+        // await connectToDB();
 
         // 2
         const savingNewsArticlePromiseArray = mapNewsCacheObjectToPromiseArray(newsCacheObject, requestedAt);
@@ -39,28 +37,6 @@ async function savingNewsCacheObjectToDB(newsCacheObject, requestedAt) {
     } catch (e) {
         console.log(e);
     }
-}
-
-function connectToDB() {
-    return new Promise((resolve, reject) => {
-        mongoose.connect(MONGODB_URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true
-        })
-            .catch((e) => {
-                console.log(e);
-                reject(e);
-            });
-
-        const db = mongoose.connection;
-        db.on('error', (err) => {
-            console.log('db connection error when saving news', err);
-            reject(err);
-        });
-        db.once('open', () => {
-            resolve();
-        })
-    })
 }
 
 function mapNewsCacheObjectToPromiseArray(newsCacheObject, requestedAt) {

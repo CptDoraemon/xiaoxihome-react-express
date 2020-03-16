@@ -45,8 +45,8 @@ const ArticleCategoryType = new GraphQLEnumType({
 });
 
 
-function getNewsGraphQL(app) {
-    getAllNews();
+function getNewsGraphQL(app, currentNewsCollection) {
+    getAllNews(currentNewsCollection);
 
     const QueryType = new GraphQLObjectType({
         name: 'RootQueryType',

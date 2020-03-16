@@ -1,9 +1,7 @@
-require('dotenv').config();
 const bodyParser = require('body-parser');
 const mongoose = require ("mongoose");
 
 function xiaoxihomeFeedback(app) {
-    const uristring = process.env.MONGODB_URI;
     let feedbackSchema = new mongoose.Schema({
         name: String,
         email: String,
@@ -27,20 +25,14 @@ function xiaoxihomeFeedback(app) {
                 message: message,
                 date: date
             });
-            mongoose.connect(uristring, { useNewUrlParser: true });
-            let db = mongoose.connection;
-            db.on('error', (err) => {
-                res.json({response: 'Ooops: ' + err + ', please try again.'});
-            });
-            db.once('open', () => {
-                newFeedback.save((err) => {
-                    if (err) {
-                        res.json({response: 'Ooops: ' + err + ', please try again.'});
-                    } else {
-                        res.json({response: 'Thank you for your message, I\'ll get back to you soon.'});
-                    }
-                })
-            });
+
+            newFeedback.save((err) => {
+                if (err) {
+                    res.json({response: 'Ooops: ' + err + ', please try again.'});
+                } else {
+                    res.json({response: 'Thank you for your message, I\'ll get back to you soon.'});
+                }
+            })
         }
     });
 }

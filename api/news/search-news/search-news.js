@@ -11,11 +11,7 @@ const validateDate = require('./query-validation').validateDate;
 const validateSort = require('./query-validation').validateSort;
 const sortTypes = require('./query-validation').sortTypes;
 // DB related
-const MongoClient = require('mongodb').MongoClient;
 const ObjectID = require('mongodb').ObjectID;
-require('dotenv').config();
-const MONGODB_URI = process.env.MONGODB_URI;
-const client = new MongoClient(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 // DB related ends
 
 // Analytics imports
@@ -23,12 +19,7 @@ const getFrequencyAnalytics = require('../analytics/frequency-by-day').getFreque
 const getUTCDayOfYear = require('../analytics/frequency-by-day').getUTCDayOfYear;
 // Analytics imports end
 
-function searchNews(app) {
-
-    client.connect(err => {
-       if (err) console.log(err);
-    });
-    const collection = client.db().collection("news");
+function searchNews(app, newsCollection) {
 
     app.get('/api/search-news', cors(corsOptions), async (req, res) => {
         try {
@@ -43,8 +34,8 @@ function searchNews(app) {
 
             if (isError) return;
 
-            const docs = await searchNewsInDB(collection,`${keyword}`, sort, skip, date);
-            const totalCount = await getKeywordSearchTotalCount(collection, `${keyword}`, date);
+            const docs = await searchNewsInDB(newsCollection,`${keyword}`, sort, skip, date);
+            const totalCount = await getKeywordSearchTotalCount(newsCollection, `${keyword}`, date);
             const baseResponse = {
                 status: 'ok',
                 totalCount,
@@ -53,7 +44,7 @@ function searchNews(app) {
 
             // Response with frequency
             if (isFrequency) {
-                const frequencyAnalytics = await getFrequencyAnalytics(keyword, collection);
+                const frequencyAnalytics = await getFrequencyAnalytics(keyword, newsCollection);
                 baseResponse.frequency = Object.assign({}, frequencyAnalytics);
             }
 

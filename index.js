@@ -4,6 +4,7 @@ const path = require('path');
 const helmet = require('helmet');
 require('dotenv').config();
 
+const connectToDBs = require('./api/db-connections/connect-to-dbs').connectToDBs;
 const weatherAPI = require('./api/weather').weather;
 const reverseGeoCodingAPI = require('./api/geocoding').reverseGeoCoding;
 const searchCityName = require('./api/search-cityname').searchCityName;
@@ -14,7 +15,7 @@ const searchNews = require('./api/news/search-news/search-news');
 
 
 
-if( process.env.PORT ) {
+if (process.env.PORT) {
     app.use((req, res, next) => {
         if (req.header('X-Forwarded-Proto') === 'https') {
             next();
@@ -24,26 +25,34 @@ if( process.env.PORT ) {
 app.use(helmet());
 app.use(express.static(path.join(__dirname, 'client/build')));
 
-
-
-// ROUTERS
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname+'/client/build/index.html'));
 });
 
+(async () => {
+    try {
+        const {
+            cityNameDB,
+            currentNewsCollection,
+            newsCollection
+        } = await connectToDBs();
 
-searchCityName(app);
-weatherAPI(app);
-reverseGeoCodingAPI(app);
-xiaoxihomeFeedback(app);
-xiaoxihomeAboutpageData(app);
-getNewsGraphQL(app);
-searchNews(app);
+        searchCityName(app, cityNameDB);
+        weatherAPI(app);
+        reverseGeoCodingAPI(app);
+        xiaoxihomeFeedback(app);
+        xiaoxihomeAboutpageData(app);
+        getNewsGraphQL(app, currentNewsCollection);
+        searchNews(app, newsCollection);
 
+        app.get('*', (req, res) => {
+            res.sendFile(path.join(__dirname+'/client/build/index.html'));
+        });
 
-app.get('*', (req, res) => {
-   res.sendFile(path.join(__dirname+'/client/build/index.html'));
-});
+    } catch (e) {
+        console.log(e)
+    }
+})();
 
 
 const port = process.env.PORT || 5000;

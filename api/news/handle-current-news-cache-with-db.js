@@ -2,29 +2,10 @@
 // Reset collection
 // Save the current cache to collection
 
-// DB related
-const MongoClient = require('mongodb').MongoClient;
-require('dotenv').config();
-const MONGODB_URI = process.env.MONGODB_URI;
-const client = new MongoClient(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
-// DB related ends
-
-function connectToDB() {
-    return new Promise((resolve, reject) => {
-        client.connect(err => {
-            if (err) {
-                reject(err)
-            }
-            resolve(client.db().collection("currentNews"))
-        });
-    })
-}
-
-async function saveNewsCacheToDB(cache) {
+async function saveNewsCacheToDB(cache, currentNewsCollection) {
     try {
-        const collection = await connectToDB();
-        await collection.deleteMany({});
-        await collection.insertOne(cache);
+        await currentNewsCollection.deleteMany({});
+        await currentNewsCollection.insertOne(cache);
 
         console.log('Current news cache saved to DB');
     } catch (e) {
@@ -32,10 +13,9 @@ async function saveNewsCacheToDB(cache) {
     }
 }
 
-async function getNewsCacheFromDB() {
+async function getNewsCacheFromDB(currentNewsCollection) {
     try {
-        const collection = await connectToDB();
-        const cache = await collection.findOne({}, {projection: {_id: 0}});
+        const cache = await currentNewsCollection.findOne({}, {projection: {_id: 0}});
 
         console.log('Current news cache retrieved from DB');
         return cache

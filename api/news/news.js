@@ -21,7 +21,7 @@ let SCHEDULED_UPDATE_TIMER;
 const UPDATE_INTERVAL = 60 * 60 * 1000; // 60 minutes
 const CATEGORY_REQUEST_INTERVAL = 10 * 1000; // 10 seconds
 
-function getNews(url, cacheKey, isLast) {
+function getNews(url, cacheKey, isLast, currentNewsCollection) {
     https.get(url, (res) => {
         let body = '';
         res.on('data', (data) => {
@@ -38,7 +38,7 @@ function getNews(url, cacheKey, isLast) {
                     LAST_UPDATE_AT = Date.now();
                     console.log('All news updated at: ', LAST_UPDATE_AT);
                     // collection "currentNews"
-                    saveNewsCacheToDB(CACHE);
+                    saveNewsCacheToDB(CACHE, currentNewsCollection);
                     // collection "news"
                     savingNewsCacheObjectToDB(Object.assign({}, CACHE), LAST_UPDATE_AT);
                 }
@@ -50,18 +50,19 @@ function getNews(url, cacheKey, isLast) {
         })
 }
 
-async function getAllNews() {
+async function getAllNews(currentNewsCollection) {
     try {
         // get cache from db
-        const cache = await getNewsCacheFromDB();
+        const cache = await getNewsCacheFromDB(currentNewsCollection);
         CACHE = Object.assign({}, cache);
 
         // get latest news from newsapi.org
+        // TODO: remove before deploy
         const DELAY = 1000 * 60 * 5; // Start to call api after 5 minutes
         let i = 0;
         const getNewsInQueue = () => {
             const isLast = i === CATEGORIES.length - 1;
-            getNews(CATEGORIES_URLS[i], CATEGORIES[i], isLast);
+            getNews(CATEGORIES_URLS[i], CATEGORIES[i], isLast, currentNewsCollection);
             i++;
             if (!isLast) {
                 setTimeout(getNewsInQueue, CATEGORY_REQUEST_INTERVAL);
