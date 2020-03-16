@@ -57,7 +57,6 @@ async function getAllNews(currentNewsCollection) {
         CACHE = Object.assign({}, cache);
 
         // get latest news from newsapi.org
-        // TODO: remove before deploy
         const DELAY = 1000 * 60 * 5; // Start to call api after 5 minutes
         let i = 0;
         const getNewsInQueue = () => {

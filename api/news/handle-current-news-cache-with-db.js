@@ -4,7 +4,7 @@
 
 async function saveNewsCacheToDB(cache, currentNewsCollection) {
     try {
-        await currentNewsCollection.deleteMany({});
+        await currentNewsCollection.deleteOne({});
         await currentNewsCollection.insertOne(cache);
 
         console.log('Current news cache saved to DB');
