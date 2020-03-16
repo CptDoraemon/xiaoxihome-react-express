@@ -12,7 +12,7 @@ function validateSkip(skip, res, setError) {
     }
 
     skip = parseInt(skip);
-    const invalidSkip = isNaN(skip) || skip <= 0;
+    const invalidSkip = isNaN(skip) || skip < 0;
 
     if (invalidSkip) {
         return invalidHandler(res, setError, 'skip parameter must be a non-negative integer');
