@@ -16,7 +16,6 @@ const ObjectID = require('mongodb').ObjectID;
 
 // Analytics imports
 const getFrequencyAnalytics = require('../analytics/frequency-by-day').getFrequencyAnalytics;
-const getUTCDayOfYear = require('../analytics/frequency-by-day').getUTCDayOfYear;
 // Analytics imports end
 
 function searchNews(app, newsCollection) {
