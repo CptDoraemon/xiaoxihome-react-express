@@ -3,18 +3,25 @@ let EARLIEST_DOCUMENT_DATE = null;
 let LATEST_DOCUMENT_DATE = null;
 
 function getDocumentDate(which, collection) {
-    let sortBy;
-    if (which === 'latest') {
-        if (LATEST_DOCUMENT_DATE) return LATEST_DOCUMENT_DATE;
-        sortBy = -1
-    } else if (which === 'earliest') {
-        if (EARLIEST_DOCUMENT_DATE) return EARLIEST_DOCUMENT_DATE;
-        sortBy = 1
-    } else {
-        return false
-    }
-
     return new Promise((resolve, reject) => {
+        let sortBy;
+        if (which === 'latest') {
+            if (LATEST_DOCUMENT_DATE) {
+                resolve(LATEST_DOCUMENT_DATE);
+                return
+            }
+            sortBy = -1
+        } else if (which === 'earliest') {
+            if (EARLIEST_DOCUMENT_DATE) {
+                resolve(EARLIEST_DOCUMENT_DATE);
+                return
+            }
+            sortBy = 1
+        } else {
+            reject('wrong "which" param');
+            return
+        }
+
         collection.aggregate([
             {$sort: {_id: sortBy}},
             {$limit: 1}

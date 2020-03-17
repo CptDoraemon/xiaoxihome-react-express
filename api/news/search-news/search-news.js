@@ -4,15 +4,15 @@ const corsOptions = {
     maxAge: 31536000,
     methods: 'POST'
 };
+//
+const getFindArg = require('../analytics/reusables/get-documents-count').getFindArg;
+const getDocumentsCount = require('../analytics/reusables/get-documents-count').getDocumentsCount;
 // validators
 const validateKeyword = require('./query-validation').validateKeyword;
 const validateSkip = require('./query-validation').validateSkip;
 const validateDate = require('./query-validation').validateDate;
 const validateSort = require('./query-validation').validateSort;
 const sortTypes = require('./query-validation').sortTypes;
-// DB related
-const ObjectID = require('mongodb').ObjectID;
-// DB related ends
 
 // Analytics imports
 const getFrequencyAnalytics = require('../analytics/frequency-by-day').getFrequencyAnalytics;
@@ -34,7 +34,7 @@ function searchNews(app, newsCollection) {
             if (isError) return;
 
             const docs = await searchNewsInDB(newsCollection,`${keyword}`, sort, skip, date);
-            const totalCount = await getKeywordSearchTotalCount(newsCollection, `${keyword}`, date);
+            const totalCount = await getDocumentsCount(newsCollection, `${keyword}`, date);
             const baseResponse = {
                 status: 'ok',
                 totalCount,
@@ -58,34 +58,6 @@ function searchNews(app, newsCollection) {
             });
         }
     })
-}
-
-function getFindArg(keyword, date) {
-    let findArg = {$text: { $search : keyword }};
-    if (date !== -1) {
-        const dateObj = new Date(date);
-        const beginningOfDay = Date.UTC(dateObj.getUTCFullYear(), dateObj.getUTCMonth(), dateObj.getUTCDate());
-        const endOfDay = beginningOfDay + 1000 * 60 * 60 * 24 - 1;
-        const idMin = ObjectID(Math.floor((new Date(beginningOfDay))/1000).toString(16) + "0000000000000000");
-        const idMax = ObjectID(Math.floor((new Date(endOfDay))/1000).toString(16) + "0000000000000000");
-
-        findArg = {
-            $text: { $search : keyword },
-            _id: {$gt: idMin, $lt: idMax}
-        }
-    }
-
-    return findArg
-}
-
-function getKeywordSearchTotalCount(collection, keyword, date) {
-    const findArg = getFindArg(keyword, date);
-    return new Promise((resolve, reject) => {
-        collection.countDocuments(findArg, null, (err, result) => {
-            if (err) reject(err);
-            resolve(result);
-        });
-    });
 }
 
 function searchNewsInDB(collection, keyword, sortBy, skipper, date) {

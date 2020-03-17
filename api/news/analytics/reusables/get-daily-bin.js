@@ -1,18 +1,19 @@
 const getUTCDayOfYear = require('./get-utc-day-of-year').getUTCDayOfYear;
+const getDocumentDate = require('./get-earliest-and-latest-document-date').getDocumentDate;
 
 const DAY = 1000 * 60 * 60 * 24; // a day in ms
 let DAILY_BIN = null;
 
-function getDailyBin(earliest, latest) {
+function getDailyBinInRange(start, end) {
     if (DAILY_BIN) return DAILY_BIN;
 
     const bin = [];
-    let point = latest;
+    let point = end;
     //
     const startedAt = Date.now();
     const maximumAllowedTime = 5000;
 
-    while (point > earliest) {
+    while (point > start) {
         // end if infinite loop
         const now = Date.now();
         if (now - startedAt > maximumAllowedTime) break;
@@ -21,7 +22,7 @@ function getDailyBin(earliest, latest) {
         point -= DAY;
     }
 
-    bin.push(earliest);
+    bin.push(start);
     bin.reverse();
     // date from earliest to latest now
 
@@ -44,6 +45,20 @@ function getDailyBin(earliest, latest) {
     return bin
 }
 
+function getDailyBinFromEarliestToLatest(collection) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const earliestDocumentDate = await getDocumentDate('earliest', collection);
+            const latestDocumentDate = await getDocumentDate('latest', collection);
+
+            resolve(getDailyBinInRange(earliestDocumentDate, latestDocumentDate))
+        } catch (e) {
+            reject(e)
+        }
+    })
+}
+
 module.exports = {
-    getDailyBin
+    getDailyBinInRange,
+    getDailyBinFromEarliestToLatest
 };

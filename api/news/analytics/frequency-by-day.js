@@ -1,22 +1,8 @@
-const getDocumentDate = require('./reusables/get-earliest-and-latest-document-date').getDocumentDate;
-const getDailyBin = require('./reusables/get-daily-bin').getDailyBin;
-
-function getFrequencyBin(collection) {
-    return new Promise(async (resolve, reject) => {
-        try {
-            const earliestDocumentDate = await getDocumentDate('earliest', collection);
-            const latestDocumentDate = await getDocumentDate('latest', collection);
-
-            resolve(getDailyBin(earliestDocumentDate, latestDocumentDate))
-        } catch (e) {
-            reject(e)
-        }
-    })
-}
+const getDailyBinFromEarliestToLatest = require('./reusables/get-daily-bin').getDailyBinFromEarliestToLatest;
+const matchValueArrayToDailyBin = require('./reusables/match-value-array-to-daily-bin').matchValueArrayToDailyBin;
 
 function getKeywordFrequencyByDay(keyword, collection) {
     const pipeline = [
-        { $match: { $text: { $search : keyword } } },
         { $group: {
                 _id: {
                     year: {$year: "$_id"},
@@ -36,6 +22,10 @@ function getKeywordFrequencyByDay(keyword, collection) {
         }
     ];
 
+    if (keyword.length > 0) {
+        pipeline.unshift(        { $match: { $text: { $search : keyword } } })
+    }
+
     return new Promise((resolve, reject) => {
         collection.aggregate(pipeline)
             .toArray((err, result) => {
@@ -45,29 +35,10 @@ function getKeywordFrequencyByDay(keyword, collection) {
     })
 }
 
-function matchFrequencyToBin(binArray, frequencyArray) {
-    const matched = [];
-    binArray.forEach(bin => {
-        let isFound = false;
-        for (let i=0; i<frequencyArray.length; i++) {
-            const frequency = frequencyArray[i];
-            if (bin.year === frequency.year && bin.dayOfYear === frequency.dayOfYear) {
-                matched.push(frequency.count);
-                isFound = true;
-                break;
-            }
-            if (i === frequencyArray.length - 1 && !isFound) {
-                matched.push(0);
-            }
-        }
-    });
-    return matched
-}
-
 async function getFrequency(keyword, collection, bin) {
     try {
         const rawFrequency = await getKeywordFrequencyByDay(keyword, collection);
-        return matchFrequencyToBin(bin, rawFrequency)
+        return matchValueArrayToDailyBin(bin, rawFrequency)
     } catch (e) {
         throw(e)
     }
@@ -75,7 +46,7 @@ async function getFrequency(keyword, collection, bin) {
 
 async function getFrequencyAnalytics(keyword, collection) {
     try {
-        const bin = await getFrequencyBin(collection);
+        const bin = await getDailyBinFromEarliestToLatest(collection);
         const frequency = await getFrequency(keyword, collection, bin);
 
         return {

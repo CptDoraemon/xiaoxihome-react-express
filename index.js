@@ -12,6 +12,7 @@ const xiaoxihomeFeedback = require('./api/xiaoxihome/xiaoxihome-feedback');
 const xiaoxihomeAboutpageData = require('./api/xiaoxihome/aboutpage/xiaoxihome-aboutpage-data');
 const getNewsGraphQL = require('./api/news/scheme');
 const searchNews = require('./api/news/search-news/search-news');
+const newsAnalytics = require('./api/news/news-analytics');
 
 
 
@@ -44,6 +45,7 @@ app.get('/', (req, res) => {
         xiaoxihomeAboutpageData(app);
         getNewsGraphQL(app, currentNewsCollection);
         searchNews(app, newsCollection);
+        newsAnalytics(app, newsCollection);
 
         app.get('*', (req, res) => {
             res.sendFile(path.join(__dirname+'/client/build/index.html'));

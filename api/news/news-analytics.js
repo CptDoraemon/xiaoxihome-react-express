@@ -1,3 +1,4 @@
+const getSummaryStatistics = require('./analytics/summary-statistics').getSummaryStatistics;
 const cors = require('cors');
 const corsOptions = {
     // origin: ['https://cptdoraemon.github.io', 'http://localhost:3000'],
@@ -6,16 +7,25 @@ const corsOptions = {
     methods: 'POST'
 };
 
-async function newsAnalytics(app, newsCollection) {
-    try {
-        const newsAnalytics = await getNewsAnalytics(newsCollection);
-
-        app.get('/api/news-analytics', cors(corsOptions), (res, req) => {
-
-        })
-    } catch (e) {
-        throw (e)
-    }
+function newsAnalytics(app, newsCollection) {
+    app.get('/api/news-analytics', cors(corsOptions), async (req, res) => {
+        try {
+            const newsAnalytics = await getNewsAnalytics(newsCollection);
+            res.json(Object.assign(
+                {},
+                {
+                    status: 'ok'
+                },
+                newsAnalytics
+                ))
+        } catch (e) {
+            await res.json({
+                status: 'error',
+                message: 'server error'
+            });
+            throw (e)
+        }
+    })
 }
 
 async function getNewsAnalytics(newsCollection) {
@@ -30,12 +40,4 @@ async function getNewsAnalytics(newsCollection) {
     }
 }
 
-function getSummaryStatistics(newsCollection) {
-    return new Promise((resolve, reject) => {
-
-    })
-}
-
-module.exports = {
-    newsAnalytics
-};
+module.exports = newsAnalytics;
