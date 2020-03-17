@@ -52,12 +52,15 @@ function getNews(url, cacheKey, isLast, currentNewsCollection) {
 
 async function getAllNews(currentNewsCollection) {
     try {
-        // get cache from db
-        const cache = await getNewsCacheFromDB(currentNewsCollection);
-        CACHE = Object.assign({}, cache);
+        let DELAY = 0; // Start to call api after 5 minutes
+        // get cache from db on server start
+        if (!Object.keys(CACHE).length) {
+            const cache = await getNewsCacheFromDB(currentNewsCollection);
+            CACHE = Object.assign({}, cache);
+            DELAY = 1000 * 60 * 5; // Start to call api after 5 minutes
+        }
 
         // get latest news from newsapi.org
-        const DELAY = 1000 * 60 * 5; // Start to call api after 5 minutes
         let i = 0;
         const getNewsInQueue = () => {
             const isLast = i === CATEGORIES.length - 1;
@@ -66,7 +69,7 @@ async function getAllNews(currentNewsCollection) {
             if (!isLast) {
                 setTimeout(getNewsInQueue, CATEGORY_REQUEST_INTERVAL);
             } else {
-                SCHEDULED_UPDATE_TIMER = setTimeout(getAllNews, UPDATE_INTERVAL);
+                SCHEDULED_UPDATE_TIMER = setTimeout(() => getAllNews(currentNewsCollection), UPDATE_INTERVAL);
             }
         };
 
