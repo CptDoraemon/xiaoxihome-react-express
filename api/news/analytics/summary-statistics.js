@@ -14,8 +14,8 @@ function getSummaryStatistics(newsCollection) {
             }
 
             const totalDocuments = await getDocumentsCount(newsCollection, '', -1);
-            const earliestDocumentDate = await getDocumentDate('earliest');
-            const latestDocumentDate = await getDocumentDate('latest');
+            const earliestDocumentDate = await getDocumentDate('earliest', newsCollection);
+            const latestDocumentDate = await getDocumentDate('latest', newsCollection);
             const documentsCountByDay = await getFrequencyAnalytics('', newsCollection);
             const documentsCountByCategory = await getDocumentsCountByCategory(newsCollection);
 
