@@ -88,7 +88,7 @@ function getWordCloud(collection) {
                 }
             },
             {$sort: {count: -1}},
-            {$limit: 20},
+            {$limit: 100},
             {$project: {
                 word: "$_id.word",
                 count: 1,
