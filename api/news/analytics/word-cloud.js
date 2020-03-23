@@ -19,7 +19,7 @@ const blacklist = [
     "was", "were", "be", "been", "being", "have", "has",
     "had", "having", "do", "does", "did", "doing", "will",
     "would", "should", "can", "could", "ought", "i'm",
-    "you're", "he's", "she's", "it's", "we're", "they're",
+    "you're", "he's", "she's", "it's", "it’s", "we're", "they're",
     "i've", "you've", "we've", "they've", "i'd", "you'd",
     "he'd", "she'd", "we'd", "they'd", "i'll", "you'll",
     "he'll", "she'll", "we'll", "they'll", "isn't",
@@ -52,19 +52,19 @@ function getWordCloud(collection) {
                             input: { $split: ['$description', ' '] },
                             as: 'str',
                             in: {$cond: {
-                                if: {
-                                    $not: [{
-                                        $in: [
-                                            "$$str",
-                                            [",", "|", "(", ")", "{", "}", "—", "<", ">", ".", ";", "\"", "&", "...", "…"]
-                                        ]
-                                    }]
-                                },
-                                then: {
-                                    $toLower: "$$str"
-                                },
-                                else: "null"
-                            }}
+                                    if: {
+                                        $not: [{
+                                            $in: [
+                                                "$$str",
+                                                [",", "|", "(", ")", "{", "}", "—", "-", "--", "<", ">", ".", ";", "\"", "&", "...", "…"]
+                                            ]
+                                        }]
+                                    },
+                                    then: {
+                                        $toLower: "$$str"
+                                    },
+                                    else: "null"
+                                }}
                         }
                     }
                 }
@@ -90,9 +90,9 @@ function getWordCloud(collection) {
             {$sort: {count: -1}},
             {$limit: 100},
             {$project: {
-                word: "$_id.word",
-                count: 1,
-                _id: 0
+                    word: "$_id.word",
+                    count: 1,
+                    _id: 0
                 }}
         ];
         collection.aggregate(pipeline).toArray((err, doc) => {
