@@ -19,17 +19,17 @@ function workerCode () {
             }
         };
 
-        const updateSnowFlake = (obj, height) => {
-            const newY = obj.y < height ? obj.y + obj.speed : obj.y;
-            const newIsBottom = obj.y >= height;
+        const updateSnowFlake = (obj) => {
+            const newY = obj.y < obj.height ? obj.y + obj.speed : obj.y;
+            const newIsBottom = obj.y >= obj.height;
             return Object.assign({}, obj, {y: newY, isBottom: newIsBottom})
         };
 
-        frames.push(snowFlakes);
+        frames.push(snowFlakes.slice());
 
         for (let i=1; i<totalFrames; i++) {
             if (snowFlakes.length > 0) {
-                snowFlakes = snowFlakes.map(obj => updateSnowFlake(obj, height));
+                snowFlakes = snowFlakes.map(obj => updateSnowFlake(obj));
             }
             if (Math.random() > 0.95 && snowFlakes.length <= 100) {
                 snowFlakes.push(createSnowFlake(width, height))
@@ -37,7 +37,7 @@ function workerCode () {
             if (snowFlakes.length > 100 && snowFlakes[0].isBottom) {
                 snowFlakes.shift();
             }
-            frames.push(snowFlakes);
+            frames.push(snowFlakes.slice());
         }
 
         postMessage(frames)
