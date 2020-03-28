@@ -4,6 +4,7 @@ import './contact.css'
 import { IoIosClose, IoMdListBox } from "react-icons/io";
 import Loader from 'react-loader-spinner';
 import {setTitle} from "../../tools/set-title";
+import snowWorkerScript from "./snow-worker";
 
 class Contact extends React.Component {
     constructor(props){
@@ -155,56 +156,57 @@ class Contact extends React.Component {
         }
     }
     letItSnow() {
+        if (!window.Worker) return;
+
         let display = document.getElementById('display');
         let ctx = display.getContext('2d');
         let width = display.width = window.innerWidth;
         let height = display.height = window.innerHeight;
 
-        class Snow {
-            constructor(){
-                this.x = Math.floor(Math.random() * width);
-                this.y = 0;
-                this.update = this.update.bind(this);
-                this.draw = this.draw.bind(this);
-                this.radius = Math.random() * 2 + 3;
-                this.speed = this.radius / 5;
-            }
-            draw() {
-                let x = this.x;
-                let y = this.y;
-                ctx.save();
-                ctx.fillStyle = 'rgb(255, 255, 255)';
-                ctx.beginPath();
-                ctx.arc(x, y, this.radius, 0, 2*Math.PI); // x, y, r, startAngle, endAngle
-                ctx.fill();
-                ctx.restore();
-            }
-            update() {
-                if(this.y <= height){
-                    this.y += this.speed;
-                }
-            }
-        }
+        let frames = [[]];
+        let isWorkerWorking = false;
+        let isAnimating = false;
 
-        let array = [];
-        requestAnimationFrame(frame);
+        const drawSnowFlake = (snowFlakeObj) => {
+            ctx.beginPath();
+            ctx.arc(snowFlakeObj.x, snowFlakeObj.y, snowFlakeObj.radius, 0, 2*Math.PI); // x, y, r, startAngle, endAngle
+            ctx.fillStyle = '#fff';
+            ctx.fill();
+        };
+
+        const getMessagePostToWorker = () => {
+            return {snowFlakes: frames[frames.length - 1], width, height}
+        };
+
+        const snowWorker = new Worker(snowWorkerScript);
+        snowWorker.onmessage = function(e) {
+            frames = frames.concat(e.data);
+            isWorkerWorking = false;
+            if (!isAnimating) {
+                isAnimating = true;
+                requestAnimationFrame(frame);
+            }
+        };
+        snowWorker.onerror = function(e) {
+            console.log(e.message)
+        };
+        snowWorker.postMessage(getMessagePostToWorker());
         function frame() {
-            requestAnimationFrame(frame);
-            if (Math.random() > 0.95) {
-                let snow = new Snow();
-                array.push(snow);
-            }
             ctx.clearRect(0, 0, width, height);
-            array.map((i) => i.update());
-            array.map((i) => i.draw());
-            if(array.length > 100){
-                array.shift();
+            frames[0].forEach(obj => drawSnowFlake(obj));
+            frames.shift();
+            if (frames.length < 600 && !isWorkerWorking) {
+                isWorkerWorking = true;
+                snowWorker.postMessage(getMessagePostToWorker())
             }
+            requestAnimationFrame(frame);
         }
     }
+
     componentDidMount() {
         setTitle('Contact me', false);
-        if (window.innerWidth > 800) this.letItSnow();
+        // if (window.innerWidth > 800) this.letItSnow();
+        this.letItSnow();
         this.setState({
             name: this.nameDefault,
             email: this.emailDefault,
