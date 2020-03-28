@@ -15,6 +15,7 @@
         ├── contact
             ├── contact.css
             ├── contact.js
+            ├── snow-worker.js
         ├── frontpage.css
         ├── frontpage.tsx
         ├── gallery
