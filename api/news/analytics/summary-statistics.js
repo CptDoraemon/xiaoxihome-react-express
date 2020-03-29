@@ -21,7 +21,7 @@ function getSummaryStatistics(newsCollection) {
             const documentsCountByDay = await getFrequencyAnalytics('', newsCollection);
             const documentsCountByCategory = await getDocumentsCountByCategory(newsCollection);
             const wordCloud = await getWordCloud(newsCollection);
-            const getDocumentsCountByDayAndCategory = await getDocumentsCountByDayAndCategory(newsCollection);
+            const documentsCountByDayAndCategory = await getDocumentsCountByDayAndCategory(newsCollection);
 
             cache = {
                 totalDocuments,
@@ -30,7 +30,7 @@ function getSummaryStatistics(newsCollection) {
                 documentsCountByDay,
                 documentsCountByCategory,
                 wordCloud,
-                getDocumentsCountByDayAndCategory
+                documentsCountByDayAndCategory
             };
 
             resolve(cache)
