@@ -3,6 +3,7 @@ const getDocumentDate = require('../analytics/reusables/get-earliest-and-latest-
 const getFrequencyAnalytics = require('./frequency-by-day').getFrequencyAnalytics;
 const getDocumentsCountByCategory = require('./reusables/get-documents-count-by-category').getDocumentsCountByCategory;
 const getWordCloud = require('./word-cloud').getWordCloud;
+const getDocumentsCountByDayAndCategory = require('./reusables/get-documents-count-by-day-and-category').getDocumentsCountByDayAndCategory;
 
 let cache = null;
 
@@ -20,6 +21,7 @@ function getSummaryStatistics(newsCollection) {
             const documentsCountByDay = await getFrequencyAnalytics('', newsCollection);
             const documentsCountByCategory = await getDocumentsCountByCategory(newsCollection);
             const wordCloud = await getWordCloud(newsCollection);
+            const getDocumentsCountByDayAndCategory = await getDocumentsCountByDayAndCategory(newsCollection);
 
             cache = {
                 totalDocuments,
@@ -27,7 +29,8 @@ function getSummaryStatistics(newsCollection) {
                 latestDocumentDate,
                 documentsCountByDay,
                 documentsCountByCategory,
-                wordCloud
+                wordCloud,
+                getDocumentsCountByDayAndCategory
             };
 
             resolve(cache)

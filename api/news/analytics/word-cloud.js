@@ -42,7 +42,10 @@ const blacklist = [
 
 function getWordCloud(collection) {
     return new Promise((resolve, reject) => {
-        if (cache) resolve(cache);
+        if (cache) {
+            resolve(cache);
+            return
+        }
 
         const pipeline = [
             {
@@ -96,10 +99,12 @@ function getWordCloud(collection) {
                 }}
         ];
         collection.aggregate(pipeline).toArray((err, doc) => {
-            if (err) reject(err);
-            console.log(doc);
-            cache = doc;
-            resolve(doc);
+            if (err) {
+                reject(err);
+            } else {
+                cache = doc;
+                resolve(doc);
+            }
         })
     })
 }

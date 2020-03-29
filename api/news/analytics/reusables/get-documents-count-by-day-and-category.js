@@ -1,15 +1,17 @@
 let cache = null;
 
-function getDocumentsCountByCategory(newsCollection) {
+function getDocumentsCountByDayAndCategory(newsCollection) {
     return new Promise((resolve, reject) => {
         if (cache) {
             resolve(cache);
-            return;
+            return
         }
 
         newsCollection.aggregate([
             { $group: {
                     _id: {
+                        year: {$year: '$_id'},
+                        dayOfYear: {$dayOfYear: '$_id'},
                         category: "$category",
                     },
                     count: {
@@ -19,6 +21,8 @@ function getDocumentsCountByCategory(newsCollection) {
             },
             { $project: {
                     _id: 0,
+                    year: "$_id.year",
+                    dayOfYear: "$_id.dayOfYear",
                     category: "$_id.category",
                     count: 1,
                 }
@@ -35,5 +39,5 @@ function getDocumentsCountByCategory(newsCollection) {
 }
 
 module.exports = {
-    getDocumentsCountByCategory
+    getDocumentsCountByDayAndCategory
 };
