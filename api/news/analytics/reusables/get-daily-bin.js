@@ -14,7 +14,7 @@ function getDailyBinInRange(start, end) {
 
     const bin = [];
     let i = startDay;
-    while (i < endDay) {
+    while (i <= endDay) {
         bin.push((new Date(i)).toISOString());
         i += DAY;
     }
