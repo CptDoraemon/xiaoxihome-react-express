@@ -38,7 +38,7 @@ function getKeywordFrequencyByDay(keyword, collection) {
 async function getFrequency(keyword, collection, bin) {
     try {
         const rawFrequency = await getKeywordFrequencyByDay(keyword, collection);
-        return matchValueArrayToDailyBin(bin, rawFrequency)
+        return matchValueArrayToDailyBin(bin, rawFrequency, 'count', 0)
     } catch (e) {
         throw(e)
     }
@@ -47,10 +47,11 @@ async function getFrequency(keyword, collection, bin) {
 async function getFrequencyAnalytics(keyword, collection) {
     try {
         const bin = await getDailyBinFromEarliestToLatest(collection);
+        const binISOStringOnly = bin.map(obj => obj.ISOString);
         const frequency = await getFrequency(keyword, collection, bin);
 
         return {
-            bin,
+            bin: binISOStringOnly,
             frequency
         }
     } catch (e) {

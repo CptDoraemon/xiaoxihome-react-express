@@ -30,14 +30,14 @@ function getDocumentDate(which, collection) {
                 if (err) reject(err);
                 const doc = result[0];
                 const time = ObjectID(doc._id).getTimestamp();
-                const ms = new Date(time).getTime();
+                const ISOString = (new Date(time)).toISOString();
 
                 if (sortBy === -1) {
-                    LATEST_DOCUMENT_DATE = ms
+                    LATEST_DOCUMENT_DATE = ISOString
                 } else if (sortBy === 1) {
-                    EARLIEST_DOCUMENT_DATE = ms
+                    EARLIEST_DOCUMENT_DATE = ISOString
                 }
-                resolve(ms);
+                resolve(ISOString);
             });
     })
 }

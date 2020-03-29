@@ -1,4 +1,6 @@
 const getISOStringFromDayOfYear = require('./get-iso-string-from-day-of-year');
+const getDailyBinFromEarliestToLatest = require('./get-daily-bin').getDailyBinFromEarliestToLatest;
+const matchValueArrayToDailyBin = require('./match-value-array-to-daily-bin').matchValueArrayToDailyBin;
 
 let cache = null;
 const categoryOrder = ['headline', 'business', 'entertainment', 'health', 'science', 'sports', 'technology'];
@@ -17,37 +19,53 @@ const categoryOrder = ['headline', 'business', 'entertainment', 'health', 'scien
 //     series: string[], // array of ISO dat string
 //     category: string[] // copy of categoryOrder
 // }
-function processDoc(doc) {
-    let lastDay = -1;
-    const documentCount = [];
-    let currentDayDocumentCount = null;
-    const series = [];
-    const category = categoryOrder.slice();
+async function processDoc(doc, newsCollection) {
+    try {
+        let lastDay = -1;
+        let lastYear = -1;
+        const documentCountArray = []; // array of object
+        let currentDayDocumentCountArray = null; // array of numbers
+        const dailyBin = await getDailyBinFromEarliestToLatest(newsCollection);
+        const category = categoryOrder.slice();
 
-    for (let i=0; i<doc.length; i++) {
-        const obj = doc[i];
-        if (obj.dayOfYear !== lastDay) {
-            lastDay = obj.dayOfYear;
-            if (currentDayDocumentCount) {
-                documentCount.push(currentDayDocumentCount.slice());
+        const pushDay = () => {
+            documentCountArray.push({
+                year: lastYear,
+                dayOfYear: lastDay,
+                documentCount: currentDayDocumentCountArray.slice()
+            });
+        };
+
+        for (let i=0; i<doc.length; i++) {
+            const obj = doc[i];
+            if (obj.dayOfYear !== lastDay) {
+                if (currentDayDocumentCountArray) {
+                    pushDay();
+                }
+                lastDay = obj.dayOfYear;
+                lastYear = obj.year;
+                currentDayDocumentCountArray = (new Array(categoryOrder.length)).fill(0);
             }
-            currentDayDocumentCount = (new Array(categoryOrder.length)).fill(0);
-            series.push(getISOStringFromDayOfYear(obj.year, obj.dayOfYear));
+            const index = categoryOrder.indexOf(obj.category);
+            currentDayDocumentCountArray[index] = obj.count;
         }
-        const index = categoryOrder.indexOf(obj.category);
-        currentDayDocumentCount[index] = obj.count;
-    }
-    documentCount.push(currentDayDocumentCount.slice());
+        pushDay();
 
-    return {
-        documentCount,
-        series,
-        category
+        const matched = matchValueArrayToDailyBin(dailyBin, documentCountArray, 'documentCount', (new Array(categoryOrder.length)).fill(0));
+        const series = dailyBin.map(obj => obj.ISOString);
+
+        return {
+            documentCount: matched.slice(),
+            series,
+            category
+        }
+    } catch (e) {
+        throw(e)
     }
 }
 
 function getDocumentsCountByDayAndCategory(newsCollection) {
-    return new Promise((resolve, reject) => {
+    return new Promise( (resolve, reject) => {
         if (cache) {
             resolve(cache);
             return
@@ -80,13 +98,17 @@ function getDocumentsCountByDayAndCategory(newsCollection) {
                     category: 1
                 }
             }
-        ]).toArray((err, doc) => {
-            if (err) {
-                reject(err);
-            } else {
-                cache = processDoc(doc);
-                console.log(cache, Object.values(cache).map(_=>_.length));
-                resolve(cache);
+        ]).toArray(async (err, doc) => {
+            try {
+                if (err) {
+                    reject(err);
+                } else {
+                    cache = await processDoc(doc, newsCollection);
+                    console.log(cache, Object.values(cache).map(_=>_.length));
+                    resolve(cache);
+                }
+            } catch (e) {
+                reject(e)
             }
         })
     })

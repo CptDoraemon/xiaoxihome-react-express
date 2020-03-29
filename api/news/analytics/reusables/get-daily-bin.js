@@ -7,39 +7,30 @@ let DAILY_BIN = null;
 function getDailyBinInRange(start, end) {
     if (DAILY_BIN) return DAILY_BIN;
 
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+    const startDay = Date.UTC(startDate.getUTCFullYear(), startDate.getUTCMonth(), startDate.getUTCDate());
+    const endDay = Date.UTC(endDate.getUTCFullYear(), endDate.getUTCMonth(), endDate.getUTCDate());
+
     const bin = [];
-    let point = end;
-    //
-    const startedAt = Date.now();
-    const maximumAllowedTime = 5000;
-
-    while (point > start) {
-        // end if infinite loop
-        const now = Date.now();
-        if (now - startedAt > maximumAllowedTime) break;
-
-        bin.push(point);
-        point -= DAY;
+    let i = startDay;
+    while (i < endDay) {
+        bin.push((new Date(i)).toISOString());
+        i += DAY;
     }
 
-    bin.push(start);
-    bin.reverse();
     // date from earliest to latest now
 
-    bin.forEach((ms, i, array) => {
-        const date = new Date(ms);
-        const year = date.getFullYear();
+    bin.forEach((ISOString, i, array) => {
+        const date = new Date(ISOString);
+        const year = date.getUTCFullYear();
         const dayOfYear = getUTCDayOfYear(date);
         array[i] = {
             year,
             dayOfYear,
-            ms
+            ISOString
         }
     });
-
-    if (bin[0].dayOfYear === bin[1].dayOfYear) {
-        bin.shift()
-    }
 
     DAILY_BIN = bin;
     return bin
