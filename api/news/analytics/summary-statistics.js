@@ -1,3 +1,4 @@
+const getDailyBinFromEarliestToLatest = require('./reusables/get-daily-bin').getDailyBinFromEarliestToLatest;
 const getDocumentsCount = require('../analytics/reusables/get-documents-count').getDocumentsCount;
 const getDocumentDate = require('../analytics/reusables/get-earliest-and-latest-document-date').getDocumentDate;
 const getFrequencyAnalytics = require('./frequency-by-day').getFrequencyAnalytics;
@@ -15,6 +16,8 @@ function getSummaryStatistics(newsCollection) {
                 return
             }
 
+            const dailyBin = await getDailyBinFromEarliestToLatest(newsCollection);
+            const series = dailyBin.map(obj => obj.ISOString);
             const totalDocuments = await getDocumentsCount(newsCollection, '', -1);
             const earliestDocumentDate = await getDocumentDate('earliest', newsCollection);
             const latestDocumentDate = await getDocumentDate('latest', newsCollection);
@@ -24,6 +27,7 @@ function getSummaryStatistics(newsCollection) {
             const documentsCountByDayAndCategory = await getDocumentsCountByDayAndCategory(newsCollection);
 
             cache = {
+                series,
                 totalDocuments,
                 earliestDocumentDate,
                 latestDocumentDate,

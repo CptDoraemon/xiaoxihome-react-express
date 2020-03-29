@@ -16,7 +16,6 @@ function getFindArg(keyword, date) {
         const idMin = ObjectID(Math.floor((new Date(beginningOfDay))/1000).toString(16) + "0000000000000000");
         const idMax = ObjectID(Math.floor((new Date(endOfDay))/1000).toString(16) + "0000000000000000");
 
-
         findArg = Object.assign(findArg, {_id: {$gt: idMin, $lt: idMax}});
     }
 

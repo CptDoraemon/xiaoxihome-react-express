@@ -1,4 +1,3 @@
-const getISOStringFromDayOfYear = require('./get-iso-string-from-day-of-year');
 const getDailyBinFromEarliestToLatest = require('./get-daily-bin').getDailyBinFromEarliestToLatest;
 const matchValueArrayToDailyBin = require('./match-value-array-to-daily-bin').matchValueArrayToDailyBin;
 
@@ -52,11 +51,9 @@ async function processDoc(doc, newsCollection) {
         pushDay();
 
         const matched = matchValueArrayToDailyBin(dailyBin, documentCountArray, 'documentCount', (new Array(categoryOrder.length)).fill(0));
-        const series = dailyBin.map(obj => obj.ISOString);
 
         return {
             documentCount: matched.slice(),
-            series,
             category
         }
     } catch (e) {
@@ -104,7 +101,6 @@ function getDocumentsCountByDayAndCategory(newsCollection) {
                     reject(err);
                 } else {
                     cache = await processDoc(doc, newsCollection);
-                    console.log(cache, Object.values(cache).map(_=>_.length));
                     resolve(cache);
                 }
             } catch (e) {

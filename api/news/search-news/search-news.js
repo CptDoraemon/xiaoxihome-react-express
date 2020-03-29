@@ -7,6 +7,7 @@ const corsOptions = {
 //
 const getFindArg = require('../analytics/reusables/get-documents-count').getFindArg;
 const getDocumentsCount = require('../analytics/reusables/get-documents-count').getDocumentsCount;
+const getDailyBinFromEarliestToLatest = require('../analytics/reusables/get-daily-bin').getDailyBinFromEarliestToLatest;
 // validators
 const validateKeyword = require('./query-validation').validateKeyword;
 const validateSkip = require('./query-validation').validateSkip;
@@ -44,7 +45,10 @@ function searchNews(app, newsCollection) {
             // Response with frequency
             if (isFrequency) {
                 const frequencyAnalytics = await getFrequencyAnalytics(keyword, newsCollection);
-                baseResponse.frequency = Object.assign({}, frequencyAnalytics);
+                const dailyBin = await getDailyBinFromEarliestToLatest(newsCollection);
+                const series = dailyBin.map(obj => obj.ISOString);
+                baseResponse.frequency = frequencyAnalytics;
+                baseResponse.series = series;
             }
 
             // Base response
