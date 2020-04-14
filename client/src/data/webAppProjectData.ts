@@ -53,7 +53,9 @@ const webAppProjectData: Array<WebAppProject | WebAppProjectCollections> = [
                 <br/>
                 <a href="https://github.com/CptDoraemon/riddet" target="_blank" rel='noopener noreferrer'>GitHub</a>
                 <br/>
-                <a href="https://riddet.herokuapp.com/" target="_blank" rel='noopener noreferrer'>Demo (server may need up to half minute to wake up)</a>
+                <a href="https://riddet.herokuapp.com/" target="_blank" rel='noopener noreferrer'>Demo</a>
+                <br/>
+                (Demo server may need up to half minute to wake up)
             </p>
             `,
         summary: 'A Reddit like discussion website.',
