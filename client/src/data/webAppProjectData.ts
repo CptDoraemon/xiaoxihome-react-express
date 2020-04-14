@@ -30,8 +30,8 @@ const webAppProjectData: Array<WebAppProject | WebAppProjectCollections> = [
     {
         pageType: PageType.SINGLE,
         title: 'Discussion Board',
-        demoLink: 'https://riddet.xiaoxihome.com',
-        githubLink: 'https://github.com/CptDoraemon/riddet',
+        demoLink: 'https://cptdoraemon.github.io/discussion-board-client/',
+        githubLink: 'https://github.com/CptDoraemon/discussion-board-client',
         description:
             `
             <p>
