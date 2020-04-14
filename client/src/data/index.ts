@@ -145,7 +145,7 @@ const mappedDataForHeader: NavBarData = [
     },
     {
         name: HeaderNFooterLists.BLOG,
-        link: 'https://blog.xiaoxihome.com',
+        link: 'https://cptdoraemon.github.io/discussion-board-client/',
         isExternal: true,
         type: ButtonType.LINK
     },

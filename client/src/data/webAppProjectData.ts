@@ -29,14 +29,32 @@ interface WebAppProjectInCollections {
 const webAppProjectData: Array<WebAppProject | WebAppProjectCollections> = [
     {
         pageType: PageType.SINGLE,
-        title: 'Reddit-like Website',
+        title: 'Discussion Board',
         demoLink: 'https://riddet.xiaoxihome.com',
         githubLink: 'https://github.com/CptDoraemon/riddet',
         description:
             `
-            <p>This is a Reddit like discussion website. </p>
-            <p>It was built with React, NodeJS, Express and MongoDB. </p>
-            <p>For security reasons, this site does not allow to be loaded in an iFrame, therefore please open it in a new window.<p>
+            <p>
+                A discussion board website, also served as the blog of XiaoxiHome.
+            </p>
+            <p>
+                Backend is a headless RESTful API first Content Management System written with Python, Django and Django Rest Framework.
+                The path and response from the API endpoints and designed to be standardised as well as predictable.
+                The API is documented with GatsbyJS.
+            </p>
+            <p>
+                Frontend is written with React and the help from TypeScript, Redux, React-Router, and MaterialUI.
+            </p>
+            <br/>
+            <hr/>
+            <br/>
+            <p>There is another Reddit like discussion board available, written with React, NodeJS, Express and MongoDB:
+                <br/>
+                <br/>
+                <a href="https://github.com/CptDoraemon/riddet" target="_blank" rel='noopener noreferrer'>GitHub</a>
+                <br/>
+                <a href="https://riddet.herokuapp.com/" target="_blank" rel='noopener noreferrer'>Demo (server may need up to half minute to wake up)</a>
+            </p>
             `,
         summary: 'A Reddit like discussion website.',
     },
@@ -49,7 +67,8 @@ const webAppProjectData: Array<WebAppProject | WebAppProjectCollections> = [
             `
             <p>A news app built with TypeScript, React, Redux, MaterialUI, GraphQL, and NodeJS. </p>
             <p>News data courtesy of <a href="https://newsapi.org/" target="_blank" rel='noopener noreferrer'>NewsAPI.org</a>.</p>
-            <p>My NodeJS server request and cache news data from NewsAPI.org every hour, then exposed as GraphQL API for my front end app.</p>
+            <p>My NodeJS server request and cache news data from NewsAPI.org every hour, and exposes the news data as GraphQL API for my front end app.</p>
+            <p>Statistical analysis were made on the news data collected, and visualized to interactive charts and maps with the help from D3JS.</p>
             `,
         summary: 'A app to provide Canada news in the categories of headline, business, entertainment, health, science, sports and technology.',
     },
