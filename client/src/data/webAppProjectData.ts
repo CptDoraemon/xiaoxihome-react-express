@@ -39,8 +39,7 @@ const webAppProjectData: Array<WebAppProject | WebAppProjectCollections> = [
             </p>
             <p>
                 Backend is a headless RESTful API first Content Management System written with Python, Django and Django Rest Framework.
-                The path and response from the API endpoints and designed to be standardised as well as predictable.
-                The API is documented with GatsbyJS.
+                The path and response from the API endpoints are designed to be standardised as well as predictable.
             </p>
             <p>
                 Frontend is written with React and the help from TypeScript, Redux, React-Router, and MaterialUI.
@@ -58,7 +57,7 @@ const webAppProjectData: Array<WebAppProject | WebAppProjectCollections> = [
                 (Demo server may need up to half minute to wake up)
             </p>
             `,
-        summary: 'A Reddit like discussion website.',
+        summary: 'A discussion board built with Django, React and more.',
     },
     {
         pageType: PageType.SINGLE,
@@ -72,7 +71,7 @@ const webAppProjectData: Array<WebAppProject | WebAppProjectCollections> = [
             <p>My NodeJS server request and cache news data from NewsAPI.org every hour, and exposes the news data as GraphQL API for my front end app.</p>
             <p>Statistical analysis were made on the news data collected, and visualized to interactive charts and maps with the help from D3JS.</p>
             `,
-        summary: 'A app to provide Canada news in the categories of headline, business, entertainment, health, science, sports and technology.',
+        summary: 'An app to provide Canada news in the categories of headline, business, entertainment, health, science, sports and technology.',
     },
     {
         pageType: PageType.SINGLE,
@@ -87,7 +86,7 @@ const webAppProjectData: Array<WebAppProject | WebAppProjectCollections> = [
                 <p>The data from third party APIs are then combined in Node.JS server and exposed as my own API.</p>
                 <p>A mobile version written with Dart/Flutter is also available. To lookup cities, a PostgreSQL database is attached to this version instead of using third party API. </p>
             `,
-        summary: 'A app for currently, hourly and daily weather forecasts.'
+        summary: 'An app for currently, hourly and daily weather forecasts.'
     },
     {
         pageType: PageType.SINGLE,
