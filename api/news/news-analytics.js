@@ -17,7 +17,7 @@ function newsAnalytics(app, newsCollection) {
                     status: 'ok'
                 },
                 newsAnalytics
-                ))
+            ))
         } catch (e) {
             await res.json({
                 status: 'error',
@@ -25,13 +25,16 @@ function newsAnalytics(app, newsCollection) {
             });
             throw (e)
         }
-    })
+    });
+
+    // getNewsAnalytics is time consuming
+    // exec it when server starts and cache the result
+    getNewsAnalytics(newsCollection)
 }
 
 async function getNewsAnalytics(newsCollection) {
     try {
         const summaryStatistics = await getSummaryStatistics(newsCollection);
-
         return {
             summaryStatistics
         }
