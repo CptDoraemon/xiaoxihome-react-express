@@ -77,7 +77,7 @@ const ThumbnailToFullPageTransition: React.FC<ThumbnailToFullPageTransitionProps
         // start fill animation
         setTimeout(() => {
             setFilled(true)
-        }, 10);
+        }, 50);
     }, []);
 
     useEffect(() => {
