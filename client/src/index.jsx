@@ -12,14 +12,14 @@ import Frontpage from './app/frontpage';
 
 import mappedDataForProps from "./data";
 // import { Missing404 } from './component/missing404';
-// import { Gallery } from './app/gallery/gallery';
+import Gallery from './app/gallery/gallery';
 // import { Contact } from './app/contact/contact';
 // import { AboutPage } from './app/about/aboutPage';
 // import { AcademicProject } from './app/academicProjects';
 // import { WebAppProject } from './app/webAppProjects';
 const AcademicProject = lazy(() => import('./app/academicProjects'));
 const WebAppProject = lazy(() => import('./app/webAppProjects'));
-const Gallery = lazy(() => import('./app/gallery/gallery'));
+// const Gallery = lazy(() => import('./app/gallery/gallery'));
 const Contact = lazy(() => import('./app/contact/contact'));
 const AboutPage = lazy(() => import('./app/about/aboutPage'));
 const Missing404 = lazy(() => import('./component/missing404'));

@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import GalleryTile from "./gallery-tile";
+import GalleryTile from "../component/gallery-tile/gallery-tile";
 import Footer from "../component/footer";
 import { MouseIcon } from "../component/mouseIcon";
 import { withFlyInAnimation } from '../animations/fly-in';

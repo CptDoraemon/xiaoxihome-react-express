@@ -14,7 +14,8 @@ interface ShowProps {
 }
 
 interface ShowStates {
-    isLoading: boolean
+    isLoading: boolean,
+    introZoomOut: boolean
 }
 
 class Show extends React.Component<ShowProps, ShowStates> {
@@ -23,7 +24,8 @@ class Show extends React.Component<ShowProps, ShowStates> {
     constructor(props: ShowProps) {
         super(props);
         this.state = {
-            isLoading: false
+            isLoading: false,
+            introZoomOut: false,
         };
     }
     loadImage(link: string) {
@@ -34,7 +36,7 @@ class Show extends React.Component<ShowProps, ShowStates> {
             this.imageReference.onerror = (err: Error) => reject(err);
         });
     }
-    componentWillUpdate(prevProps: ShowProps) {
+    componentDidUpdate(prevProps: ShowProps) {
         if (this.props.link !== prevProps.link) {
             this.setState({isLoading: true});
             this.loadImage(this.props.link)
@@ -42,11 +44,19 @@ class Show extends React.Component<ShowProps, ShowStates> {
                 .catch(err => console.log(err))
         }
     }
+    componentDidMount() {
+        setTimeout(() => {
+            this.setState({introZoomOut: true})
+        }, 10);
+    }
     render() {
-        const backgroundImageStyle = this.state.isLoading ? {} : {backgroundImage: 'url(' + this.props.link + ')'};
+        const backgroundImageStyle = {backgroundImage: 'url(' + this.props.link + ')'};
 
         return (
-            <div className='showcase'>
+            <div
+                className='showcase'
+                style={this.state.introZoomOut ? {transform: 'scale(1)'} : {transform: 'scale(3)'}}
+            >
                 <div
                     className='show-blur-bg'
                     style={backgroundImageStyle}>
@@ -55,7 +65,10 @@ class Show extends React.Component<ShowProps, ShowStates> {
                     className='show'
                     style={backgroundImageStyle}>
                 </div>
-                { this.state.isLoading ? <SpinLoader size={100} /> : null}
+                {
+                    this.state.isLoading &&
+                    <SpinLoader size={100} />
+                }
             </div>
         )
     }
@@ -341,7 +354,7 @@ class Gallery extends React.Component<GalleryProps, GalleryStates> {
             album: 0,
             page: 0,
             isAutoplay: false,
-            isHudDimmed: false
+            isHudDimmed: true
         };
         this.toggleHudTimer = null;
         this.setAlbumAndPage = this.setAlbumAndPage.bind(this);
@@ -482,7 +495,10 @@ class Gallery extends React.Component<GalleryProps, GalleryStates> {
     componentDidMount() {
         this.initialize();
         this.prepareHudListData();
-        this.setToggleHudTimer();
+        // this.setToggleHudTimer();
+        setTimeout(() => {
+            this.toggleHud()
+        }, 100)
     }
 
     componentWillUnmount() {

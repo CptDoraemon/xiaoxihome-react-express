@@ -1,5 +1,6 @@
-import React, {CSSProperties} from "react";
+import React, {CSSProperties, useEffect, useRef, useState} from "react";
 import makeStyles from "@material-ui/core/styles/makeStyles";
+import ThumbnailToFullPageTransition from "./thumbnail-to-full-page-transition";
 
 const SCALE_DURATION = 500;
 const DURATION_DEFAULT = 100;
@@ -41,9 +42,16 @@ const animationPseudoElementCommon: CSSProperties = {
     content: '""',
     backgroundColor: '#fff'
 };
+const resetButtonStyles: CSSProperties = {
+    font: 'inherit',
+    fontSize: 'inherit',
+    border: 'none',
+    padding: 0
+};
 const BORDER_WIDTH = 2;
 const useStyles = makeStyles({
     root: {
+        ...resetButtonStyles,
         width: 390,
         height: 243,
         margin: 5,
@@ -165,25 +173,61 @@ interface GalleryTileProps {
     link: string;
 }
 
-const GalleryTile: React.FC<GalleryTileProps> = ({title, imgUrl}) => {
+const GalleryTile: React.FC<GalleryTileProps> = ({title, imgUrl, link}) => {
     const classes = useStyles();
+    const [pageTransitioning, setPageTransitioning] = useState(false);
+    const containerRef = useRef<HTMLButtonElement>(null);
+    const [containerPositions, setContainerPositions]  = useState({
+        top: 0,
+        left: 0,
+        width: 0,
+        height: 0
+    });
+
+    const startPageTransition = () => {
+        if (!containerRef.current) return;
+        const rect = containerRef.current.getBoundingClientRect();
+        setContainerPositions({
+            top: rect.top,
+            left: rect.left,
+            width: rect.width,
+            height: rect.height
+        });
+        setPageTransitioning(true)
+    };
 
     return (
-        <div
-            className={classes.root}
-            // style={{backgroundImage: `url("${imgUrl}")`}}
-        >
-            <div className={classes.image}>
-                <img alt={title} src={imgUrl}/>
-                <div className={classes.hoverAnimationGroup1}>
-                    <div className={classes.hoverAnimationGroup2}>
-                        <div className={classes.title}>
-                            <h5>{title}</h5>
+        <>
+            <button
+                className={classes.root}
+                title={`album ${title}`}
+                aria-label={`album ${title}`}
+                onClick={startPageTransition}
+                ref={containerRef}
+            >
+                <div className={classes.image}>
+                    <img alt={title} src={imgUrl}/>
+                    <div className={classes.hoverAnimationGroup1}>
+                        <div className={classes.hoverAnimationGroup2}>
+                            <div className={classes.title}>
+                                <h5>{title}</h5>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            </button>
+            {
+                pageTransitioning &&
+                <ThumbnailToFullPageTransition
+                    top={containerPositions.top}
+                    left={containerPositions.left}
+                    width={containerPositions.width}
+                    height={containerPositions.height}
+                    imageUrl={imgUrl}
+                    link={link}
+                />
+            }
+        </>
     )
 };
 
