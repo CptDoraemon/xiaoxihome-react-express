@@ -136,6 +136,7 @@ function AboutPageLoaded(props: AboutPageLoadedProps) {
     useEffect(() => {
         if (IS_MOBILE) return;
 
+        if (!pageRefs[currentAtPage]) return;
         myScrollTo(pageRefs[currentAtPage].current?.offsetTop)
     }, [currentAtPage, pageRefs]);
 
