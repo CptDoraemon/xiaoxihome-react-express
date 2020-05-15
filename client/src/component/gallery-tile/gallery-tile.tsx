@@ -3,13 +3,13 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import ThumbnailToFullPageTransition from "./thumbnail-to-full-page-transition";
 
 const SCALE_DURATION = 500;
+const TILE_BACKGROUND_DURATION = 500;
 const DURATION_DEFAULT = 100;
 const DURATIONS: {[keys: string]: number} = {
     borderTop: DURATION_DEFAULT,
     borderRight: DURATION_DEFAULT,
     borderBottom: DURATION_DEFAULT,
     borderLeft: DURATION_DEFAULT,
-    titleBackground: DURATION_DEFAULT
 };
 const [DELAYS, OUT_DELAYS] = (() => {
     const delays = {...DURATIONS};
@@ -149,10 +149,10 @@ const useStyles = makeStyles({
         backgroundSize: '100% 0%',
         backgroundPosition: `${BORDER_WIDTH}px ${BORDER_WIDTH}px`,
         backgroundRepeat: 'no-repeat',
-        transition: `background-size ${DURATIONS['titleBackground']}ms ${OUT_DELAYS['titleBackground']}ms`,
+        transition: `background-size ${TILE_BACKGROUND_DURATION}ms`,
         '&:hover': {
             backgroundSize: '100% 100%',
-            transition: `background-size ${DURATIONS['titleBackground']}ms ${DELAYS['titleBackground']}ms`,
+            transition: `background-size ${TILE_BACKGROUND_DURATION}ms`,
         },
         '& h5': {
             position: 'absolute',

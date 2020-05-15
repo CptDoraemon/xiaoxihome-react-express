@@ -9,7 +9,7 @@ import {setTitle} from "../../tools/set-title";
 
 //TODO: event types and eventHandler types
 
-const GALLERY_TILE_ANIMATION_DURATION = 500;
+const GALLERY_TILE_ANIMATION_DURATION = 1000;
 
 interface ShowProps {
     link: string
@@ -17,7 +17,7 @@ interface ShowProps {
 
 interface ShowStates {
     isLoading: boolean,
-    introZoomOut: boolean
+    introAnimated: boolean
 }
 
 class Show extends React.Component<ShowProps, ShowStates> {
@@ -27,7 +27,7 @@ class Show extends React.Component<ShowProps, ShowStates> {
         super(props);
         this.state = {
             isLoading: false,
-            introZoomOut: false,
+            introAnimated: false,
         };
     }
     loadImage(link: string) {
@@ -48,28 +48,31 @@ class Show extends React.Component<ShowProps, ShowStates> {
     }
     componentDidMount() {
         setTimeout(() => {
-            this.setState({introZoomOut: true})
+            this.setState({introAnimated: true})
         }, 10);
     }
     render() {
         const backgroundImageStyle = {backgroundImage: 'url(' + this.props.link + ')'};
-        const showCaseStyle = this.state.introZoomOut ?
+        const bgStyle = this.state.introAnimated ?
             {
-                transition: `transform ${GALLERY_TILE_ANIMATION_DURATION}ms`,
-                transform: 'scale(1)'
+                transition: `opacity ${GALLERY_TILE_ANIMATION_DURATION}ms, transform ${GALLERY_TILE_ANIMATION_DURATION}ms`,
+                opacity: '0.4',
+                transform: 'scale(1.2)',
             } : {
-                transition: `transform ${GALLERY_TILE_ANIMATION_DURATION}ms`,
-                transform: 'scale(3)'
+                opacity: '0',
+                transform: 'scale(1)',
             };
 
         return (
             <div
                 className='showcase'
-                style={{...showCaseStyle}}
             >
                 <div
                     className='show-blur-bg'
-                    style={backgroundImageStyle}>
+                    style={{
+                        ...backgroundImageStyle,
+                        ...bgStyle
+                    }}>
                 </div>
                 <div
                     className='show'
@@ -514,9 +517,9 @@ class Gallery extends React.Component<GalleryProps, GalleryStates> {
             }, () => {
                 setTimeout(() => {
                     this.toggleHud()
-                }, 10)
+                }, 50)
             });
-        }, GALLERY_TILE_ANIMATION_DURATION * 1.5)
+        }, 50)
     }
 
     componentWillUnmount() {

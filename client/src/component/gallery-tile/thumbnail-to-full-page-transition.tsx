@@ -5,14 +5,36 @@ import { useHistory } from "react-router-dom";
 
 const DURATION = {
     fill: 500,
-    scale: 800
+    bgChange: 1000
+};
+const SMALLER_SCREEN = '@media only screen and (max-width: 800px)';
+
+const useFullHeight = () => {
+    const [fullHeight, _setFullHeight] = useState(0);
+
+    const setFullHeight = () => {
+        _setFullHeight(window.innerHeight)
+    };
+
+    useEffect(() => {
+        setFullHeight()
+    }, []);
+
+    useEffect(() => {
+        document.addEventListener('resize', setFullHeight);
+        return () => {
+            document.removeEventListener('resize', setFullHeight);
+        }
+    }, [_setFullHeight]);
+
+    return fullHeight
 };
 
 const useStyles = makeStyles({
     root: {
         position: 'fixed',
         zIndex: 1000,
-        transition: `width ${DURATION.fill}ms, height ${DURATION.fill}ms, top ${DURATION.fill}ms, left ${DURATION.fill}ms, transform ${DURATION.scale}ms`,
+        transition: `width ${DURATION.fill}ms, height ${DURATION.fill}ms, top ${DURATION.fill}ms, left ${DURATION.fill}ms, background-color ${DURATION.bgChange}ms`,
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
@@ -20,7 +42,7 @@ const useStyles = makeStyles({
         '& img': {
             width: 'auto',
             height: '100%',
-            objectFit: 'cover'
+            // objectFit: 'contain'
         }
     }
 });
@@ -46,31 +68,33 @@ const ThumbnailToFullPageTransition: React.FC<ThumbnailToFullPageTransitionProps
     const classes = useStyles();
     const history = useHistory();
     const [filled, setFilled] = useState(false);
-    const [scaled, setScaled] = useState(false);
+    const [bgChanged, setBgChanged] = useState(false);
+    const fullHeight = useFullHeight();
+
     const initialStyle = {
         width,
         height,
         left,
         top,
-        transform: 'scale(1)',
+        backgroundColor: 'rgba(0,0,0,0)',
     };
     const filledStyle = {
         width: '100vw',
-        height: '100vh',
+        height: fullHeight,
         left: 0,
         top: 0,
-        transform: 'scale(1)',
+        backgroundColor: 'rgba(0,0,0,0)',
     };
-    const scaledStyle = {
+    const bgChangedStyle = {
         ...filledStyle,
-        transform: 'scale(3)',
+        backgroundColor: 'rgba(0,0,0,1)',
     };
     let rootStyle: any = initialStyle;
     if (filled) {
         rootStyle = filledStyle
     }
-    if (scaled) {
-        rootStyle = scaledStyle
+    if (bgChanged) {
+        rootStyle = bgChangedStyle
     }
 
     useEffect(() => {
@@ -84,19 +108,19 @@ const ThumbnailToFullPageTransition: React.FC<ThumbnailToFullPageTransitionProps
         // start scale animation
         if (filled) {
             setTimeout(() => {
-                setScaled(true)
+                setBgChanged(true)
             }, DURATION.fill);
         }
     }, [filled]);
 
     useEffect(() => {
         // redirect to target page after zoom animation
-        if (scaled) {
+        if (bgChanged) {
             setTimeout(() => {
                 history.push(link)
-            }, DURATION.scale)
+            }, DURATION.bgChange)
         }
-    }, [scaled]);
+    }, [bgChanged]);
 
     return (
         <PortalWrapper>
