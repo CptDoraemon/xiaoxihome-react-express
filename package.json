@@ -1,9 +1,6 @@
 {
   "name": "xiaoxihome-react-express",
   "version": "1.0.0",
-  "engines": {
-    "node": "13.6.x"
-  },
   "description": "",
   "main": "index.js",
   "scripts": {
