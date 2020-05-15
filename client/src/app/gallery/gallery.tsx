@@ -9,6 +9,8 @@ import {setTitle} from "../../tools/set-title";
 
 //TODO: event types and eventHandler types
 
+const GALLERY_TILE_ANIMATION_DURATION = 500;
+
 interface ShowProps {
     link: string
 }
@@ -51,11 +53,19 @@ class Show extends React.Component<ShowProps, ShowStates> {
     }
     render() {
         const backgroundImageStyle = {backgroundImage: 'url(' + this.props.link + ')'};
+        const showCaseStyle = this.state.introZoomOut ?
+            {
+                transition: `transform ${GALLERY_TILE_ANIMATION_DURATION}ms`,
+                transform: 'scale(1)'
+            } : {
+                transition: `transform ${GALLERY_TILE_ANIMATION_DURATION}ms`,
+                transform: 'scale(3)'
+            };
 
         return (
             <div
                 className='showcase'
-                style={this.state.introZoomOut ? {transform: 'scale(1)'} : {transform: 'scale(3)'}}
+                style={{...showCaseStyle}}
             >
                 <div
                     className='show-blur-bg'
@@ -336,6 +346,7 @@ interface GalleryProps {
 interface GalleryStates {
     album: number;
     page: number;
+    isHudMounted: boolean;
     isAutoplay: boolean;
     isHudDimmed: boolean;
 }
@@ -353,6 +364,7 @@ class Gallery extends React.Component<GalleryProps, GalleryStates> {
         this.state = {
             album: 0,
             page: 0,
+            isHudMounted: false,
             isAutoplay: false,
             isHudDimmed: true
         };
@@ -497,8 +509,14 @@ class Gallery extends React.Component<GalleryProps, GalleryStates> {
         this.prepareHudListData();
         // this.setToggleHudTimer();
         setTimeout(() => {
-            this.toggleHud()
-        }, 100)
+            this.setState({
+                isHudMounted: true
+            }, () => {
+                setTimeout(() => {
+                    this.toggleHud()
+                }, 10)
+            });
+        }, GALLERY_TILE_ANIMATION_DURATION * 1.5)
     }
 
     componentWillUnmount() {
@@ -515,20 +533,23 @@ class Gallery extends React.Component<GalleryProps, GalleryStates> {
         return (
             <div>
                 <Show link={link}/>
-                <Hud
-                    hudListData={this.hudListData}
-                    album={this.state.album}
-                    page={this.state.page}
-                    title={title}
-                    description={description}
-                    setAlbumAndPage={this.setAlbumAndPage}
-                    browsePrevious={this.browsePrevious}
-                    browseNext={this.browseNext}
-                    toggleAutoplay={this.toggleAutoplay}
-                    isAutoplay={this.state.isAutoplay}
-                    toggleHud = {this.toggleHud}
-                    isHudDimmed = {this.state.isHudDimmed}
-                />
+                {
+                    this.state.isHudMounted &&
+                    <Hud
+                        hudListData={this.hudListData}
+                        album={this.state.album}
+                        page={this.state.page}
+                        title={title}
+                        description={description}
+                        setAlbumAndPage={this.setAlbumAndPage}
+                        browsePrevious={this.browsePrevious}
+                        browseNext={this.browseNext}
+                        toggleAutoplay={this.toggleAutoplay}
+                        isAutoplay={this.state.isAutoplay}
+                        toggleHud = {this.toggleHud}
+                        isHudDimmed = {this.state.isHudDimmed}
+                    />
+                }
             </div>
             )
     }

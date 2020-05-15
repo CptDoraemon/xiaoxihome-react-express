@@ -4,14 +4,15 @@ import ReactDOM from 'react-dom';
 import { useHistory } from "react-router-dom";
 
 const DURATION = {
-    zoom: 500
+    fill: 500,
+    scale: 800
 };
 
 const useStyles = makeStyles({
     root: {
         position: 'fixed',
         zIndex: 1000,
-        transition: `${DURATION.zoom}ms`,
+        transition: `width ${DURATION.fill}ms, height ${DURATION.fill}ms, top ${DURATION.fill}ms, left ${DURATION.fill}ms, transform ${DURATION.scale}ms`,
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
@@ -19,8 +20,7 @@ const useStyles = makeStyles({
         '& img': {
             width: 'auto',
             height: '100%',
-            objectFit: 'cover',
-            transition: `transform ${DURATION.zoom}ms`,
+            objectFit: 'cover'
         }
     }
 });
@@ -45,7 +45,8 @@ const ThumbnailToFullPageTransition: React.FC<ThumbnailToFullPageTransitionProps
     }) => {
     const classes = useStyles();
     const history = useHistory();
-    const [zoom, setZoom] = useState(false);
+    const [filled, setFilled] = useState(false);
+    const [scaled, setScaled] = useState(false);
     const initialStyle = {
         width,
         height,
@@ -53,35 +54,55 @@ const ThumbnailToFullPageTransition: React.FC<ThumbnailToFullPageTransitionProps
         top,
         transform: 'scale(1)',
     };
-    const zoomedStyle = {
+    const filledStyle = {
         width: '100vw',
         height: '100vh',
         left: 0,
         top: 0,
+        transform: 'scale(1)',
+    };
+    const scaledStyle = {
+        ...filledStyle,
         transform: 'scale(3)',
     };
+    let rootStyle: any = initialStyle;
+    if (filled) {
+        rootStyle = filledStyle
+    }
+    if (scaled) {
+        rootStyle = scaledStyle
+    }
 
     useEffect(() => {
-        // start fadeIn animation
+        // start fill animation
         setTimeout(() => {
-            setZoom(true)
+            setFilled(true)
         }, 10);
     }, []);
 
     useEffect(() => {
+        // start scale animation
+        if (filled) {
+            setTimeout(() => {
+                setScaled(true)
+            }, DURATION.fill);
+        }
+    }, [filled]);
+
+    useEffect(() => {
         // redirect to target page after zoom animation
-        if (zoom) {
+        if (scaled) {
             setTimeout(() => {
                 history.push(link)
-            }, DURATION.zoom)
+            }, DURATION.scale)
         }
-    }, [zoom]);
+    }, [scaled]);
 
     return (
         <PortalWrapper>
             <div
                 className={classes.root}
-                style={zoom ? zoomedStyle : initialStyle}
+                style={rootStyle}
             >
                 <img
                     alt=""
