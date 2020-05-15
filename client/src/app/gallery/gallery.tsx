@@ -56,8 +56,8 @@ class Show extends React.Component<ShowProps, ShowStates> {
         const bgStyle = this.state.introAnimated ?
             {
                 transition: `opacity ${GALLERY_TILE_ANIMATION_DURATION}ms, transform ${GALLERY_TILE_ANIMATION_DURATION}ms`,
-                opacity: '0.4',
-                transform: 'scale(1.2)',
+                opacity: '0.2',
+                transform: 'scale(1.5)',
             } : {
                 opacity: '0',
                 transform: 'scale(1)',
@@ -70,9 +70,9 @@ class Show extends React.Component<ShowProps, ShowStates> {
                 <div
                     className='show-blur-bg'
                     style={{
-                        ...backgroundImageStyle,
                         ...bgStyle
                     }}>
+                    <img src={this.props.link} />
                 </div>
                 <div
                     className='show'
