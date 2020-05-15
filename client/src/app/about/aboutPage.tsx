@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction, useEffect, useRef, useState} from 'react';
+import React, {createRef, Dispatch, RefObject, SetStateAction, useEffect, useRef, useState} from 'react';
 import './aboutPage.css';
 import { MdRadioButtonUnchecked, MdRadioButtonChecked, MdPowerSettingsNew , MdDone, MdErrorOutline} from "react-icons/md";
 import { setTitle } from "../../tools/set-title";
@@ -126,25 +126,29 @@ interface AboutPageLoadedProps {
 }
 
 function AboutPageLoaded(props: AboutPageLoadedProps) {
-
-    const pageRefs = props.pageData.map(() => useRef<HTMLDivElement>(document.createElement("div")));
-
+    const [pageRefs, setPageRefs] = useState<RefObject<HTMLDivElement>[]>([]);
     const [currentAtPage, setCurrentAtPage] = useOnePageScroll(0, props.pageData.length);
 
-    if (!IS_MOBILE) {
-        useEffect(() => {
-            myScrollTo(pageRefs[currentAtPage].current.offsetTop)
-        }, [currentAtPage]);
+    useEffect(() => {
+        setPageRefs(props.pageData.map(() => createRef()))
+    }, [props.pageData]);
 
-        useEffect(() => {
-            document.body.style.overflow = 'hidden';
-            document.body.style.height = '100vh';
-            return () => {
-                document.body.style.overflow = '';
-                document.body.style.height = '';
-            }
-        }, [])
-    }
+    useEffect(() => {
+        if (IS_MOBILE) return;
+
+        myScrollTo(pageRefs[currentAtPage].current?.offsetTop)
+    }, [currentAtPage, pageRefs]);
+
+    useEffect(() => {
+        if (IS_MOBILE) return;
+
+        document.body.style.overflow = 'hidden';
+        document.body.style.height = '100vh';
+        return () => {
+            document.body.style.overflow = '';
+            document.body.style.height = '';
+        }
+    }, []);
 
     return (
         <div className={'about-page-wrapper'}>

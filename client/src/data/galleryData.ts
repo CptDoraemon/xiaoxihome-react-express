@@ -16,27 +16,32 @@ interface AlbumPreview {
 export const galleryPreviewData: Array<AlbumPreview> = [
     {
         albumName: 'Toronto',
-        link: 'https://s3.us-east-2.amazonaws.com/xiaoxihome/galleryphoto/preview/toronto.png'
+        // link: 'https://s3.us-east-2.amazonaws.com/xiaoxihome/galleryphoto/preview/toronto.png',
+        link: 'https://s3.us-east-2.amazonaws.com/xiaoxihome/galleryphoto/toronto/toronto1.jpg'
     },
     {
         albumName: 'Canada',
-        link: 'https://s3.us-east-2.amazonaws.com/xiaoxihome/galleryphoto/preview/canada.jpg'
+        // link: 'https://s3.us-east-2.amazonaws.com/xiaoxihome/galleryphoto/preview/canada.jpg',
+        link: 'https://s3.us-east-2.amazonaws.com/xiaoxihome/galleryphoto/canada/canada1.jpg'
     },
     {
         albumName: 'Banff',
-        link: 'https://s3.us-east-2.amazonaws.com/xiaoxihome/galleryphoto/preview/banff.png'
+        // link: 'https://s3.us-east-2.amazonaws.com/xiaoxihome/galleryphoto/preview/banff.png',
+        link: 'https://s3.us-east-2.amazonaws.com/xiaoxihome/galleryphoto/banff/banff1.jpg'
     },
     {
         albumName: 'Hometown',
-        link: 'https://s3.us-east-2.amazonaws.com/xiaoxihome/galleryphoto/preview/hometown.jpg'
+        // link: 'https://s3.us-east-2.amazonaws.com/xiaoxihome/galleryphoto/preview/hometown.jpg',
+        link: 'https://xiaoxihome.s3.us-east-2.amazonaws.com/galleryphoto/hometown/wuhan-2019-1.jpg'
     },
     {
         albumName: 'YorkU',
-        link: 'https://s3.us-east-2.amazonaws.com/xiaoxihome/galleryphoto/preview/yorku.png'
+        // link: 'https://s3.us-east-2.amazonaws.com/xiaoxihome/galleryphoto/preview/yorku.png',
+        link: 'https://s3.us-east-2.amazonaws.com/xiaoxihome/galleryphoto/yorku/yorku1.jpg'
     },
     {
         albumName: 'Astro',
-        link: 'https://s3.us-east-2.amazonaws.com/xiaoxihome/galleryphoto/preview/astro.png'
+        link: 'https://s3.us-east-2.amazonaws.com/xiaoxihome/galleryphoto/astro/astro1.jpg'
     },
 ];
 

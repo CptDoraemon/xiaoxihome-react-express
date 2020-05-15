@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-
-// import HeaderCover from "../component/header";
+import GalleryTile from "./gallery-tile";
 import Footer from "../component/footer";
 import { MouseIcon } from "../component/mouseIcon";
 import { withFlyInAnimation } from '../animations/fly-in';
@@ -8,8 +7,7 @@ import { SpinLoader } from "../animations/spin-loader";
 import { myScrollTo } from "../tools/myScrollTo";
 import {
     useScrollOpacityAnimation,
-    useGetContainerPosition,
-    useScrollOpacityAnimationForCustomScrollEvent
+    useGetContainerPosition
 } from "../animations/parallax";
 
 import { Link } from 'react-router-dom';
@@ -20,7 +18,6 @@ import {GitHubButton} from "./webAppProjects";
 import {FrontpageHeader, MobileNavBar} from "../component/header";
 import mappedDataForProps from "../data";
 import {WithCallBackOnResized} from "../tools/use-is-resized";
-// import {resetJSONLD, setSummaryPageJSONLD} from "../tools/set-JSONLD";
 
 const IS_MOBILE = () => window.innerWidth < 800;
 
@@ -54,10 +51,14 @@ function Cover(props: CoverProps){
     // scroll opacity animation
     const containerRef: React.Ref<any> = useRef();
     const containerPosition = useGetContainerPosition(containerRef);
-    const scrolledPercentage = IS_MOBILE() ?
-        useScrollOpacityAnimation(containerPosition.offsetTop, containerPosition.offsetTop + containerPosition.offsetHeight, 1.0) :
-        useScrollOpacityAnimationForCustomScrollEvent(containerPosition.offsetTop, containerPosition.offsetTop + containerPosition.offsetHeight, 1.0)
-    ;
+    // the page will reload if IS_MOBILE() changes, leave it like this for now
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const scrolledPercentage = useScrollOpacityAnimation(
+        containerPosition.offsetTop,
+        containerPosition.offsetTop + containerPosition.offsetHeight,
+        1.0,
+        !IS_MOBILE()
+    );
     // load cover image state
     const [imageOrder, setImageOrder] = useState(initImageOrder());
     const [isCoverLoaded, setIsCoverLoaded] = useState(false);
@@ -126,27 +127,7 @@ function Cover(props: CoverProps){
 enum TileSize {
     SMALL = 'tile-sm',
     BIG = 'tile-big',
-    BIGRIBBONED = 'tile-big ribboned',
-    GALLERY = 'tile-gallery'
-}
-
-interface GalleryTileProps extends GalleryTileInfo {
-    className: TileSize;
-    isImgLoaded: boolean;
-}
-
-function GalleryTile(props: GalleryTileProps) {
-    const image = props.isImgLoaded ? {style: {backgroundImage: `url(${props.imgUrl})`}} : null;
-    return (
-        <Link to={props.link}>
-            <div
-                className={props.className}
-                {...image}
-            >
-                <h5>{props.title}</h5>
-            </div>
-        </Link>
-    )
+    BIGRIBBONED = 'tile-big ribboned'
 }
 
 interface TextTileProps extends  TextTileInfo {
@@ -325,15 +306,12 @@ class ProjectListGallery extends React.Component<ProjectListGalleryProps, Projec
                 />
                 <div className='flexbox-wrapper-800'>
                     {this.props.tileInfo.map((i, index) => {
-                        const tileSize = TileSize.GALLERY;
                         return <WithFlyInAnimationGalleryTile
                             key={index}
                             passOnProps={{
                                 link: i.link,
                                 title: i.title,
-                                className: tileSize,
-                                imgUrl: i.imgUrl,
-                                isImgLoaded: this.props.isImgLoaded,
+                                imgUrl: i.imgUrl
                             }}
                             propsForWrapper={{
                                 key: index,
@@ -440,7 +418,7 @@ class Frontpage extends React.Component<FrontpageProps, FrontpageStates> {
     }
     reloadOnIsMobileChanged() {
         if (IS_MOBILE() !== this.isMobile) {
-            location.reload();
+            window.location.reload();
         }
     }
     componentDidMount() {

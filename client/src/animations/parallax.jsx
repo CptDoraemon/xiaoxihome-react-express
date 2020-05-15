@@ -18,7 +18,7 @@ function useParallax(startInPixel, endInPixel, parallaxEffectStrength) {
     return translateY
 }
 
-function useScrollOpacityAnimation(startInPixel, endInPixel, animationFinishPoint0to1) {
+function useScrollOpacityAnimation(startInPixel, endInPixel, animationFinishPoint0to1, isCustomEvent) {
     const [scrolledPercentage, setScrolledPercentage] = useState(0);
     useEffect(() => {
         document.addEventListener('scroll', scrollHandler);
@@ -26,30 +26,13 @@ function useScrollOpacityAnimation(startInPixel, endInPixel, animationFinishPoin
             document.removeEventListener('scroll', scrollHandler);
         }
     }, [startInPixel, endInPixel]);
-    function scrollHandler() {
-        if (window.scrollY > endInPixel || window.scrollY < startInPixel) return;
-        const containerHeight = endInPixel - startInPixel;
-        // debounced by 2 decimal places.
-        const returnPercentage = Math.min(Math.max(Math.ceil(100 * (window.scrollY / (animationFinishPoint0to1 * containerHeight))) / 100, 0), 1);
-        setScrolledPercentage(returnPercentage);
-    }
-    return scrolledPercentage; /* [0-1] */
-}
-
-function useScrollOpacityAnimationForCustomScrollEvent(startInPixel, endInPixel, animationFinishPoint0to1) {
-    const [scrolledPercentage, setScrolledPercentage] = useState(0);
-    useEffect(() => {
-        document.addEventListener('parallaxScroll', scrollHandler);
-        return () => {
-            document.removeEventListener('parallaxScroll', scrollHandler);
-        }
-    }, [startInPixel, endInPixel]);
     function scrollHandler(e) {
-        const scrolled = e.detail.scrollTop;
+        const scrolled = isCustomEvent ? e.detail.scrollTop : window.scrollY;
+
         if (scrolled > endInPixel || scrolled < startInPixel) return;
         const containerHeight = endInPixel - startInPixel;
         // debounced by 2 decimal places.
-        const returnPercentage = Math.min(Math.max(Math.ceil(100 * (scrolled / (animationFinishPoint0to1 * containerHeight))) / 100, 0), 1);
+        const returnPercentage = Math.min(Math.max(Math.ceil(100 * (window.scrollY / (animationFinishPoint0to1 * containerHeight))) / 100, 0), 1);
         setScrolledPercentage(returnPercentage);
     }
     return scrolledPercentage; /* [0-1] */
@@ -101,4 +84,4 @@ function parallaxWrapper(WrappedComponent, parallaxStrength0to1) {
     }
 }
 
-export { useParallax, useScrollOpacityAnimation, useGetContainerPosition, parallaxWrapper, useScrollOpacityAnimationForCustomScrollEvent };
+export { useParallax, useScrollOpacityAnimation, useGetContainerPosition, parallaxWrapper };

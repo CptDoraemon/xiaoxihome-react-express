@@ -241,89 +241,6 @@
     color: white;
     text-align: center;
 }
-.tile-gallery {
-    width: 390px;
-    height: 243px;
-    margin: 5px;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    background-image: radial-gradient(#434343, #000000);
-    position: relative;
-}
-/* 1 */
-.tile-gallery::after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 2px;
-    background-color: white;
-    top: 0;
-    left: 0;
-    transition: 0.1s 0.3s;
-}
-.tile-gallery:hover::after {
-    width: 100%;
-    transition: 0.1s;
-}
-/* 2 */
-.tile-gallery h5::after {
-    content: '';
-    position: absolute;
-    width: 2px;
-    height: 0;
-    background-color: white;
-    top: 0;
-    right: 0;
-    transition: 0.1s 0.2s;
-}
-.tile-gallery h5:hover::after {
-    height: 100%;
-    transition: 0.1s 0.1s;
-}
-/* 3 */
-.tile-gallery::before {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 2px;
-    background-color: white;
-    bottom: 0;
-    right: 0;
-    transition: 0.1s 0.1s;
-}
-.tile-gallery:hover::before {
-    width: 100%;
-    transition: 0.1s 0.2s;
-}
-/* 4 */
-.tile-gallery h5::before {
-    content: '';
-    position: absolute;
-    width: 2px;
-    height: 0;
-    background-color: white;
-    bottom: 0;
-    left: 0;
-    transition: 0.1s;
-}
-.tile-gallery h5:hover::before {
-    height: 100%;
-    transition: 0.1s 0.3s;
-}
-
-.tile-gallery h5{
-    color: rgba(255, 255, 255, 0.5);
-    position: relative;
-    width: calc(100% - 10px);
-    height: calc(100% - 6px);
-    padding: 3px 5px;
-    transition: 0.1s 0.4s;
-}
-.tile-gallery h5:hover{
-    color: rgba(255, 255, 255, 1);
-    cursor: pointer;
-}
 .ribboned::after {
     position: absolute;
     content: '';
@@ -416,12 +333,6 @@
     .tile-big h3, .tile-sm h3 {
         font-size: 16px;
         color: white;
-    }
-    .tile-gallery {
-        width: 100%; /* inherit flexbox-wrapper-800 */
-        height: calc((100vw - 10px) * 0.5625); /* 16:9 */
-        margin: 5px 0;
-        background-size: 100%;
     }
     .ribboned::after {
         left: -25px;
