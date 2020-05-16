@@ -1,5 +1,26 @@
-import React, {useMemo, useRef} from "react";
+import React, {useEffect, useMemo, useRef, useState} from "react";
 import makeStyles from "@material-ui/core/styles/makeStyles";
+
+const useDelayedActive = (isActive: boolean) => {
+    const [isActiveStyle, setIsActiveStyle] = useState(false);
+    const delay = 20;
+
+    useEffect(() => {
+        if (isActive) {
+            if (!isActiveStyle) {
+                setTimeout(() => {
+                    setIsActiveStyle(true)
+                }, delay)
+            }
+        } else {
+            setTimeout(() => {
+                setIsActiveStyle(false)
+            }, delay)
+        }
+    }, [isActive]);
+
+    return isActiveStyle
+};
 
 const useStyles = makeStyles({
     root: {
@@ -20,6 +41,7 @@ interface FlyInWrapperProps {
  */
 const FlyInWrapper: React.FC<FlyInWrapperProps> = ({children, isActive, direction, delay = 0, offset}) => {
     const classes = useStyles();
+    const isActiveStyle = useDelayedActive(isActive);
 
     const {
         inactiveStyle,
@@ -50,7 +72,7 @@ const FlyInWrapper: React.FC<FlyInWrapperProps> = ({children, isActive, directio
     }, [offset]);
 
     return (
-        <div className={classes.root} style={isActive ? activeStyle : inactiveStyle}>
+        <div className={classes.root} style={isActiveStyle ? activeStyle : inactiveStyle}>
             { children }
         </div>
     )

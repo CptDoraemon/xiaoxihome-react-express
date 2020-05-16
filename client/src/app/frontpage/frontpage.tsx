@@ -70,7 +70,7 @@ class Frontpage extends React.Component<FrontpageProps, FrontpageStates> {
         this.reloadOnIsMobileChanged = this.reloadOnIsMobileChanged.bind(this);
     }
     scrollToWorkRef() {
-        if (this.webRef.current && this.parallelBoxRef.current) myScrollTo(this.webRef.current.offsetTop, this.parallelBoxRef.current);
+        if (this.webRef.current) myScrollTo(this.webRef.current.offsetTop);
     };
     reloadOnIsMobileChanged() {
         if (IS_MOBILE() !== this.isMobile) {
