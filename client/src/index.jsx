@@ -30,13 +30,13 @@ class App extends React.Component {
         super(props);
         this.academicRouters = mappedDataForProps.routers.academic.map((academicPageData, index) => {
             return <Route key={`${academicPageData.link}`} path={`${academicPageData.link}`} render={() => <AcademicProject data={academicPageData.data} key={index}/> } />
-        })
+        });
         this.webRouters = mappedDataForProps.routers.web.map((webPageData, index) => {
             return <Route key={`${webPageData.link}`} path={`${webPageData.link}`} render={() => <WebAppProject data={webPageData.data} key={index}/> } />
-        })
-        this.albumRouters = mappedDataForProps.routers.web.map((link) => {
-            return <Route key={`${link}`} path={`${link}`} render={() => <Gallery /> } />
-        })
+        });
+        // this.albumRouters = mappedDataForProps.routers.web.map((link) => {
+        //     return <Route key={`${link}`} path={`${link}`} render={() => <Gallery /> } />
+        // })
     }
 
 
