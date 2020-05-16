@@ -21,18 +21,19 @@ function useParallax(startInPixel, endInPixel, parallaxEffectStrength) {
 function useScrollOpacityAnimation(startInPixel, endInPixel, animationFinishPoint0to1, isCustomEvent) {
     const [scrolledPercentage, setScrolledPercentage] = useState(0);
     useEffect(() => {
-        document.addEventListener('scroll', scrollHandler);
+        const event = isCustomEvent ? 'parallaxScroll' : 'scroll';
+        document.addEventListener(event, scrollHandler);
         return () => {
-            document.removeEventListener('scroll', scrollHandler);
+            document.removeEventListener(event, scrollHandler);
         }
-    }, [startInPixel, endInPixel]);
+    }, [startInPixel, endInPixel, isCustomEvent]);
     function scrollHandler(e) {
         const scrolled = isCustomEvent ? e.detail.scrollTop : window.scrollY;
 
         if (scrolled > endInPixel || scrolled < startInPixel) return;
         const containerHeight = endInPixel - startInPixel;
         // debounced by 2 decimal places.
-        const returnPercentage = Math.min(Math.max(Math.ceil(100 * (window.scrollY / (animationFinishPoint0to1 * containerHeight))) / 100, 0), 1);
+        const returnPercentage = Math.min(Math.max(Math.ceil(100 * (scrolled / (animationFinishPoint0to1 * containerHeight))) / 100, 0), 1);
         setScrolledPercentage(returnPercentage);
     }
     return scrolledPercentage; /* [0-1] */

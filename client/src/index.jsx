@@ -8,7 +8,7 @@ import './flexbox.css';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import ScrollToTop from './component/scrolltotop'
-import Frontpage from './app/frontpage';
+import Frontpage from './app/frontpage/frontpage';
 
 import mappedDataForProps from "./data";
 // import { Missing404 } from './component/missing404';

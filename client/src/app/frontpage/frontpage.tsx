@@ -1,23 +1,22 @@
 import React, { useRef, useState, useEffect } from 'react';
-import GalleryTile from "../component/gallery-tile/gallery-tile";
-import Footer from "../component/footer";
-import { MouseIcon } from "../component/mouseIcon";
-import { withFlyInAnimation } from '../animations/fly-in';
-import { SpinLoader } from "../animations/spin-loader";
-import { myScrollTo } from "../tools/myScrollTo";
+import GalleryTile from "./gallery-tile/gallery-tile";
+import TextTile from "./text-tile/text-tile";
+import Footer from "../../component/footer";
+import { MouseIcon } from "../../component/mouseIcon";
+import FlyInWrapper from "../../animations/fly-in";
+import { SpinLoader } from "../../animations/spin-loader";
+import { myScrollTo } from "../../tools/myScrollTo";
 import {
     useScrollOpacityAnimation,
     useGetContainerPosition
-} from "../animations/parallax";
-
-import { Link } from 'react-router-dom';
+} from "../../animations/parallax";
 import './frontpage.css';
-import  '../flexbox.css'
-import {setTitle} from "../tools/set-title";
-import {GitHubButton} from "./webAppProjects";
-import {FrontpageHeader, MobileNavBar} from "../component/header";
-import mappedDataForProps from "../data";
-import {WithCallBackOnResized} from "../tools/use-is-resized";
+import  '../../flexbox.css'
+import {setTitle} from "../../tools/set-title";
+import {GitHubButton} from "../webAppProjects";
+import {FrontpageHeader, MobileNavBar} from "../../component/header";
+import mappedDataForProps from "../../data";
+import {WithCallBackOnResized} from "../../tools/use-is-resized";
 
 const IS_MOBILE = () => window.innerWidth < 800;
 
@@ -51,13 +50,11 @@ function Cover(props: CoverProps){
     // scroll opacity animation
     const containerRef: React.Ref<any> = useRef();
     const containerPosition = useGetContainerPosition(containerRef);
-    // the page will reload if IS_MOBILE() changes, leave it like this for now
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const scrolledPercentage = useScrollOpacityAnimation(
         containerPosition.offsetTop,
         containerPosition.offsetTop + containerPosition.offsetHeight,
         1.0,
-        !IS_MOBILE()
+        true
     );
     // load cover image state
     const [imageOrder, setImageOrder] = useState(initImageOrder());
@@ -93,7 +90,10 @@ function Cover(props: CoverProps){
         <>
             <div className='cover-wrapper' ref={containerRef}>
                 <div className={isCoverAnimationBegin ? 'cover-loaded' : 'cover-loading'}>
-                    { !isCoverLoaded ? null : <img src={coverSrc} width='100%' height='100%' style={{objectFit: 'cover'}} alt='cover'/> }
+                    {
+                        isCoverLoaded &&
+                        <img src={coverSrc} width='100%' height='100%' style={{objectFit: 'cover'}} alt='cover'/>
+                    }
                 </div>
             </div>
             <div className='cover-intro parallax-container'>
@@ -118,29 +118,10 @@ function Cover(props: CoverProps){
                 </div>
             </div>
             {
-                isCoverLoaded ? null : <div className='loader-wrapper'><SpinLoader size={20}/></div>
+                !isCoverLoaded &&
+                <div className='loader-wrapper'><SpinLoader size={20}/></div>
             }
         </>
-    )
-}
-
-enum TileSize {
-    SMALL = 'tile-sm',
-    BIG = 'tile-big',
-    BIGRIBBONED = 'tile-big ribboned'
-}
-
-interface TextTileProps extends  TextTileInfo {
-    className: string;
-}
-function TextTile(props: TextTileProps) {
-    return (
-        <Link to={props.link}>
-            <div
-                className={props.className}>
-                <h3> { props.title } </h3>
-            </div>
-        </Link>
     )
 }
 
@@ -154,11 +135,6 @@ function SectionTitle(props: SectionTitleProps) {
         </h2>
     )
 }
-
-// IMPORTANT!! DON'T USE HOC IN RENDER!!
-const WithFlyInAnimationGalleryTile = withFlyInAnimation(GalleryTile);
-const WithFlyInAnimationTextTile = withFlyInAnimation(TextTile);
-const WithFlyInAnimationSectionTitle = withFlyInAnimation(SectionTitle);
 
 interface TextTileInfo extends ProjectInfo {
 
@@ -182,16 +158,25 @@ enum ProjectListType {
 class ProjectListText extends React.Component<ProjectListTextProps, ProjectListTextStates> {
 
     containerRef = React.createRef<HTMLDivElement>();
-    typeRelatedParams = {
+    typeRelatedParams: {
+        [key: string]: {
+            flyInDelayRemap: number[],
+            flyInDirectionRemap: ('left' | 'right')[],
+            size: ('big' | 'small')[],
+            variant: ('ribbon' | null)[],
+        }
+    } = {
         [ProjectListType.ONE]: {
             flyInDelayRemap: [0.2, 0.1, 0, 0.1, 0.2, 0.3],
             flyInDirectionRemap: ['left', 'left', 'left', 'right', 'right', 'right'],
-            bigTileIndex: [1, 3]
+            size: ['small', 'big', 'small', 'big', 'small', 'small'],
+            variant: [null, null, null, null, null, null]
         },
         [ProjectListType.TWO]: {
             flyInDelayRemap: [0, 0.1, 0.2, 0.3, 0.2, 0.1],
             flyInDirectionRemap: ['right', 'right', 'right', 'left', 'left', 'left'],
-            bigTileIndex: [0, 5]
+            size: ['big', 'small', 'small', 'small', 'small', 'big'],
+            variant: ['ribbon', null, null, null, null, 'ribbon']
         }
     };
 
@@ -212,43 +197,31 @@ class ProjectListText extends React.Component<ProjectListTextProps, ProjectListT
         const typeRelatedParams = this.typeRelatedParams[this.props.projectListType];
         return (
             <div className='project-container' ref={this.containerRef}>
-                <WithFlyInAnimationSectionTitle
-                    propsForWrapper={{
-                        flyInDirection: 'down',
-                        flyInDelay: 0,
-                        animationTriggerPoint: this.state.animationTriggerPoint,
-                        wrapperClassName: 'fly-in-wrapper',
-                        customScrollEvent: IS_MOBILE() ? '' : 'parallaxScroll',
-                    }}
-                    passOnProps={{
-                        sectionTitle: this.props.sectionTitle
-                    }}
-                />
+                <FlyInWrapper propsForWrapper={{
+                    flyInDirection: 'down',
+                    flyInDelay: 0,
+                    animationTriggerPoint: this.state.animationTriggerPoint,
+                    wrapperClassName: 'fly-in-wrapper',
+                    customScrollEvent: IS_MOBILE() ? '' : 'parallaxScroll',
+                }}>
+                    <SectionTitle sectionTitle={this.props.sectionTitle}/>
+                </FlyInWrapper>
+
                 <div className='flexbox-wrapper-800'>
                     { this.props.tileInfo.map((i, index) => {
-
-                        const tileSize = (typeRelatedParams.bigTileIndex.indexOf(index)) === -1 ?
-                            TileSize.SMALL :
-                            this.props.projectListType === ProjectListType.TWO ?
-                                TileSize.BIGRIBBONED :
-                                TileSize.BIG;
-
-                        return <WithFlyInAnimationTextTile
-                            key={index}
-                            passOnProps={{
-                                link: i.link,
-                                title: i.title,
-                                className: tileSize,
-                            }}
-                            propsForWrapper={{
-                                key: index,
-                                flyInDirection: typeRelatedParams.flyInDirectionRemap[index],
-                                flyInDelay: typeRelatedParams.flyInDelayRemap[index],
-                                animationTriggerPoint: this.state.animationTriggerPoint,
-                                wrapperClassName: 'fly-in-wrapper',
-                                customScrollEvent: IS_MOBILE() ? '' : 'parallaxScroll',
-                            }}
-                        />
+                        return (
+                            <FlyInWrapper
+                                key={i.title}
+                                propsForWrapper={{
+                                    flyInDirection: typeRelatedParams.flyInDirectionRemap[index],
+                                    flyInDelay: typeRelatedParams.flyInDelayRemap[index],
+                                    animationTriggerPoint: this.state.animationTriggerPoint,
+                                    wrapperClassName: 'fly-in-wrapper',
+                                    customScrollEvent: IS_MOBILE() ? '' : 'parallaxScroll',
+                            }}>
+                                <TextTile link={i.link} title={i.title} size={typeRelatedParams.size[index]} variant={typeRelatedParams.variant[index]}/>
+                            </FlyInWrapper>
+                        );
                     })}
                 </div>
             </div>
@@ -292,36 +265,31 @@ class ProjectListGallery extends React.Component<ProjectListGalleryProps, Projec
     render() {
         return (
             <div className='project-container' ref={this.containerRef}>
-                <WithFlyInAnimationSectionTitle
-                    propsForWrapper={{
-                        flyInDirection: 'down',
-                        flyInDelay: 0,
-                        animationTriggerPoint: this.state.animationTriggerPoint,
-                        wrapperClassName: 'fly-in-wrapper',
-                        customScrollEvent: IS_MOBILE() ? '' : 'parallaxScroll',
-                    }}
-                    passOnProps={{
-                        sectionTitle: this.props.sectionTitle
-                    }}
-                />
+                <FlyInWrapper propsForWrapper={{
+                    flyInDirection: 'down',
+                    flyInDelay: 0,
+                    animationTriggerPoint: this.state.animationTriggerPoint,
+                    wrapperClassName: 'fly-in-wrapper',
+                    customScrollEvent: IS_MOBILE() ? '' : 'parallaxScroll',
+                }}>
+                    <SectionTitle sectionTitle={this.props.sectionTitle}/>
+                </FlyInWrapper>
+
                 <div className='flexbox-wrapper-800'>
                     {this.props.tileInfo.map((i, index) => {
-                        return <WithFlyInAnimationGalleryTile
-                            key={index}
-                            passOnProps={{
-                                link: i.link,
-                                title: i.title,
-                                imgUrl: i.imgUrl
-                            }}
-                            propsForWrapper={{
-                                key: index,
-                                flyInDirection: this.flyInDirectionRemap[index],
-                                flyInDelay: this.flyInDelayRemap[index],
-                                animationTriggerPoint: this.state.animationTriggerPoint,
-                                wrapperClassName: 'fly-in-wrapper',
-                                customScrollEvent: IS_MOBILE() ? '' : 'parallaxScroll',
-                            }}
-                        />
+                        return (
+                            <FlyInWrapper
+                                key={i.title}
+                                propsForWrapper={{
+                                    flyInDirection: this.flyInDirectionRemap[index],
+                                    flyInDelay: this.flyInDelayRemap[index],
+                                    animationTriggerPoint: this.state.animationTriggerPoint,
+                                    wrapperClassName: 'fly-in-wrapper',
+                                    customScrollEvent: IS_MOBILE() ? '' : 'parallaxScroll',
+                            }}>
+                                <GalleryTile title={i.title} imgUrl={i.imgUrl} link={i.link}/>
+                            </FlyInWrapper>
+                        );
                     })}
                 </div>
             </div>
