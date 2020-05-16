@@ -1,12 +1,11 @@
 import {Link} from "react-router-dom";
-import React, {useMemo} from "react";
+import React, {useEffect, useMemo, useRef, useState} from "react";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {createStyles} from "@material-ui/core/styles";
-import {CreateCSSProperties} from "@material-ui/core/styles/withStyles";
 
 const SMALLER_SCREEN = '@media only screen and (max-width: 800px)';
 const tileCommons = createStyles({
-    root: {
+    common: {
         height: 192,
         backgroundColor: 'rgba(255,255,255,0.2)',
         margin: 5,
@@ -24,8 +23,6 @@ const tileCommons = createStyles({
             textAlign: 'center',
         },
         '&:hover': {
-            backgroundColor: 'rgba(0,0,0,0.1)',
-            transition: 'background-color 0.3s',
             cursor: 'pointer'
         },
         [SMALLER_SCREEN]: {
@@ -36,9 +33,6 @@ const tileCommons = createStyles({
             width: '100%',
             '& h3': {
                 fontSize: '16px'
-            },
-            '&:hover': {
-                transition: 0,
             }
         }
     }
@@ -48,11 +42,11 @@ const useStyles = makeStyles({
 
     },
     big: {
-        ...tileCommons.root,
+        ...tileCommons.common,
         width: 385,
     },
     small: {
-        ...tileCommons.root,
+        ...tileCommons.common,
         width: 192,
     },
     ribbon: {
@@ -82,7 +76,35 @@ const useStyles = makeStyles({
                 left: -40
             },
         }
-    }
+    },
+    hoverDetection: {
+        '&:hover $backgroundWrapper': {
+            transform: 'translate(0, 0) rotate(0)',
+            transition: 'transform 0.2s',
+        },
+        '&:hover $backgroundScale': {
+            transform: 'scale(1, 2) translateY(25%)',
+            transition: 'transform 1s 0.2s',
+        }
+    },
+    backgroundWrapper: {
+        zIndex: -1,
+        width: '200%',
+        height: '200%',
+        position: 'absolute',
+        top: '-100%',
+        left: '-100%',
+        transition: 'transform 0.2s',
+        transform: 'translate(-50%, -200%) rotate(25deg)',
+        borderRadius: '50%'
+    },
+    backgroundScale: {
+        width: '100%',
+        height: '100%',
+        transform: 'scale(1, 2) translateY(-25%)',
+        backgroundImage: 'linear-gradient(to bottom, #EC9F05, #FF4E00)',
+        transition: 'transform 0.2s 0.2s',
+    },
 });
 
 interface TextTileProps {
@@ -92,11 +114,62 @@ interface TextTileProps {
     variant?: 'ribbon' | null,
 }
 
+const useHover = (ref: React.RefObject<HTMLElement>) => {
+    const [position, setPosition] = useState({
+        x: 0,
+        y: 0
+    });
+
+    const isHovering = (x: number, y: number) => {
+        if (!ref.current) return false;
+
+        const rect = ref.current.getBoundingClientRect();
+        const refElRect = {
+            x0: rect.x,
+            x1: rect.x + rect.width,
+            y0: rect.y,
+            y1: rect.y + rect.height
+        };
+        return (
+            x >= refElRect.x0 &&
+            x <= refElRect.x1 &&
+            y >= refElRect.y0 &&
+            y <= refElRect.y1
+        )
+    };
+
+    const mouseMoveHandler = (e: MouseEvent) => {
+        const x = e.clientX;
+        const y = e.clientY;
+
+        if (isHovering(x, y)) {
+            setPosition({x, y})
+        } else {
+            if (!(position.x === 0 && position.y === 0)) {
+                setPosition({
+                    x: 0,
+                    y: 0
+                })
+            }
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener('mousemove', mouseMoveHandler);
+        return () => {
+            document.removeEventListener('mousemove', mouseMoveHandler);
+        }
+    }, [ref, position]);
+
+    return position
+};
+
 const TextTile: React.FC<TextTileProps> = ({link, title, size, variant}) => {
     const classes = useStyles();
+    const containerRef = useRef<HTMLAnchorElement>(null);
 
     const rootStyle = useMemo(() => {
-        let rootStyle = classes.root;
+        let rootStyle = `${classes.root} ${classes.hoverDetection}`;
         rootStyle += ' ';
         rootStyle += size === 'big' ? classes.big : classes.small;
         if (variant === 'ribbon') {
@@ -106,10 +179,18 @@ const TextTile: React.FC<TextTileProps> = ({link, title, size, variant}) => {
         return rootStyle
     }, [size, variant]);
 
+    // const mousePosition = useHover(containerRef);
+
     return (
-        <Link to={link} className={rootStyle}>
+        <Link to={link} className={rootStyle} ref={containerRef}>
             <div>
-                <h3> { title } </h3>
+                <h3>
+                    { title }
+                </h3>
+            </div>
+            <div className={classes.backgroundWrapper}>
+                <div className={classes.backgroundScale}>
+                </div>
             </div>
         </Link>
     )
