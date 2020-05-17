@@ -79,7 +79,7 @@ const useStyles = makeStyles({
     },
     hoverDetection: {
         '&:hover $backgroundWrapper': {
-            transform: 'translate(0, 0) rotate(0)',
+            transform: 'translate(32%, 32%)',
             transition: 'transform 0.2s',
         },
         '&:hover $backgroundScale': {
@@ -89,14 +89,15 @@ const useStyles = makeStyles({
     },
     backgroundWrapper: {
         zIndex: -1,
-        width: '200%',
-        height: '200%',
+        width: '150%',
+        height: '150%',
+        borderRadius: '50%',
+        overflow: 'hidden',
         position: 'absolute',
-        top: '-100%',
-        left: '-100%',
+        top: '-75%',
+        left: '-75%',
         transition: 'transform 0.2s',
-        transform: 'translate(-50%, -200%) rotate(25deg)',
-        borderRadius: '50%'
+        transform: 'translate(-38%, -38%)',
     },
     backgroundScale: {
         width: '100%',
