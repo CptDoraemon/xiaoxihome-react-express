@@ -32,14 +32,16 @@ interface FlyInWrapperProps {
     isActive: boolean,
     delay?: number,
     direction: 'top' | 'right' | 'bottom' | 'left',
-    offset?: string
+    offset?: string,
+    className?: string,
 }
 
 /**
  * @param triggerPoint {number} In range [0, 1]
  * @param delay {number} Unit is ms
+ * @param className {string} Will be applied to root element if provided
  */
-const FlyInWrapper: React.FC<FlyInWrapperProps> = ({children, isActive, direction, delay = 0, offset}) => {
+const FlyInWrapper: React.FC<FlyInWrapperProps> = ({children, isActive, direction, delay = 0, offset, className}) => {
     const classes = useStyles();
     const isActiveStyle = useDelayedActive(isActive);
 
@@ -72,7 +74,10 @@ const FlyInWrapper: React.FC<FlyInWrapperProps> = ({children, isActive, directio
     }, [offset]);
 
     return (
-        <div className={classes.root} style={isActiveStyle ? activeStyle : inactiveStyle}>
+        <div
+            className={className ? `${classes.root} ${className}` : classes.root}
+            style={isActiveStyle ? activeStyle : inactiveStyle}
+        >
             { children }
         </div>
     )

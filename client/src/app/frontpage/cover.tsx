@@ -3,8 +3,7 @@ import {MouseIcon} from "../../component/mouseIcon";
 import {GitHubButton} from "../webAppProjects";
 import {SpinLoader} from "../../animations/spin-loader";
 import useIsMobile from "./use-is-mobile";
-import makeStyles from "@material-ui/core/styles/makeStyles";
-import {createStyles} from "@material-ui/core";
+import useCoverStyles from "./cover-styles";
 import useScrolledPercentage from "../../animations/use-scroll-percentage";
 import FlyInWrapper from "../../animations/fly-in-wrapper";
 
@@ -66,121 +65,6 @@ const useFullHeight = () => {
     }, [])
 };
 
-const fullscreenWrapper = createStyles({
-    fullscreenWrapper: {
-        width: '100%',
-        height: '100%',
-        position: 'absolute',
-        top: 0,
-        left: 0
-    }
-});
-const useStyles = makeStyles({
-    root: {
-        width: '100%',
-        height: '100vh',
-        position: 'relative',
-        overflow: 'hidden',
-    },
-    background: {
-        ...fullscreenWrapper.fullscreenWrapper,
-        '& img': {
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-        }
-    },
-    title: {
-        ...fullscreenWrapper.fullscreenWrapper,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        '& h1': {
-            fontFamily: '"Open Sans", sans-serif',
-            fontWeight: 800,
-            color: '#fff',
-            fontSize: '72px',
-            lineHeight: '144px',
-            textAlign: 'center',
-            margin: 0,
-        }
-    },
-    toolbar: {
-        position: 'absolute',
-        left: '25%',
-        bottom: 0,
-        width: '50%',
-        height: '100px',
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'rgba(255, 255, 255, 0.3)',
-        borderRadius: '25px',
-        transform: 'translateY(85px)',
-        transition: 'transform 0.3s, background-color 0.3s',
-        color: '#fff',
-        animationName: '$scroll-down-indicator-roll-in',
-        animationDuration: '1s',
-        '&:hover': {
-            transform: 'translateY(25px)',
-            backgroundColor: 'rgba(37, 41, 45, 1)',
-        }
-    },
-    '@keyframes scroll-down-indicator-roll-in': {
-        '0%': {
-            width: '20%',
-            left: '40%',
-            backgroundColor: 'rgba(255, 255, 255, 1)'
-        },
-        '100%': {
-            width: '50%',
-            left: '25%',
-            backgroundColor: 'rgba(255, 255, 255, 0.3)'
-        }
-    },
-    progressBar: {
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        height: '5px',
-        backgroundColor: '#fff'
-    },
-    loader: {
-        position: 'absolute',
-        bottom: 0,
-        right: 0,
-    },
-    mouseIcon: {
-        margin: '0 0 20px 0',
-    },
-    githubButton: {
-        width: '100px',
-        height: '30px',
-        transform: 'scale(0.8)',
-        borderRadius: '10px',
-        cursor: 'pointer',
-        color:' #fff',
-        fontSize: '20px',
-        border: '3px solid #fff',
-        opacity: 0.5,
-        margin: '0 20px 20px 20px',
-        textAlign: 'center',
-        fontWeight: 'bold',
-        userSelect: 'none',
-        '& span': {
-            fontSize: '18px',
-            lineHeight: '30px',
-        },
-        '&:hover': {
-            opacity: 1,
-            color: 'rgb(37, 41, 45)',
-            backgroundColor: '#fff',
-        }
-    }
-});
-
 /**
  * return number in range [0, 1]
  */
@@ -224,7 +108,7 @@ interface CoverProps {
 }
 
 const Cover: React.FC<CoverProps> = ({clickToScrollToAnchor}) => {
-    const classes = useStyles();
+    const classes = useCoverStyles();
     const containerRef = useRef<HTMLDivElement>(null);
     const isMobile = useIsMobile();
     const fullHeight = useFullHeight();
@@ -254,13 +138,13 @@ const Cover: React.FC<CoverProps> = ({clickToScrollToAnchor}) => {
                 }
             </div>
             <div className={classes.title} style={{opacity: titleOpacity}}>
-                <FlyInWrapper isActive={true} direction={'bottom'}>
+                <FlyInWrapper isActive={isCoverLoaded} direction={'bottom'}>
                     <h1>
                         Welcome To Xiaoxi's Home!
                     </h1>
                 </FlyInWrapper>
             </div>
-            <div className={classes.toolbar}>
+            <div className={isProgressBar || !isCoverLoaded ? classes.toolbarInactive : classes.toolbarActive}>
                 <div className={classes.mouseIcon}>
                     <MouseIcon onClickMouseIcon={clickToScrollToAnchor}/>
                 </div>

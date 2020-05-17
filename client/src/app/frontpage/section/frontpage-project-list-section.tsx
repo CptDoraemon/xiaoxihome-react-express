@@ -82,12 +82,14 @@ const useStyles = makeStyles({
         alignItems: 'center',
         justifyContent: 'center',
         [SMALLER_SCREEN]: {
-            width: '100%',
-            margin: 0,
+            width: 'calc(100% - 20px)',
+            margin: '0 10px',
             flexDirection: 'column',
-            '& a': {
-                width: 'calc(100% - 10px)'
-            }
+        }
+    },
+    flyInWrapper: {
+        [SMALLER_SCREEN]: {
+            width: '100%'
         }
     }
 });
@@ -128,6 +130,7 @@ const FrontpageProjectListSection: React.FC<FrontpageProjectListSectionProps> = 
                             delay={sectionParams.flyInDelayRemap[index]}
                             offset={'1000px'}
                             key={i.title}
+                            className={classes.flyInWrapper}
                         >
                             {
                                 type === 'gallery' ?
