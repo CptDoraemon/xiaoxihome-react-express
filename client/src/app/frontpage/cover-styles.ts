@@ -1,6 +1,7 @@
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {createStyles} from "@material-ui/core";
 
+const SMALLER_SCREEN = '@media only screen and (max-width: 800px)';
 const fullscreenWrapper = createStyles({
     fullscreenWrapper: {
         width: '100%',
@@ -30,8 +31,13 @@ const useCoverStyles = makeStyles({
     root: {
         width: '100%',
         height: '100vh',
-        position: 'relative',
+        position: 'fixed',
         overflow: 'hidden',
+    },
+    relativeContainer: {
+        width: '100%',
+        height: '100%',
+        position: 'relative',
     },
     background: {
         ...fullscreenWrapper.fullscreenWrapper,
@@ -59,6 +65,10 @@ const useCoverStyles = makeStyles({
         '&:hover': {
             transform: 'translateY(25px)',
             backgroundColor: 'rgba(37, 41, 45, 1)',
+        },
+        [SMALLER_SCREEN]: {
+            width: '100%',
+            left: '0',
         }
     },
     toolbarInactive: {

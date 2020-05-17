@@ -115,6 +115,8 @@ const Cover: React.FC<CoverProps> = ({clickToScrollToAnchor}) => {
     const scrolled = useScrolledPercentage(containerRef);
     const coverScrolled = useCoverScrolled(scrolled);
     const titleOpacity = useInterpolate(coverScrolled, 0, 1, 1);
+    const titleOffset = useInterpolate(coverScrolled, 50, 0, 0);
+    const backgroundOffset = useInterpolate(coverScrolled, 75, 0, 0);
     const isProgressBar = coverScrolled >= 0.5;
     const {
         isCoverLoaded,
@@ -130,36 +132,61 @@ const Cover: React.FC<CoverProps> = ({clickToScrollToAnchor}) => {
     };
 
     return (
-        <div className={classes.root} style={{height: `${fullHeight}px`}} ref={containerRef}>
-            <div className={classes.background}>
+        <div
+            className={classes.relativeContainer}
+            style={{
+                height: `${fullHeight}px`,
+            }}
+            ref={containerRef}
+        >
+        <div
+            className={classes.root}
+            style={{
+                height: `${fullHeight}px`,
+                top: `${-coverScrolled * 100}%`,
+            }}
+        >
+                <div
+                    className={classes.background}
+                    style={{
+                        top: `${backgroundOffset}%`,
+                    }}
+                >
+                    {
+                        isCoverLoaded &&
+                        <img src={coverImageUrl} alt={'cover image'} style={coverImageStyle}/>
+                    }
+                </div>
+                <div
+                    className={classes.title}
+                    style={{
+                        opacity: titleOpacity,
+                        top: `${titleOffset}%`
+                    }}
+                >
+                    <CoverTitle
+                        subtitle={`Hi there, I'm Xiaoxi Yu.`}
+                        title={`Welcome to my home, I store my works here.`}
+                        isActive={isCoverLoaded}
+                    />
+                </div>
+                <div className={isProgressBar || !isCoverLoaded ? classes.toolbarInactive : classes.toolbarActive}>
+                    <div className={classes.mouseIcon}>
+                        <MouseIcon onClickMouseIcon={clickToScrollToAnchor}/>
+                    </div>
+                    <GitHubButton link={'https://github.com/CptDoraemon'} className={classes.githubButton}/>
+                </div>
                 {
-                    isCoverLoaded &&
-                    <img src={coverImageUrl} alt={'cover image'} style={coverImageStyle}/>
+                    isProgressBar &&
+                    <div className={classes.progressBar} style={{width: `${((coverScrolled - 0.5) / 0.5) * 100}%`}}>
+
+                    </div>
+                }
+                {
+                    !isCoverLoaded &&
+                    <div className={classes.loader}><SpinLoader size={20}/></div>
                 }
             </div>
-            <div className={classes.title} style={{opacity: titleOpacity}}>
-                <CoverTitle
-                    subtitle={`Hi there, I'm Xiaoxi Yu.`}
-                    title={`Welcome to my home, I store my works here.`}
-                    isActive={isCoverLoaded}
-                />
-            </div>
-            <div className={isProgressBar || !isCoverLoaded ? classes.toolbarInactive : classes.toolbarActive}>
-                <div className={classes.mouseIcon}>
-                    <MouseIcon onClickMouseIcon={clickToScrollToAnchor}/>
-                </div>
-                <GitHubButton link={'https://github.com/CptDoraemon'} className={classes.githubButton}/>
-            </div>
-            {
-                isProgressBar &&
-                <div className={classes.progressBar} style={{width: `${((coverScrolled - 0.5) / 0.5) * 100}%`}}>
-
-                </div>
-            }
-            {
-                !isCoverLoaded &&
-                <div className={classes.loader}><SpinLoader size={20}/></div>
-            }
         </div>
     )
 };
