@@ -5,7 +5,7 @@ import {SpinLoader} from "../../animations/spin-loader";
 import useIsMobile from "./use-is-mobile";
 import useCoverStyles from "./cover-styles";
 import useScrolledPercentage from "../../animations/use-scroll-percentage";
-import FlyInWrapper from "../../animations/fly-in-wrapper";
+import CoverTitle from "./cover-title";
 
 /**
  * if visited first time, return 1
@@ -138,11 +138,11 @@ const Cover: React.FC<CoverProps> = ({clickToScrollToAnchor}) => {
                 }
             </div>
             <div className={classes.title} style={{opacity: titleOpacity}}>
-                <FlyInWrapper isActive={isCoverLoaded} direction={'bottom'}>
-                    <h1>
-                        Welcome To Xiaoxi's Home!
-                    </h1>
-                </FlyInWrapper>
+                <CoverTitle
+                    subtitle={`Hi there, I'm Xiaoxi Yu.`}
+                    title={`Welcome to my home, I store my works here.`}
+                    isActive={isCoverLoaded}
+                />
             </div>
             <div className={isProgressBar || !isCoverLoaded ? classes.toolbarInactive : classes.toolbarActive}>
                 <div className={classes.mouseIcon}>

@@ -47,15 +47,6 @@ const useCoverStyles = makeStyles({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        '& h1': {
-            fontFamily: '"Open Sans", sans-serif',
-            fontWeight: 800,
-            color: '#fff',
-            fontSize: '72px',
-            lineHeight: '144px',
-            textAlign: 'center',
-            margin: 0,
-        }
     },
     toolbarActive: {
         ...toolbarCommons.toolbarCommons,
