@@ -1,5 +1,5 @@
 import React from 'react';
-import Cover from "./cover";
+import Cover from "./cover/cover";
 import Footer from "../../component/footer";
 import { myScrollTo } from "../../tools/myScrollTo";
 import './frontpage.css';

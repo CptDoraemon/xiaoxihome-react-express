@@ -1,11 +1,11 @@
 import React, {useEffect, useMemo, useRef, useState} from "react";
-import {MouseIcon} from "../../component/mouseIcon";
-import {GitHubButton} from "../webAppProjects";
-import {SpinLoader} from "../../animations/spin-loader";
-import useIsMobile from "./use-is-mobile";
+import {MouseIcon} from "../../../component/mouseIcon";
+import {GitHubButton} from "../../webAppProjects";
+import {SpinLoader} from "../../../animations/spin-loader";
+import useIsMobile from "../use-is-mobile";
 import useCoverStyles from "./cover-styles";
-import useScrolledPercentage from "../../animations/use-scroll-percentage";
 import CoverTitle from "./cover-title";
+import useCoverAnimations from "./use-cover-animations";
 
 /**
  * if visited first time, return 1
@@ -60,48 +60,31 @@ const useLoadCoverImage = (isMobile: boolean) => {
 };
 
 const useFullHeight = () => {
-    return useMemo(() => {
-        return window.innerHeight
-    }, [])
-};
-
-/**
- * return number in range [0, 1]
- */
-const useCoverScrolled = (scrolled: number) => {
-    const start = 0.5; // the cover is at the top of the document, therefore it has minimum scrolled = 50%
-    const [coverScrolled, setCoverScrolled] = useState(0);
+    const [fullHeight, setFullHeight] = useState(0);
 
     useEffect(() => {
-        if (scrolled >= 0.5) {
-            const percentage = (scrolled - start) / (1 - start);
-            if (percentage !== coverScrolled) {
-                setCoverScrolled(percentage)
+        setFullHeight(window.innerHeight)
+    }, []);
+
+    useEffect(() => {
+        const resizeHandler = () => {
+            if (window.innerHeight !== fullHeight) {
+                setFullHeight(window.innerHeight)
             }
+        };
+        window.addEventListener('resize', resizeHandler);
+        return () => {
+            window.removeEventListener('resize', resizeHandler);
         }
-    }, [scrolled, coverScrolled]);
+    }, [fullHeight]);
 
-    return coverScrolled
+    return fullHeight
 };
 
-/**
- * @param scrolled
- * @param max expected interpolated when scrolled = 1
- * @param min expected interpolated when scrolled = 0
- * @param initialValue
- */
-const useInterpolate = (scrolled: number, max: number, min: number, initialValue: number) => {
-    const [result, setResult] = useState(initialValue);
-
-    useEffect(() => {
-        const newResult = (max - min) * scrolled + min;
-        if (newResult !== result) {
-            setResult(newResult)
-        }
-    }, [scrolled, result]);
-
-    return result
-};
+const containerID = 'cover-container';
+const backgroundImageID = 'cover-background-image';
+const titleID = 'cover-title';
+const progressBarID = 'cover-progressbar';
 
 interface CoverProps {
     clickToScrollToAnchor: () => void
@@ -109,15 +92,10 @@ interface CoverProps {
 
 const Cover: React.FC<CoverProps> = ({clickToScrollToAnchor}) => {
     const classes = useCoverStyles();
-    const containerRef = useRef<HTMLDivElement>(null);
+    const placeholderRef = useRef<HTMLDivElement>(null);
     const isMobile = useIsMobile();
+    const isProgressBar = useCoverAnimations(placeholderRef, containerID, backgroundImageID, titleID, progressBarID);
     const fullHeight = useFullHeight();
-    const scrolled = useScrolledPercentage(containerRef);
-    const coverScrolled = useCoverScrolled(scrolled);
-    const titleOpacity = useInterpolate(coverScrolled, 0, 1, 1);
-    const titleOffset = useInterpolate(coverScrolled, 50, 0, 0);
-    const backgroundOffset = useInterpolate(coverScrolled, 75, 0, 0);
-    const isProgressBar = coverScrolled >= 0.5;
     const {
         isCoverLoaded,
         isCoverAnimationBegin,
@@ -134,36 +112,17 @@ const Cover: React.FC<CoverProps> = ({clickToScrollToAnchor}) => {
     return (
         <div
             className={classes.relativeContainer}
-            style={{
-                height: `${fullHeight}px`,
-            }}
-            ref={containerRef}
+            ref={placeholderRef}
+            style={{height: `${fullHeight}px`}}
         >
-        <div
-            className={classes.root}
-            style={{
-                height: `${fullHeight}px`,
-                top: `${-coverScrolled * 100}%`,
-            }}
-        >
-                <div
-                    className={classes.background}
-                    style={{
-                        top: `${backgroundOffset}%`,
-                    }}
-                >
+            <div className={classes.root} id={containerID} style={{height: `${fullHeight}px`}}>
+                <div className={classes.background} id={backgroundImageID}>
                     {
                         isCoverLoaded &&
                         <img src={coverImageUrl} alt={'cover image'} style={coverImageStyle}/>
                     }
                 </div>
-                <div
-                    className={classes.title}
-                    style={{
-                        opacity: titleOpacity,
-                        top: `${titleOffset}%`
-                    }}
-                >
+                <div className={classes.title} id={titleID}>
                     <CoverTitle
                         subtitle={`Hi there, I'm Xiaoxi Yu.`}
                         title={`Welcome to my home, I store my works here.`}
@@ -178,7 +137,7 @@ const Cover: React.FC<CoverProps> = ({clickToScrollToAnchor}) => {
                 </div>
                 {
                     isProgressBar &&
-                    <div className={classes.progressBar} style={{width: `${((coverScrolled - 0.5) / 0.5) * 100}%`}}>
+                    <div className={classes.progressBar} id={progressBarID}>
 
                     </div>
                 }

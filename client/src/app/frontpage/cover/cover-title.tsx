@@ -1,5 +1,5 @@
 import React, {useMemo} from "react";
-import FlyInWrapper from "../../animations/fly-in-wrapper";
+import FlyInWrapper from "../../../animations/fly-in-wrapper";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {createStyles} from "@material-ui/core";
 
