@@ -34,12 +34,12 @@ function loadImage (src: string) {
     });
 }
 
-const useLoadCoverImage = (isMobile: boolean) => {
+const useLoadCoverImage = () => {
     const [isCoverLoaded, setIsCoverLoaded] = useState(false);
     const [isCoverAnimationBegin, setIsCoverAnimationBegin] = useState(false);
     const coverImageUrl = useMemo(() => {
         const imageOrder = initImageOrder();
-        return isMobile
+        return window.innerWidth <= 800
             ? `https://xiaoxihome.s3.us-east-2.amazonaws.com/galleryphoto/cover/cover-${imageOrder}-mobile.jpg`
             : `https://xiaoxihome.s3.us-east-2.amazonaws.com/galleryphoto/cover/cover-${imageOrder}-5k.jpg`;
     }, []);
@@ -81,7 +81,6 @@ interface CoverProps {
 const Cover: React.FC<CoverProps> = ({clickToScrollToAnchor}) => {
     const classes = useCoverStyles();
     const placeholderRef = useRef<HTMLDivElement>(null);
-    const isMobile = useIsMobile();
     const fullHeight = useFullHeight();
     const containerHeight = fullHeight ? `${fullHeight}px` : '100vh';
     const isProgressBar = useCoverAnimations(placeholderRef, containerID, backgroundImageID, titleID, progressBarID);
@@ -89,7 +88,7 @@ const Cover: React.FC<CoverProps> = ({clickToScrollToAnchor}) => {
         isCoverLoaded,
         isCoverAnimationBegin,
         coverImageUrl
-    } = useLoadCoverImage(isMobile);
+    } = useLoadCoverImage();
 
     const coverImageStyle = isCoverAnimationBegin ? {
         transform: `scale(1)`,
