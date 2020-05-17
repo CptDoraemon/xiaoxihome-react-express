@@ -41,13 +41,13 @@ const useCoverAnimations = (targetRef: React.RefObject<any>, containerID: string
             const title = document.getElementById(titleID);
             const progressBar = document.getElementById(progressBarID);
             if (container) {
-                container.style.top = `${-coverPercentage * 100}%`;
+                container.style.top = `${-coverPercentage * rect.height}px`;
             }
             if (backgroundImage) {
-                backgroundImage.style.top = `${0.75 * coverPercentage * 100}%`;
+                backgroundImage.style.top = `${0.75 * coverPercentage * rect.height}px`;
             }
             if (title) {
-                title.style.top = `${0.5 * coverPercentage * 100}%`;
+                title.style.top = `${0.5 * coverPercentage * rect.height}px`;
                 title.style.opacity = `${1 - coverPercentage}`;
             }
             if (progressBar) {

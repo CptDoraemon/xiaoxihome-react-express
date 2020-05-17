@@ -59,6 +59,16 @@ const useLoadCoverImage = (isMobile: boolean) => {
     }
 };
 
+const useFullHeight = () => {
+    const [fullHeight, setFullHeight] = useState(0);
+
+    useEffect(() => {
+        setFullHeight(window.innerHeight)
+    }, []);
+
+    return fullHeight
+};
+
 const containerID = 'cover-container';
 const backgroundImageID = 'cover-background-image';
 const titleID = 'cover-title';
@@ -72,6 +82,8 @@ const Cover: React.FC<CoverProps> = ({clickToScrollToAnchor}) => {
     const classes = useCoverStyles();
     const placeholderRef = useRef<HTMLDivElement>(null);
     const isMobile = useIsMobile();
+    const fullHeight = useFullHeight();
+    const containerHeight = fullHeight ? `${fullHeight}px` : '100vh';
     const isProgressBar = useCoverAnimations(placeholderRef, containerID, backgroundImageID, titleID, progressBarID);
     const {
         isCoverLoaded,
@@ -90,8 +102,9 @@ const Cover: React.FC<CoverProps> = ({clickToScrollToAnchor}) => {
         <div
             className={classes.relativeContainer}
             ref={placeholderRef}
+            style={{height: containerHeight}}
         >
-            <div className={classes.root} id={containerID}>
+            <div className={classes.root} id={containerID} style={{height: containerHeight}}>
                 <div className={classes.background} id={backgroundImageID}>
                     {
                         isCoverLoaded &&
