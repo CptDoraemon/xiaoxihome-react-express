@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 
 const useCoverAnimations = (targetRef: React.RefObject<any>, containerID: string, backgroundImageID: string, titleID: string, progressBarID: string) => {
     const [halfWay, setHalfWay] = useState(false);
+    const toFixed = true;
 
     useEffect(() => {
         /**
@@ -10,11 +11,11 @@ const useCoverAnimations = (targetRef: React.RefObject<any>, containerID: string
          * 1 -> when the bottom of the element reaches the top of the viewport
          * a little extra padding helps edge cases (eg: when element is at top of the document)
          */
-        let percentage = 0;
+        let percentage: null | number = null;
         /**
          * percentage remapped with start point at 0.5 since the cover is at the top of the document
          */
-        let coverPercentage = 0;
+        let coverPercentage: null | number = null;
 
         const scrollHandler = () => {
             if (!targetRef.current) return;
@@ -30,7 +31,10 @@ const useCoverAnimations = (targetRef: React.RefObject<any>, containerID: string
             percentage = newPercentage;
 
             const start = window.innerHeight / totalDistance;
-            const newCoverPercentage = (percentage - start) / (1 - start);
+            let newCoverPercentage = (percentage - start) / (1 - start);
+            if (toFixed) {
+                newCoverPercentage = parseFloat(newCoverPercentage.toFixed(4))
+            }
 
             if (coverPercentage === newCoverPercentage) return;
             coverPercentage = newCoverPercentage;
