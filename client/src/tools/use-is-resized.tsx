@@ -40,7 +40,7 @@ function useIsResized(callback: () => void, userDelay?: number | null) {
         return () => {
             window.removeEventListener('resize', resizeHandler);
         }
-    });
+    }, []);
 
     useEffect(() => {
         if (resizeCounter) {

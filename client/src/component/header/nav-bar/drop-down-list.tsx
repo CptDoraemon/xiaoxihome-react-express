@@ -2,16 +2,13 @@ import * as React from "react";
 import {DropDownListData} from "./index";
 import {Link} from "react-router-dom";
 import './drop-down-list.css';
-import {Dispatch, SetStateAction, useEffect} from "react";
 
 interface DropDownListProps {
     data: DropDownListData,
     className?: string,
     isActive: boolean,
     left: number,
-    setIsActive: Dispatch<SetStateAction<boolean>>,
     fadeOut?: boolean,
-    closeOnMouseLeave?: boolean
 }
 
 const DropDownList: React.FC<DropDownListProps> = ({
@@ -19,31 +16,18 @@ const DropDownList: React.FC<DropDownListProps> = ({
     className,
     isActive,
     left,
-    setIsActive,
     fadeOut,
-    closeOnMouseLeave
 }) => {
-    useEffect(() => {
-       window.addEventListener('click', closeDropDownList);
-       return () => {
-           window.removeEventListener('click', closeDropDownList);
-       }
-    });
-
-    const closeDropDownList = () => {
-        setIsActive(false);
-    };
-
     return (
-        <div className={className ? className : 'drop-down-list-wrapper'}
-             onClick={(e) => e.stopPropagation()}
-             style={{
-                 transform: isActive ? 'translateY(0)' : 'translateY(-100%)',
-                 opacity: !isActive && fadeOut ? 0 : 1,
-                 transition: 'transform 0.3s, opacity 0.3s',
-                 left: `${left}px`
-             }}
-             onMouseLeave={closeOnMouseLeave ? closeDropDownList : () => false}
+        <div
+            onClick={(e) => e.stopPropagation()}
+            className={className ? className : 'drop-down-list-wrapper'}
+            style={{
+             transform: isActive ? 'translateY(0)' : 'translateY(-100%)',
+             opacity: !isActive && fadeOut ? 0 : 1,
+             transition: 'transform 0.3s, opacity 0.3s',
+             left: `${left}px`
+            }}
         >
             {
                 data.map((section, i) => {

@@ -5,6 +5,16 @@ import List from "./list";
 import {useState} from "react";
 import DropDownList from "./drop-down-list";
 import useIsMobile from "../../../tools/use-is-mobile";
+import {useEffect} from "react";
+
+const useCloseDropDownOnClickElseWhere = (close: () => void) => {
+    useEffect(() => {
+        window.addEventListener('click', close);
+        return () => {
+            window.removeEventListener('click', close);
+        }
+    }, [close]);
+};
 
 interface NavBarProps {
     data: NavBarData,
@@ -41,10 +51,10 @@ const NavBar: React.FC<NavBarProps> = (
         setDropDownListLeft
     ] = useState(0);
 
-    const closeDropDownAfterResized = () => {
-        if (isDropDownListActive) setIsDropDownListActive(false);
+    const closeDropDown = () => {
+        setIsDropDownListActive(false);
     };
-    const isMobile = useIsMobile(null, null, closeDropDownAfterResized);
+    const isMobile = useIsMobile(null, null, closeDropDown);
 
     const toggleDropDownList = (data: DropDownListData, left: number) => {
         setDropDownListData(data);
@@ -55,6 +65,8 @@ const NavBar: React.FC<NavBarProps> = (
         }
         setIsDropDownListActive((state) => !state);
     };
+
+    useCloseDropDownOnClickElseWhere(closeDropDown);
 
     return (
         <>
@@ -70,9 +82,7 @@ const NavBar: React.FC<NavBarProps> = (
                 data={dropDownListData}
                 isActive={isDropDownListActive}
                 left={dropDownListLeft}
-                setIsActive={setIsDropDownListActive}
                 fadeOut={dropDownListFadeOut}
-                closeOnMouseLeave={dropDownListCloseOnMouseLeave}
             />
         </>
     )

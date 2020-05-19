@@ -27,7 +27,7 @@ const MobileNavBarDropDownList: React.FC<MobileNavBarDropDownListProps> = ({
             <div style={{
                 display: isDropDownOpen ? 'block' : 'none'
             }}>
-                <DropDownList data={data} className={'mobile-nav-bar-drop-down-list'} left={0} setIsActive={setIsDropDownOpen} isActive={true}/>
+                <DropDownList data={data} className={'mobile-nav-bar-drop-down-list'} left={0} isActive={true}/>
             </div>
         </li>
     )

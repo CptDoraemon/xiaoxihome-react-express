@@ -62,7 +62,7 @@ const List: React.FC<ListProps> = (
     };
 
     return (
-        <nav className={className ? className : 'nav-bar-list-wrapper'} ref={containerRef}>
+        <nav className={className ? className : 'nav-bar-list-wrapper'} ref={containerRef} onClick={(e) => e.stopPropagation()}>
             <div className={'nav-bar-list-mask'} style={{height: `${maskHeight || 100}px`}}>
                 { slideInBackground && <div style={{...backgroundDIVStyle, transform: isBackgroundVisible ? 'translateY(0)' : 'translateY(-100%)'}}> </div>}
                 <ul>
