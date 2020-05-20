@@ -26,35 +26,5 @@
 }
 
 @media only screen and (max-width: 800px) {
-    /* disable parallax effect */
-    .cover-wrapper, .cover-intro, .mouse-icon-parallax {
-        transform: translateZ(0) scale(1);
-    }
-    .cover-wrapper {
-        z-index: 2;
-    }
-    .cover-intro {
-        z-index: 3;
-    }
-    .mouse-icon-parallax {
-        display: none;
-    }
-    .scroll-down-indicator-wrapper {
-        display: none;
-    }
-    /* */
-    .frontpage-main {
-        perspective: none;
-        transform-style: flat;
-        overflow-x: hidden;
-        overflow-y: hidden;
-        height: auto;
-        transform: none;
-    }
-    .cover-intro-inner h1 {
-        font-size: 60px;
-        line-height: 65px;
-        word-spacing: 100vw;
-        user-select: none;
-    }
+
 }

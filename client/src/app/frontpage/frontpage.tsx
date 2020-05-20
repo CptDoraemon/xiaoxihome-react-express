@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useMemo} from 'react';
 import Cover from "./cover/cover";
 import Footer from "../../component/footer";
 import { myScrollTo } from "../../tools/myScrollTo";
@@ -13,6 +13,7 @@ import {
     FrontpageGallerySection,
     FrontpageWebSection
 } from "./section/frontpage-project-list-section";
+import ParallaxWrapper from "../../animations/parallax-wrapper";
 
 const IS_MOBILE = () => window.innerWidth < 800;
 
@@ -47,70 +48,52 @@ interface FrontpageProps {
     allProjectsInfo: AllProjectsInfo
 }
 
-interface FrontpageStates {
-    isImgLoaded: boolean,
-    containerKey: number
-}
+const Frontpage: React.FC<FrontpageProps> = ({allProjectsInfo}) => {
+    const galleryRef = React.useRef<HTMLDivElement>(null);
+    const academicRef = React.useRef<HTMLDivElement>(null);
+    const webRef = React.useRef<HTMLDivElement>(null);
+    const isMobile = useMemo(() => IS_MOBILE(), []);
 
-class Frontpage extends React.Component<FrontpageProps, FrontpageStates> {
-    galleryRef = React.createRef<HTMLDivElement>();
-    academicRef = React.createRef<HTMLDivElement>();
-    webRef = React.createRef<HTMLDivElement>();
-    parallelBoxRef = React.createRef<HTMLDivElement>();
-    isMobile: boolean;
-
-    constructor(props: FrontpageProps) {
-        super(props);
-        this.state = {
-            isImgLoaded: false,
-            containerKey: 0
-        };
-        this.isMobile = IS_MOBILE();
-        this.scrollToWorkRef = this.scrollToWorkRef.bind(this);
-        this.reloadOnIsMobileChanged = this.reloadOnIsMobileChanged.bind(this);
-    }
-    scrollToWorkRef() {
-        if (this.webRef.current) myScrollTo(this.webRef.current.offsetTop);
+    const scrollToWorkRef = () => {
+        if (webRef.current) myScrollTo(webRef.current.getBoundingClientRect().top + window.scrollY);
     };
-    reloadOnIsMobileChanged() {
-        if (IS_MOBILE() !== this.isMobile) {
+    const reloadOnIsMobileChanged = () => {
+        if (IS_MOBILE() !== isMobile) {
             window.location.reload();
         }
-    }
-    componentDidMount() {
+    };
+
+    useEffect(() => {
         setTitle(null, true);
         // setSummaryPageJSONLD();
-    }
-    componentWillUnmount() {
-        // resetJSONLD();
-    }
-    render() {
-        return (
-            <WithCallBackOnResized callback={this.reloadOnIsMobileChanged}>
-                <div className='frontpage-main' ref={this.parallelBoxRef}>
-                    <FrontpageHeader data={mappedDataForProps.header}/>
-                    <MobileNavBar data={mappedDataForProps.header}/>
-                    <Cover clickToScrollToAnchor={this.scrollToWorkRef}/>
+        // return () => {
+            // resetJSONLD();
+        // }
+    }, []);
 
+    return (
+        <WithCallBackOnResized callback={reloadOnIsMobileChanged}>
+            <div className='frontpage-main'>
+                <FrontpageHeader data={mappedDataForProps.header}/>
+                <MobileNavBar data={mappedDataForProps.header}/>
+                <Cover clickToScrollToAnchor={scrollToWorkRef}/>
+
+                <ParallaxWrapper className={'frontpage-main'}>
                     <div className={'academic-and-web'}>
-
-                        <div ref={this.webRef}/>
-                        <FrontpageWebSection sectionTitle={this.props.allProjectsInfo[1].sectionTitle} tileInfo={this.props.allProjectsInfo[1].projects}/>
-
-                        <div ref={this.academicRef}/>
-                        <FrontpageAcademicSection sectionTitle={this.props.allProjectsInfo[0].sectionTitle} tileInfo={this.props.allProjectsInfo[0].projects}/>
-
+                        <div ref={webRef}/>
+                        <FrontpageWebSection sectionTitle={allProjectsInfo[1].sectionTitle} tileInfo={allProjectsInfo[1].projects}/>
+                        <div ref={academicRef}/>
+                        <FrontpageAcademicSection sectionTitle={allProjectsInfo[0].sectionTitle} tileInfo={allProjectsInfo[0].projects}/>
                     </div>
-
-                    <div className={'gallery'} ref={this.galleryRef}>
-                        <FrontpageGallerySection sectionTitle={this.props.allProjectsInfo[2].sectionTitle} tileInfo={this.props.allProjectsInfo[2].projects}/>
+                    <div className={'gallery'} ref={galleryRef}>
+                        <FrontpageGallerySection sectionTitle={allProjectsInfo[2].sectionTitle} tileInfo={allProjectsInfo[2].projects}/>
                     </div>
                     <Footer />
-                </div>
-            </WithCallBackOnResized>
-        )
-    }
-}
+                </ParallaxWrapper>
+            </div>
+        </WithCallBackOnResized>
+    )
+};
 
 export default Frontpage;
 
