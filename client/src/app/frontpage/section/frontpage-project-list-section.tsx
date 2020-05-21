@@ -138,7 +138,7 @@ const FrontpageProjectListSection: React.FC<FrontpageProjectListSectionProps> = 
                         <FlyInWrapper
                             isActive={isFlyInActive}
                             direction={sectionParams.flyInDirectionRemap[index]}
-                            delay={sectionParams.flyInDelayRemap[index] + 50} // +50 to mitigate choppy since isFlyInActive just updated
+                            delay={sectionParams.flyInDelayRemap[index]}
                             offset={'1000px'}
                             key={i.title}
                             className={classes.flyInWrapper}
