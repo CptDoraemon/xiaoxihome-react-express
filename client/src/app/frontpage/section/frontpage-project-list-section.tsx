@@ -122,7 +122,6 @@ const FrontpageProjectListSection: React.FC<FrontpageProjectListSectionProps> = 
     const classes = useStyles();
     const containerRef = useRef<HTMLDivElement>(null);
     const isFlyInActive = useFlyInTrigger(containerRef);
-    console.log(Date.now());
 
     return (
         <div className={classes.root} ref={containerRef}>
