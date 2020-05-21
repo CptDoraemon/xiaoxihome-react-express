@@ -78,7 +78,7 @@ const Frontpage: React.FC<FrontpageProps> = ({allProjectsInfo}) => {
                 <MobileNavBar data={mappedDataForProps.header}/>
                 <Cover clickToScrollToAnchor={scrollToWorkRef}/>
 
-                <ParallaxWrapper className={'frontpage-main'}>
+                <ParallaxWrapper className={'frontpage-main'} parallaxStrength={0}>
                     <div className={'academic-and-web'}>
                         <div ref={webRef}/>
                         <FrontpageWebSection sectionTitle={allProjectsInfo[1].sectionTitle} tileInfo={allProjectsInfo[1].projects}/>

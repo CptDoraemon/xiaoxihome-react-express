@@ -7,27 +7,8 @@ interface Size {
     height: number
 }
 
-const useStyles = makeStyles({
-    root: {
-        position: 'fixed'
-    },
-    placeholder: {
-
-    }
-});
-
-interface ParallaxWrapperProps {
-    className: string
-}
-
-/**
- * @param className Classname will be applied to the wrapper
- */
-const ParallaxWrapper: React.FC<ParallaxWrapperProps> = ({children, className}) => {
-    const classes = useStyles();
-    const containerRef = useRef<HTMLDivElement>(null);
+const useGetChildrenSize = (containerRef: React.RefObject<HTMLElement>) => {
     const [size, setSize] = useState<null | Size>(null);
-    const [top, setTop] = useState(0);
 
     useEffect(() => {
         if (!containerRef.current) return;
@@ -37,15 +18,37 @@ const ParallaxWrapper: React.FC<ParallaxWrapperProps> = ({children, className}) 
             left: rect.left,
             height: rect.height
         });
-        setTop(rect.top)
     }, []);
 
+    return size
+};
+
+const useParallaxEffect = (
+    size: Size | null,
+    parallaxStrength: number,
+    containerRef: React.RefObject<HTMLElement>,
+    fixedRef: React.RefObject<HTMLElement>,
+    absoluteRef: React.RefObject<HTMLElement>,
+) => {
     useEffect(() => {
         if (!size) return;
-        const scrollHandler = () => {
-            if (!containerRef.current) return;
-            setTop(containerRef.current.getBoundingClientRect().top)
+        const getScrolledPercentage = (targetElementRef: React.RefObject<HTMLElement>) => {
+            if (!targetElementRef.current) return 0;
+            const rect = targetElementRef.current.getBoundingClientRect();
+            const totalDistance = rect.height + window.innerHeight;
+            const travelled = window.innerHeight - rect.top;
+            return travelled / totalDistance;
         };
+        const scrollHandler = parallaxStrength === 0 ?
+            () => {
+                if (!containerRef.current || !fixedRef.current) return;
+                fixedRef.current.style.top = `${containerRef.current.getBoundingClientRect().top}px`;
+            } :
+            () => {
+                if (!containerRef.current || !fixedRef.current || !absoluteRef.current) return;
+                fixedRef.current.style.top = `${containerRef.current.getBoundingClientRect().top}px`;
+                absoluteRef.current.style.top = `${containerRef.current.getBoundingClientRect().height * getScrolledPercentage(containerRef) * parallaxStrength}px`;
+            };
 
         document.addEventListener('scroll', scrollHandler);
         return () => {
@@ -53,6 +56,38 @@ const ParallaxWrapper: React.FC<ParallaxWrapperProps> = ({children, className}) 
         }
 
     }, [size]);
+}
+
+const useStyles = makeStyles({
+    root: {
+        position: 'fixed',
+        overflow: 'hidden'
+    },
+    absoluteContainer: {
+        position: 'absolute'
+    },
+    placeholder: {
+
+    }
+});
+
+interface ParallaxWrapperProps {
+    className: string,
+    parallaxStrength: number
+}
+
+/**
+ * @param className Classname will be applied to the wrapper
+ * @param parallaxStrength In range [-1, 1], sync at 0
+ */
+const ParallaxWrapper: React.FC<ParallaxWrapperProps> = ({children, className, parallaxStrength}) => {
+    const classes = useStyles();
+    const containerRef = useRef<HTMLDivElement>(null);
+    const fixedRef = useRef<HTMLDivElement>(null);
+    const absoluteRef = useRef<HTMLDivElement>(null);
+
+    const size = useGetChildrenSize(containerRef);
+    useParallaxEffect(size, parallaxStrength, containerRef, fixedRef, absoluteRef);
 
     if (!size) {
         return (
@@ -66,11 +101,19 @@ const ParallaxWrapper: React.FC<ParallaxWrapperProps> = ({children, className}) 
                 <div
                     className={classes.root}
                     style={{
-                        top: `${top}px`
+                        left: `${size?.left}px`,
+                        width: `${size?.width}px`,
+                        height: `${size?.height}px`,
                     }}
+                    ref={fixedRef}
                 >
-                    <div className={className}>
-                        { children }
+                    <div className={classes.absoluteContainer}>
+                        <div
+                            ref={absoluteRef}
+                            className={className}
+                        >
+                            { children }
+                        </div>
                     </div>
                 </div>
                 <div
