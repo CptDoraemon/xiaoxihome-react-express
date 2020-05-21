@@ -43,6 +43,9 @@ interface FlyInWrapperProps {
  */
 const FlyInWrapper: React.FC<FlyInWrapperProps> = ({children, isActive, direction, delay = 0, offset, className}) => {
     const classes = useStyles();
+    /**
+     * a little delay between isActive and internal isActiveStyle make sure there will still be animation if isActive is set to be true from the beginning
+     */
     const isActiveStyle = useDelayedActive(isActive);
 
     const {
