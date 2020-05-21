@@ -133,63 +133,6 @@ interface TextTileProps {
     variant?: 'ribbon' | null
 }
 
-const USE_HOVER_DEFAULT_POSITION = {
-    x: -9999,
-    y: -9999
-};
-
-const useHover = (ref: React.RefObject<HTMLElement>) => {
-    const [position, setPosition] = useState<{
-        x: number,
-        y: number
-    } | null>(null);
-
-    const isHovering = (x: number, y: number) => {
-        if (!ref.current) return false;
-
-        const rect = ref.current.getBoundingClientRect();
-        const refElRect = {
-            x0: rect.x,
-            x1: rect.x + rect.width,
-            y0: rect.y,
-            y1: rect.y + rect.height
-        };
-        return (
-            x >= refElRect.x0 &&
-            x <= refElRect.x1 &&
-            y >= refElRect.y0 &&
-            y <= refElRect.y1
-        )
-    };
-
-    const mouseMoveHandler = (e: MouseEvent) => {
-        if (!ref.current) return;
-        const x = e.clientX;
-        const y = e.clientY;
-
-        if (isHovering(x, y)) {
-            setPosition({x: x - ref.current.getBoundingClientRect().left, y: y - ref.current.getBoundingClientRect().top})
-        } else {
-            setPosition(null)
-        }
-    };
-
-    const mouseLeaveHandler = () => {
-        setPosition(null)
-    };
-
-    useEffect(() => {
-        document.addEventListener('mousemove', mouseMoveHandler);
-        document.addEventListener('scroll', mouseLeaveHandler);
-        return () => {
-            document.removeEventListener('mousemove', mouseMoveHandler);
-            document.removeEventListener('scroll', mouseLeaveHandler);
-        }
-    }, [ref]);
-
-    return position
-};
-
 const TextTile: React.FC<TextTileProps> = ({link, title, size, variant}) => {
     const classes = useStyles();
     const containerRef = useRef<HTMLAnchorElement>(null);
@@ -217,7 +160,6 @@ const TextTile: React.FC<TextTileProps> = ({link, title, size, variant}) => {
         return rootStyle
     }, [size, variant]);
 
-    const mousePosition = useHover(containerRef);
     const content = (
         <>
             <div className={classes.backgroundWrapper}>
@@ -236,8 +178,7 @@ const TextTile: React.FC<TextTileProps> = ({link, title, size, variant}) => {
         <Link to={link} className={rootStyle} ref={containerRef}>
             { content }
             <MagnifyingGlass
-                x={mousePosition ? mousePosition.x : USE_HOVER_DEFAULT_POSITION.x}
-                y={mousePosition ? mousePosition.y : USE_HOVER_DEFAULT_POSITION.y}
+                containerRef={containerRef}
                 zIndex={zIndices.magnifyingGlass}
             >
                 <div

@@ -1,5 +1,64 @@
-import React from "react";
+import React, {useEffect, useRef} from "react";
 import makeStyles from "@material-ui/core/styles/makeStyles";
+
+const useMagnifyingGlass = (
+    containerRef: React.RefObject<HTMLElement>,
+    maskRef: React.RefObject<HTMLElement>,
+    contentRef: React.RefObject<HTMLElement>
+) => {
+    const isHovering = (x: number, y: number) => {
+        if (!containerRef.current) return false;
+
+        const rect = containerRef.current.getBoundingClientRect();
+        const refElRect = {
+            x0: rect.x,
+            x1: rect.x + rect.width,
+            y0: rect.y,
+            y1: rect.y + rect.height
+        };
+        return (
+            x >= refElRect.x0 &&
+            x <= refElRect.x1 &&
+            y >= refElRect.y0 &&
+            y <= refElRect.y1
+        )
+    };
+
+    const mouseLeaveHandler = () => {
+        if (!maskRef.current || !contentRef.current) return;
+        maskRef.current.style.left = `${-9999}px`;
+        maskRef.current.style.top = `${-9999}px`;
+        contentRef.current.style.left = `${0}px`;
+        contentRef.current.style.top = `${0}px`;
+    };
+
+    const mouseMoveHandler = (e: MouseEvent) => {
+        if (!containerRef.current || !maskRef.current || !contentRef.current) return;
+        const x = e.clientX;
+        const y = e.clientY;
+
+        if (isHovering(x, y)) {
+            const xOffset = x - containerRef.current.getBoundingClientRect().left - 0.5 * size;
+            const yOffset = y - containerRef.current.getBoundingClientRect().top - 0.5 * size;
+            maskRef.current.style.left = `${xOffset}px`;
+            maskRef.current.style.top = `${yOffset}px`;
+            contentRef.current.style.left = `${-xOffset}px`;
+            contentRef.current.style.top = `${-yOffset}px`;
+            contentRef.current.style.transformOrigin = `${xOffset + 0.5 * size}px ${yOffset + 0.5 * size}px`;
+        } else {
+            mouseLeaveHandler()
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener('mousemove', mouseMoveHandler);
+        document.addEventListener('scroll', mouseLeaveHandler);
+        return () => {
+            document.removeEventListener('mousemove', mouseMoveHandler);
+            document.removeEventListener('scroll', mouseLeaveHandler);
+        }
+    }, []);
+};
 
 const size = 80;
 const useStyles = makeStyles({
@@ -18,23 +77,24 @@ const useStyles = makeStyles({
 });
 
 interface MagnifyingGlassProps {
-    x: number,
-    y: number,
+    containerRef: React.RefObject<HTMLElement>
     zIndex: number,
 }
 
-const MagnifyingGlass: React.FC<MagnifyingGlassProps> = ({children, x, y, zIndex}) => {
+const MagnifyingGlass: React.FC<MagnifyingGlassProps> = ({children, containerRef, zIndex}) => {
     const classes = useStyles();
-    const xOffset = x - 0.5 * size;
-    const yOffset = y - 0.5 * size;
+    const maskRef = useRef<HTMLDivElement>(null);
+    const contentRef = useRef<HTMLDivElement>(null);
+    useMagnifyingGlass(containerRef, maskRef, contentRef);
 
     return (
         <div
-            style={{left: `${xOffset}px`, top: `${yOffset}px`, zIndex: zIndex}}
+            style={{zIndex: zIndex}}
+            ref={maskRef}
             className={classes.root}
         >
             <div
-                style={{left: `${-xOffset}px`, top: `${-yOffset}px`, transformOrigin: `${x}px ${y}px`}}
+                ref={contentRef}
                 className={classes.scale}
             >
                 { children }
