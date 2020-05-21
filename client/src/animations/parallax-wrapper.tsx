@@ -50,13 +50,14 @@ const useParallaxEffect = (
                 absoluteRef.current.style.top = `${containerRef.current.getBoundingClientRect().height * getScrolledPercentage(containerRef) * parallaxStrength}px`;
             };
 
+        scrollHandler();
         document.addEventListener('scroll', scrollHandler);
         return () => {
             document.removeEventListener('scroll', scrollHandler);
         }
 
     }, [size]);
-}
+};
 
 const useStyles = makeStyles({
     root: {

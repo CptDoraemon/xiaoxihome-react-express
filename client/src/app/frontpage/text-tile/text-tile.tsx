@@ -2,14 +2,20 @@ import {Link} from "react-router-dom";
 import React, {useEffect, useMemo, useRef, useState} from "react";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {createStyles} from "@material-ui/core/styles";
+import MagnifyingGlass from "./magnifying-glass";
 
+const zIndices = {
+    magnifyingGlass: 40,
+    text: 30,
+    ribbon: 20,
+    backgroundColor: 10,
+};
 const SMALLER_SCREEN = '@media only screen and (max-width: 800px)';
 const tileCommons = createStyles({
     common: {
         height: 192,
         backgroundColor: 'rgba(255,255,255,0.2)',
         margin: 5,
-        transition: 'background-color 0.3s',
         textTransform: 'capitalize',
         overflow: 'hidden',
         position: 'relative',
@@ -39,7 +45,7 @@ const tileCommons = createStyles({
 });
 const useStyles = makeStyles({
     root: {
-
+        position: 'relative'
     },
     big: {
         ...tileCommons.common,
@@ -53,6 +59,7 @@ const useStyles = makeStyles({
         position: 'relative',
         '&::after': {
             position: 'absolute',
+            zIndex: zIndices.ribbon,
             content: '""',
             top: 0,
             left: -45,
@@ -87,8 +94,11 @@ const useStyles = makeStyles({
             transition: 'transform 1s 0.2s',
         }
     },
+    text: {
+        zIndex: zIndices.text,
+    },
     backgroundWrapper: {
-        zIndex: -1,
+        zIndex: zIndices.backgroundColor,
         width: '200%',
         height: '200%',
         borderRadius: '50%',
@@ -104,22 +114,35 @@ const useStyles = makeStyles({
         height: '100%',
         transform: 'scale(1, 2) translateY(-25%)',
         backgroundImage: 'linear-gradient(to bottom, #EC9F05, #FF4E00)',
+        backgroundSize: 'cover',
         transition: 'transform 0.2s 0.2s',
     },
+    magnifyingWrapper: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'relative'
+    }
 });
 
 interface TextTileProps {
     link: string,
     title: string,
     size: 'big' | 'small',
-    variant?: 'ribbon' | null,
+    variant?: 'ribbon' | null
 }
 
+const USE_HOVER_DEFAULT_POSITION = {
+    x: -9999,
+    y: -9999
+};
+
 const useHover = (ref: React.RefObject<HTMLElement>) => {
-    const [position, setPosition] = useState({
-        x: 0,
-        y: 0
-    });
+    const [position, setPosition] = useState<{
+        x: number,
+        y: number
+    } | null>(null);
 
     const isHovering = (x: number, y: number) => {
         if (!ref.current) return false;
@@ -140,27 +163,29 @@ const useHover = (ref: React.RefObject<HTMLElement>) => {
     };
 
     const mouseMoveHandler = (e: MouseEvent) => {
+        if (!ref.current) return;
         const x = e.clientX;
         const y = e.clientY;
 
         if (isHovering(x, y)) {
-            setPosition({x, y})
+            setPosition({x: x - ref.current.getBoundingClientRect().left, y: y - ref.current.getBoundingClientRect().top})
         } else {
-            if (!(position.x === 0 && position.y === 0)) {
-                setPosition({
-                    x: 0,
-                    y: 0
-                })
-            }
+            setPosition(null)
         }
+    };
+
+    const mouseLeaveHandler = () => {
+        setPosition(null)
     };
 
     useEffect(() => {
         document.addEventListener('mousemove', mouseMoveHandler);
+        document.addEventListener('scroll', mouseLeaveHandler);
         return () => {
             document.removeEventListener('mousemove', mouseMoveHandler);
+            document.removeEventListener('scroll', mouseLeaveHandler);
         }
-    }, [ref, position]);
+    }, [ref]);
 
     return position
 };
@@ -168,6 +193,18 @@ const useHover = (ref: React.RefObject<HTMLElement>) => {
 const TextTile: React.FC<TextTileProps> = ({link, title, size, variant}) => {
     const classes = useStyles();
     const containerRef = useRef<HTMLAnchorElement>(null);
+    const [containerSize, setContainerSize] = useState({
+       width: 0,
+       height: 0
+    });
+
+    useEffect(() => {
+        if (!containerRef.current) return;
+        setContainerSize({
+            width: containerRef.current.getBoundingClientRect().width,
+            height: containerRef.current.getBoundingClientRect().height
+        })
+    }, []);
 
     const rootStyle = useMemo(() => {
         let rootStyle = `${classes.root} ${classes.hoverDetection}`;
@@ -180,19 +217,39 @@ const TextTile: React.FC<TextTileProps> = ({link, title, size, variant}) => {
         return rootStyle
     }, [size, variant]);
 
-    // const mousePosition = useHover(containerRef);
-
-    return (
-        <Link to={link} className={rootStyle} ref={containerRef}>
-            <div>
-                <h3>
-                    { title }
-                </h3>
-            </div>
+    const mousePosition = useHover(containerRef);
+    const content = (
+        <>
             <div className={classes.backgroundWrapper}>
                 <div className={classes.backgroundScale}>
                 </div>
             </div>
+            <div className={classes.text}>
+                <h3>
+                    { title }
+                </h3>
+            </div>
+        </>
+    );
+
+    return (
+        <Link to={link} className={rootStyle} ref={containerRef}>
+            { content }
+            <MagnifyingGlass
+                x={mousePosition ? mousePosition.x : USE_HOVER_DEFAULT_POSITION.x}
+                y={mousePosition ? mousePosition.y : USE_HOVER_DEFAULT_POSITION.y}
+                zIndex={zIndices.magnifyingGlass}
+            >
+                <div
+                    className={classes.magnifyingWrapper}
+                    style={{
+                        width: `${containerSize.width}px`,
+                        height: `${containerSize.height}px`,
+                    }}
+                >
+                    { content }
+                </div>
+            </MagnifyingGlass>
         </Link>
     )
 };

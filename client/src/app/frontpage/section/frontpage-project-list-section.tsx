@@ -2,9 +2,9 @@ import React, {useEffect, useRef, useState} from "react";
 import FlyInWrapper from "../../../animations/fly-in-wrapper";
 import TextTile from "../text-tile/text-tile";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import useScrolledPercentage from "../../../animations/use-scroll-percentage";
 import SectionTitle from "./section-title";
 import GalleryTile from "../gallery-tile/gallery-tile";
+import getScrolledPercentage from "../../../animations/get-scroll-percentage";
 
 interface SectionParams {
     flyInDelayRemap: number[],
@@ -32,17 +32,28 @@ const GALLERY_PROJECT_SECTION_PARAMS: SectionParams = {
 };
 
 const useFlyInTrigger = (ref: React.RefObject<HTMLDivElement>) => {
-    const scrolled = useScrolledPercentage(ref);
     const [isActive, setIsActive] = useState(false);
     const triggerPoint = 0.2;
 
     useEffect(() => {
-        if (scrolled >= triggerPoint && !isActive) {
-            setIsActive(true)
-        } else if (scrolled < triggerPoint && isActive) {
-            setIsActive(false)
+        const scrollHandler = () => {
+            const scrolled = getScrolledPercentage(ref);
+
+            // setState with same value as old won't trigger update
+            if (scrolled >= triggerPoint) {
+                setIsActive(true)
+            } else if (scrolled < triggerPoint) {
+                setIsActive(false)
+            }
+        };
+
+        scrollHandler();
+
+        document.addEventListener('scroll', scrollHandler);
+        return () => {
+            document.removeEventListener('scroll', scrollHandler);
         }
-    }, [scrolled, isActive]);
+    }, []);
 
     return isActive
 };
@@ -111,6 +122,7 @@ const FrontpageProjectListSection: React.FC<FrontpageProjectListSectionProps> = 
     const classes = useStyles();
     const containerRef = useRef<HTMLDivElement>(null);
     const isFlyInActive = useFlyInTrigger(containerRef);
+    console.log(Date.now());
 
     return (
         <div className={classes.root} ref={containerRef}>

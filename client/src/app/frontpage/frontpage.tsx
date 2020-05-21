@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import Cover from "./cover/cover";
 import Footer from "../../component/footer";
 import { myScrollTo } from "../../tools/myScrollTo";
@@ -14,8 +14,6 @@ import {
     FrontpageWebSection
 } from "./section/frontpage-project-list-section";
 import ParallaxWrapper from "../../animations/parallax-wrapper";
-
-const IS_MOBILE = () => window.innerWidth < 800;
 
 interface ProjectInfo {
     link: string;
@@ -52,13 +50,13 @@ const Frontpage: React.FC<FrontpageProps> = ({allProjectsInfo}) => {
     const galleryRef = React.useRef<HTMLDivElement>(null);
     const academicRef = React.useRef<HTMLDivElement>(null);
     const webRef = React.useRef<HTMLDivElement>(null);
-    const isMobile = useMemo(() => IS_MOBILE(), []);
+    const [screenWidth, setScreenWidth] = useState(window.innerWidth);
 
     const scrollToWorkRef = () => {
         if (webRef.current) myScrollTo(webRef.current.getBoundingClientRect().top + window.scrollY);
     };
-    const reloadOnIsMobileChanged = () => {
-        if (IS_MOBILE() !== isMobile) {
+    const reloadOnScreenWidthChange = () => {
+        if (screenWidth !== window.innerWidth) {
             window.location.reload();
         }
     };
@@ -72,7 +70,7 @@ const Frontpage: React.FC<FrontpageProps> = ({allProjectsInfo}) => {
     }, []);
 
     return (
-        <WithCallBackOnResized callback={reloadOnIsMobileChanged}>
+        <WithCallBackOnResized callback={reloadOnScreenWidthChange}>
             <div className='frontpage-main'>
                 <FrontpageHeader data={mappedDataForProps.header}/>
                 <MobileNavBar data={mappedDataForProps.header}/>
