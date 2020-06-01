@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const helmet = require('helmet');
+const compression = require('compression');
 require('dotenv').config();
 
 const connectToDBs = require('./api/db-connections/connect-to-dbs').connectToDBs;
@@ -24,6 +25,7 @@ if (process.env.PORT) {
     });
 }
 app.use(helmet());
+app.use(compression());
 app.use(express.static(path.join(__dirname, 'client/build')));
 
 app.get('/', (req, res) => {
