@@ -1,4 +1,7 @@
-//stupid IE
+// Polyfills
+import 'react-app-polyfill/ie9';
+import 'react-app-polyfill/ie11';
+import 'react-app-polyfill/stable';
 //import 'babel-polyfill';
 
 import React, { Suspense, lazy } from 'react';
@@ -11,15 +14,9 @@ import ScrollToTop from './component/scrolltotop'
 import Frontpage from './app/frontpage/frontpage';
 
 import mappedDataForProps from "./data";
-// import { Missing404 } from './component/missing404';
 import Gallery from './app/gallery/gallery';
-// import { Contact } from './app/contact/contact';
-// import { AboutPage } from './app/about/aboutPage';
-// import { AcademicProject } from './app/academicProjects';
-// import { WebAppProject } from './app/webAppProjects';
 const AcademicProject = lazy(() => import('./app/academicProjects'));
 const WebAppProject = lazy(() => import('./app/webAppProjects'));
-// const Gallery = lazy(() => import('./app/gallery/gallery'));
 const Contact = lazy(() => import('./app/contact/contact'));
 const AboutPage = lazy(() => import('./app/about/aboutPage'));
 const Missing404 = lazy(() => import('./component/missing404'));
@@ -34,11 +31,7 @@ class App extends React.Component {
         this.webRouters = mappedDataForProps.routers.web.map((webPageData, index) => {
             return <Route key={`${webPageData.link}`} path={`${webPageData.link}`} render={() => <WebAppProject data={webPageData.data} key={index}/> } />
         });
-        // this.albumRouters = mappedDataForProps.routers.web.map((link) => {
-        //     return <Route key={`${link}`} path={`${link}`} render={() => <Gallery /> } />
-        // })
     }
-
 
     render() {
         return (
