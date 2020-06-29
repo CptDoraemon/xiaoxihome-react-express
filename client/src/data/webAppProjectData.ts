@@ -90,17 +90,19 @@ const webAppProjectData: Array<WebAppProject | WebAppProjectCollections> = [
     },
     {
         pageType: PageType.SINGLE,
-        title: 'Masonry Gallery',
-        demoLink: 'http://gallery.xiaoxihome.com',
-        githubLink: 'https://github.com/CptDoraemon/waterfall-gallery',
+        title: 'Data Explorer',
+        demoLink: 'https://zdy-website.herokuapp.com/',
+        githubLink: 'https://github.com/CptDoraemon/zdy-website',
         description:
         `
-            <p>A Pinterest like gallery. </p>
-            <p>It uses AWS S3 storage to store the uploaded photos. </p>
-            <p>It's hosted on a free server and will be connected via unencrypted HTTP, therefore it will be refused to be loaded in this page, and it may take up to half minutes for server to wake up.</p>
-            <p>Please open in new window and wait a moment.</p>
+            <p>Under development! Working on "File Repository" tab at the moment.</p>
+            <p>The website provides a table to allow users to explore the data from a database.</p>
+            <p>Each item in the database is associated with a collections of files (which is represented by a cat picture in the development).</p>
+            <p>The users are able to bundle the desired files to download by applying filters and / or make selections in the table.</p>
+            <p>The aggregated file size is designed to be ~20 GB, therefore the bundles with considerable sizes will be queued for compression, meanwhile the smaller bundles will be available to download immediately.</p>
+            <p>To minimize the cost of the overall application, the server uses AWS S3 as storage, it reads objects from the S3 as stream, use the server as computation unit to compress and write to S3 bucket as stream. The compression tasks are placed in a queue and there will be only one task being processed at a time.</p>
         `,
-        summary: 'A Pinterest like gallery.'
+        summary: 'A data exploring website.'
     },
     {
         pageType: PageType.COLLECTION,
