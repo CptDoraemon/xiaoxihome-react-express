@@ -3,14 +3,32 @@ import FlyInWrapper from "../../../animations/fly-in-wrapper";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {createStyles} from "@material-ui/core";
 
-const GAP = 100;
-const SMALLER_SCREEN = '@media only screen and (max-width: 800px)';
+const GAP = 100; // the gap between slide up animation
+const MD_SCREEN = '@media only screen and (max-width: 1280px)';
+const SM_SCREEN = '@media only screen and (max-width: 800px)';
+const FONT_SIZES = {
+    title: {
+        lg: 72,
+        md: 54,
+        sm: 36
+    },
+    subtitle: {
+        lg: 32,
+        md: 24,
+        sm: 16
+    }
+};
+const FONT_SPACING = 0.35;
+const getFontStyle = (fontSize: number) => ({
+    fontSize,
+    '& span': {
+        marginRight: fontSize * FONT_SPACING,
+        display: 'inline-block'
+    },
+});
 const titleCommons = createStyles({
     titleCommons: {
         width: '60%',
-        display: 'flex',
-        flexDirection: 'row',
-        flexWrap: 'wrap',
     }
 });
 const useStyles = makeStyles({
@@ -32,36 +50,29 @@ const useStyles = makeStyles({
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
         fontWeight: 600,
-        fontSize: '24px',
-        '& span': {
-            marginRight: '8px'
+        ...getFontStyle(FONT_SIZES.subtitle.lg),
+        [MD_SCREEN]: {
+            ...getFontStyle(FONT_SIZES.subtitle.md),
         },
-        [SMALLER_SCREEN]: {
+        [SM_SCREEN]: {
             width: '100%',
-            fontSize: '16px',
-            '& span': {
-                marginRight: '4px'
-            },
-        }
+            ...getFontStyle(FONT_SIZES.subtitle.sm),
+        },
     },
     title: {
         ...titleCommons.titleCommons,
         alignItems: 'center',
         justifyContent: 'flex-start',
         fontWeight: 800,
-        fontSize: '72px',
         lineHeight: 1.25,
-        '& span': {
-            marginRight: '15px'
+        ...getFontStyle(FONT_SIZES.title.lg),
+        [MD_SCREEN]: {
+            ...getFontStyle(FONT_SIZES.title.md),
         },
-        [SMALLER_SCREEN]: {
+        [SM_SCREEN]: {
             width: '100%',
-            lineHeight: 1,
-            fontSize: '36px',
-            '& span': {
-                marginRight: '8px'
-            },
-        }
+            ...getFontStyle(FONT_SIZES.title.sm),
+        },
     }
 });
 
@@ -88,10 +99,8 @@ const CoverTitle: React.FC<CoverTitle> = ({isActive, title, subtitle}) => {
                 {
                     subtitleWords.map((word, i) => {
                         return (
-                            <FlyInWrapper isActive={isActive} direction={'bottom'} delay={i*GAP} key={i}>
-                                <span>
-                                    { word }
-                                </span>
+                            <FlyInWrapper isActive={isActive} direction={'bottom'} delay={i*GAP} key={i} element='span'>
+                                { word }
                             </FlyInWrapper>
                         )
                     })
@@ -101,10 +110,8 @@ const CoverTitle: React.FC<CoverTitle> = ({isActive, title, subtitle}) => {
                 {
                     titleWords.map((word, i) => {
                         return (
-                            <FlyInWrapper isActive={isActive} direction={'bottom'} delay={i*GAP} key={i}>
-                                <span>
-                                    { word }
-                                </span>
+                            <FlyInWrapper isActive={isActive} direction={'bottom'} delay={i*GAP} key={i} element='span'>
+                                { word }
                             </FlyInWrapper>
                         )
                     })
