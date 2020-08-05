@@ -13,8 +13,8 @@ const FONT_SIZES = {
         sm: 36
     },
     subtitle: {
-        lg: 32,
-        md: 24,
+        lg: 24,
+        md: 20,
         sm: 16
     }
 };
