@@ -15,8 +15,6 @@ const getNewsGraphQL = require('./api/news/scheme');
 const searchNews = require('./api/news/search-news/search-news');
 const newsAnalytics = require('./api/news/news-analytics');
 
-
-
 if (process.env.PORT) {
     app.use((req, res, next) => {
         if (req.header('X-Forwarded-Proto') === 'https') {
