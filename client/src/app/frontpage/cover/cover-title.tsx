@@ -13,12 +13,12 @@ const FONT_SIZES = {
         sm: 36
     },
     subtitle: {
-        lg: 32,
-        md: 24,
+        lg: 24,
+        md: 20,
         sm: 16
     }
 };
-const FONT_SPACING = 0.35;
+const FONT_SPACING = 0.3;
 const getFontStyle = (fontSize: number) => ({
     fontSize,
     '& span': {
@@ -71,6 +71,7 @@ const useStyles = makeStyles({
         },
         [SM_SCREEN]: {
             width: '100%',
+            lineHeight: 1,
             ...getFontStyle(FONT_SIZES.title.sm),
         },
     }
