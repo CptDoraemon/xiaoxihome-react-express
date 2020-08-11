@@ -35,24 +35,27 @@ const useFlyInTrigger = (ref: React.RefObject<HTMLDivElement>) => {
     const [isActive, setIsActive] = useState(false);
     const triggerPoint = 0.2;
 
+    const scrollHandler = () => {
+        const scrolled = getScrolledPercentage(ref);
+
+        // setState with same value as old won't trigger update
+        if (scrolled >= triggerPoint) {
+            setIsActive(true)
+        } else if (scrolled < triggerPoint) {
+            setIsActive(false)
+        }
+    };
+
     useEffect(() => {
-        const scrollHandler = () => {
-            const scrolled = getScrolledPercentage(ref);
-
-            // setState with same value as old won't trigger update
-            if (scrolled >= triggerPoint) {
-                setIsActive(true)
-            } else if (scrolled < triggerPoint) {
-                setIsActive(false)
-            }
-        };
-
-        scrollHandler();
-
         document.addEventListener('scroll', scrollHandler);
         return () => {
             document.removeEventListener('scroll', scrollHandler);
         }
+    }, []);
+
+    useEffect(() => {
+        // parallax wrapper needs time to deal with layout
+        setTimeout(() => scrollHandler(), 100);
     }, []);
 
     return isActive

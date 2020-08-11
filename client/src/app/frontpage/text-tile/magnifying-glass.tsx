@@ -58,6 +58,10 @@ const useMagnifyingGlass = (
             document.removeEventListener('scroll', mouseLeaveHandler);
         }
     }, []);
+
+    useEffect(() => {
+        mouseLeaveHandler()
+    }, []);
 };
 
 const size = 80;
