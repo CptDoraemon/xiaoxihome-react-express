@@ -4,6 +4,8 @@ import galleryData, {galleryPreviewData} from "./galleryData";
 import {titleConvertToLink} from "../tools/title-convert-to-link";
 import {ButtonType, DropDownListData, NavBarData} from "../component/header/nav-bar";
 
+const BLOG_LINK = 'https://cptdoraemon.github.io/discussion-board-client/';
+
 enum Sections {
     ACADEMIC = 'ACADEMIC PROJECTS',
     WEB = 'WEB APP PROJECTS',
@@ -92,7 +94,7 @@ const mappedDataForHeaderNFooter: Array<MultiLinkInfo | RouterInfo> = [
     },
     {
         title: HeaderNFooterLists.BLOG,
-        link: 'https://blog.xiaoxihome.com',
+        link: BLOG_LINK,
         isExternal: true
     },
     {
@@ -145,7 +147,7 @@ const mappedDataForHeader: NavBarData = [
     },
     {
         name: HeaderNFooterLists.BLOG,
-        link: 'https://cptdoraemon.github.io/discussion-board-client/',
+        link: BLOG_LINK,
         isExternal: true,
         type: ButtonType.LINK
     },
