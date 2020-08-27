@@ -22,7 +22,7 @@ const SpinLoader: React.FC<SpinLoaderProps> = ({size}) => {
     height: `${size}px`,
     borderRadius: `100%`,
     margin: size * 0.8,
-    border: `${size * 0.2}px solid white`,
+    border: `${size * 0.1}px solid white`,
     borderColor: 'white transparent transparent transparent',
   };
 

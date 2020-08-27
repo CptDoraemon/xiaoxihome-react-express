@@ -80,7 +80,9 @@ class Show extends React.Component<ShowProps, ShowStates> {
                 </div>
                 {
                     this.state.isLoading &&
-                    <SpinLoader size={100} />
+                      <div className='show-loader-wrapper'>
+                          <SpinLoader size={100} />
+                      </div>
                 }
             </div>
         )
