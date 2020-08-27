@@ -1,0 +1,45 @@
+import React from "react";
+import {SpinLoader} from "../../../animations/spin-loader";
+import makeStyles from "@material-ui/core/styles/makeStyles";
+import {createStyles} from "@material-ui/core";
+import useDelayedActive from "./use-delayed-active";
+
+const commonLoaderStyles = (delay: number) => createStyles({
+  loader: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    transition: `opacity ${delay}ms`
+  }
+});
+
+const useStyles = (delay: number) =>
+  (makeStyles({
+    loaderActive: {
+      ...commonLoaderStyles(delay).loader,
+      opacity: 1
+    },
+    loaderInactive: {
+      ...commonLoaderStyles(delay).loader,
+      opacity: 0
+    }
+  }))();
+
+interface CoverLoaderProps {
+  active: boolean,
+  delayOut: number,
+  size: number
+}
+
+const CoverLoader: React.FC<CoverLoaderProps> = ({active, delayOut, size}) => {
+  const classes = useStyles(delayOut);
+  const delayedActive = useDelayedActive(active, 0, delayOut);
+
+  if (delayedActive) {
+    return <div className={active ? classes.loaderActive : classes.loaderInactive}><SpinLoader size={size}/></div>
+  } else {
+    return null
+  }
+};
+
+export default CoverLoader

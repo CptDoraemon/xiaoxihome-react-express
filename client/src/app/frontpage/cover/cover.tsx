@@ -6,6 +6,8 @@ import useIsMobile from "../use-is-mobile";
 import useCoverStyles from "./cover-styles";
 import CoverTitle from "./cover-title";
 import useCoverAnimations from "./use-cover-animations";
+import CoverLoader from "./cover-loader";
+import CoverBackground from "./cover-background";
 
 /**
  * if visited first time, return 1
@@ -34,28 +36,30 @@ function loadImage (src: string) {
     });
 }
 
-const useLoadCoverImage = () => {
+const useLoadCoverImage = (animationDuration: number) => {
     const [isCoverLoaded, setIsCoverLoaded] = useState(false);
-    const [isCoverAnimationBegin, setIsCoverAnimationBegin] = useState(false);
+    const [isLoaderShown, setIsLoaderShown] = useState(true);
+
     const coverImageUrl = useMemo(() => {
         const imageOrder = initImageOrder();
         return window.innerWidth <= 800
             ? `https://xiaoxihome.s3.us-east-2.amazonaws.com/galleryphoto/cover/cover-${imageOrder}-mobile.jpg`
             : `https://xiaoxihome.s3.us-east-2.amazonaws.com/galleryphoto/cover/cover-${imageOrder}-5k.jpg`;
     }, []);
+
     useEffect(() => {
         loadImage(coverImageUrl)
-            .then((image: any) => {
+            .then(() => {
                 setIsCoverLoaded(true);
-                setTimeout(() => setIsCoverAnimationBegin(true), 20)
+                setTimeout(() => setIsLoaderShown(false), animationDuration * 1.5)
             })
             .catch((err) => console.log(err));
     }, []);
 
     return {
         isCoverLoaded,
-        isCoverAnimationBegin,
-        coverImageUrl
+        isLoaderShown,
+        coverImageUrl: isCoverLoaded ? coverImageUrl : ''
     }
 };
 
@@ -79,6 +83,7 @@ interface CoverProps {
 }
 
 const Cover: React.FC<CoverProps> = ({clickToScrollToAnchor}) => {
+    const animationDuration = 1000;
     const classes = useCoverStyles();
     const placeholderRef = useRef<HTMLDivElement>(null);
     const fullHeight = useFullHeight();
@@ -86,16 +91,9 @@ const Cover: React.FC<CoverProps> = ({clickToScrollToAnchor}) => {
     const isProgressBar = useCoverAnimations(placeholderRef, containerID, backgroundImageID, titleID, progressBarID);
     const {
         isCoverLoaded,
-        isCoverAnimationBegin,
+        isLoaderShown,
         coverImageUrl
-    } = useLoadCoverImage();
-
-    const coverImageStyle = isCoverAnimationBegin ? {
-        transform: `scale(1)`,
-        transition: 'transform 1s'
-    } : {
-        transform: 'scale(2)'
-    };
+    } = useLoadCoverImage(animationDuration);
 
     return (
         <div
@@ -105,10 +103,7 @@ const Cover: React.FC<CoverProps> = ({clickToScrollToAnchor}) => {
         >
             <div className={classes.root} id={containerID} style={{height: containerHeight}}>
                 <div className={classes.background} id={backgroundImageID}>
-                    {
-                        isCoverLoaded &&
-                        <img src={coverImageUrl} alt={'cover image'} style={coverImageStyle}/>
-                    }
+                    <CoverBackground srcUrl={coverImageUrl} animationDuration={animationDuration} />
                 </div>
                 <div className={classes.title} id={titleID}>
                     <CoverTitle
@@ -129,10 +124,8 @@ const Cover: React.FC<CoverProps> = ({clickToScrollToAnchor}) => {
 
                     </div>
                 }
-                {
-                    !isCoverLoaded &&
-                    <div className={classes.loader}><SpinLoader size={20}/></div>
-                }
+
+                <CoverLoader active={isLoaderShown} delayOut={300} size={25}/>
             </div>
         </div>
     )
