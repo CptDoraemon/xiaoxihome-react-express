@@ -125,7 +125,7 @@ const Cover: React.FC<CoverProps> = ({clickToScrollToAnchor}) => {
                     </div>
                 }
 
-                <CoverLoader active={isLoaderShown} delayOut={300} size={25}/>
+                <CoverLoader active={isLoaderShown} delayOut={300} size={25} margin={25}/>
             </div>
         </div>
     )

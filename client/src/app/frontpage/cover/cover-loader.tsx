@@ -28,15 +28,16 @@ const useStyles = (delay: number) =>
 interface CoverLoaderProps {
   active: boolean,
   delayOut: number,
-  size: number
+  size: number,
+  margin: number
 }
 
-const CoverLoader: React.FC<CoverLoaderProps> = ({active, delayOut, size}) => {
+const CoverLoader: React.FC<CoverLoaderProps> = ({active, delayOut, size, margin}) => {
   const classes = useStyles(delayOut);
   const delayedActive = useDelayedActive(active, 0, delayOut);
 
   if (delayedActive) {
-    return <div className={active ? classes.loaderActive : classes.loaderInactive}><SpinLoader size={size}/></div>
+    return <div className={active ? classes.loaderActive : classes.loaderInactive}><SpinLoader size={size} margin={margin}/></div>
   } else {
     return null
   }
