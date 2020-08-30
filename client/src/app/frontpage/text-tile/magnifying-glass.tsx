@@ -6,6 +6,8 @@ const useMagnifyingGlass = (
     maskRef: React.RefObject<HTMLElement>,
     contentRef: React.RefObject<HTMLElement>
 ) => {
+    let hasLeft = false;
+
     const isHovering = (x: number, y: number) => {
         if (!containerRef.current) return false;
 
@@ -25,11 +27,14 @@ const useMagnifyingGlass = (
     };
 
     const mouseLeaveHandler = () => {
+        if (hasLeft) return;
         if (!maskRef.current || !contentRef.current) return;
         maskRef.current.style.left = `${-9999}px`;
         maskRef.current.style.top = `${-9999}px`;
         contentRef.current.style.left = `${0}px`;
         contentRef.current.style.top = `${0}px`;
+
+        hasLeft = true;
     };
 
     const mouseMoveHandler = (e: MouseEvent) => {
@@ -45,8 +50,10 @@ const useMagnifyingGlass = (
             contentRef.current.style.left = `${-xOffset}px`;
             contentRef.current.style.top = `${-yOffset}px`;
             contentRef.current.style.transformOrigin = `${xOffset + 0.5 * size}px ${yOffset + 0.5 * size}px`;
+
+            hasLeft = false;
         } else {
-            mouseLeaveHandler()
+            mouseLeaveHandler();
         }
     };
 
