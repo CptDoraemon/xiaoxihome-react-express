@@ -91,16 +91,19 @@ const webAppProjectData: Array<WebAppProject | WebAppProjectCollections> = [
     {
         pageType: PageType.SINGLE,
         title: 'Data Explorer',
-        demoLink: 'https://zdy-website.herokuapp.com/',
-        githubLink: 'https://github.com/CptDoraemon/zdy-website',
+        demoLink: 'https://test.xiaoxihome.com/',
+        githubLink: 'https://github.com/CptDoraemon/zdy-website-2',
         description:
         `
-            <p>Under development! Working on "File Repository" tab at the moment.</p>
-            <p>The website provides a table to allow users to explore the data from a database.</p>
-            <p>Each item in the database is associated with a collections of files (which is represented by a cat picture in the development).</p>
-            <p>The users are able to bundle the desired files to download by applying filters and / or make selections in the table.</p>
-            <p>The aggregated file size is designed to be ~20 GB, therefore the bundles with considerable sizes will be queued for compression, meanwhile the smaller bundles will be available to download immediately.</p>
-            <p>To minimize the cost of the overall application, the server uses AWS S3 as storage, it reads objects from the S3 as stream, use the server as computation unit to compress and write to S3 bucket as stream. The compression tasks are placed in a queue and there will be only one task being processed at a time.</p>
+            <p><b>--> Under development! <--</b> </p>
+            <p>A website built to present research data.</p>
+            <p>The frontend is built with React and MaterialUI, 
+            the charts are built with <a href="https://www.highcharts.com/" target="_blank" rel='noopener noreferrer'>HighCharts</a>.
+            The backend is built with <a href="https://nestjs.com/" target="_blank" rel='noopener noreferrer'>Nest.js</a>, a fully-fledged framework that provides many features right out of the box.
+            </p>
+            <p>The core component of the website is a table which provides filter function. The table is working with a stand-alone redux store to improve code reusability.</p>
+            <p>The website provides a contribution feature as well, the contributed files are validated in server, then compressed and transferred to an object storage service.</p>
+            <p>Unlike many of my projects that take advantage of PaaS products, this website is deployed on an AWS EC2 instance with the help of docker and docker-compose.</p>
         `,
         summary: 'A data exploring website.'
     },
