@@ -103,7 +103,7 @@ const webAppProjectData: Array<WebAppProject | WebAppProjectCollections> = [
             </p>
             <p>The core component of the website is a table which provides filter function. The table is working with a stand-alone redux store to improve code reusability.</p>
             <p>The website provides a contribution feature as well, the contributed files are validated in server, then compressed and transferred to an object storage service.</p>
-            <p>Unlike many of my projects that take advantage of PaaS products, this website is deployed on an AWS EC2 instance with the help of docker and docker-compose.</p>
+            <p>Unlike many of my projects that take advantage of PaaS products, this website is deployed on an AWS EC2 instance with the help of docker and docker-compose. The SSL decryption and resource compression are offloaded to Nginx.</p>
         `,
         summary: 'A data exploring website.'
     },
