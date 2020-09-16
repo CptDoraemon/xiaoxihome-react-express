@@ -1,4 +1,10 @@
 const { createCanvas, loadImage } = require('canvas');
+const cors = require('cors');
+const corsOptions = {
+  origin: ['http://localhost:3000'],
+  maxAge: 31536000,
+  methods: 'POST'
+};
 
 const IMAGE_COUNT = 3;
 
@@ -6,7 +12,7 @@ const getCoverImage = (app) => {
 
   const cachedOriginalImages = getOriginalImages();
 
-  app.get('/api/xiaoxihome/get-cover-image', async (req, res) => {
+  app.get('/api/xiaoxihome/get-cover-image', cors(corsOptions), async (req, res) => {
     try {
       const isReturningViewer = req.query.isReturningViewer === 'true';
       const width = parseInt(req.query.width);
@@ -26,6 +32,9 @@ const getCoverImage = (app) => {
       }
 
       const base64 = toBase64(image, width || image.naturalWidth, height || image.naturalHeight);
+
+      const used = process.memoryUsage().heapUsed / 1024 / 1024;
+      console.log(`The script uses approximately ${Math.round(used * 100) / 100} MB`);
 
       res.json({
         status: 'ok',
@@ -69,7 +78,10 @@ function toBase64(image, width, height) {
       0, 0, width, height);
   }
 
-  return canvas.toDataURL('image/jpeg', 0.7);
+  const base64 = canvas.toDataURL('image/jpeg', 0.7);
+  canvas = null;
+
+  return base64
 }
 
 const getOriginalImages = () => {
