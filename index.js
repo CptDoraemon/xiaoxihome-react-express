@@ -9,6 +9,7 @@ const connectToDBs = require('./api/db-connections/connect-to-dbs').connectToDBs
 const weatherAPI = require('./api/weather').weather;
 const reverseGeoCodingAPI = require('./api/geocoding').reverseGeoCoding;
 const searchCityName = require('./api/search-cityname').searchCityName;
+const xiaoxihomeGetCoverImage = require('./api/xiaoxihome/get-cover-image');
 const xiaoxihomeFeedback = require('./api/xiaoxihome/xiaoxihome-feedback');
 const xiaoxihomeAboutpageData = require('./api/xiaoxihome/aboutpage/xiaoxihome-aboutpage-data');
 const getNewsGraphQL = require('./api/news/scheme');
@@ -30,31 +31,34 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname+'/client/build/index.html'));
 });
 
-(async () => {
-    try {
-        const {
-            cityNameDB,
-            currentNewsCollection,
-            newsCollection
-        } = await connectToDBs();
+xiaoxihomeGetCoverImage(app);
 
-        searchCityName(app, cityNameDB);
-        weatherAPI(app);
-        reverseGeoCodingAPI(app);
-        xiaoxihomeFeedback(app);
-        xiaoxihomeAboutpageData(app);
-        getNewsGraphQL(app, currentNewsCollection);
-        searchNews(app, newsCollection);
-        newsAnalytics(app, newsCollection);
-
-        app.get('*', (req, res) => {
-            res.sendFile(path.join(__dirname+'/client/build/index.html'));
-        });
-
-    } catch (e) {
-        console.log(e)
-    }
-})();
+// (async () => {
+//     try {
+//         const {
+//             cityNameDB,
+//             currentNewsCollection,
+//             newsCollection
+//         } = await connectToDBs();
+//
+//         searchCityName(app, cityNameDB);
+//         weatherAPI(app);
+//         reverseGeoCodingAPI(app);
+//         xiaoxihomeFeedback(app);
+//         xiaoxihomeAboutpageData(app);
+//         xiaoxihomeGetCoverImage(app);
+//         getNewsGraphQL(app, currentNewsCollection);
+//         searchNews(app, newsCollection);
+//         newsAnalytics(app, newsCollection);
+//
+//         app.get('*', (req, res) => {
+//             res.sendFile(path.join(__dirname+'/client/build/index.html'));
+//         });
+//
+//     } catch (e) {
+//         console.log(e)
+//     }
+// })();
 
 
 const port = process.env.PORT || 5000;
