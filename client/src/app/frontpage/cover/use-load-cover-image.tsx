@@ -27,13 +27,12 @@ const useLoadCoverImage = (animationDuration: number, imageContainerRef: RefObje
     if (src !== '') return;
 
     const isReturningViewer = getIsReturningViewer();
-    const isMobile = window.innerWidth <= 800;
     const baseUrl = '/api/xiaoxihome/get-cover-image';
     const url = process.env.REACT_APP_DEBUG === 'true' ?
       `http://localhost:5000${baseUrl}` :
       baseUrl;
 
-    fetch(`${url}?isReturningViewer=${isReturningViewer}&width=${width}&height=${height}&isMobile=${isMobile}`)
+    fetch(`${url}?isReturningViewer=${isReturningViewer}&width=${width}&height=${height}`)
       .then(res => res.json())
       .then(json => {
         if (json.status === 'ok') {
