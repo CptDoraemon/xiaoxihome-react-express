@@ -1,6 +1,4 @@
-const https = require('https');
-const sizeOf = require('image-size');
-const sharp = require('sharp');
+const { createCanvas, loadImage } = require('canvas');
 const cors = require('cors');
 const corsOptions = {
   origin: ['http://localhost:3000'],
@@ -33,12 +31,11 @@ const getCoverImage = (app) => {
         cachedOriginalImages[imageOrder] = image
       }
 
-      const base64 = await toBase64(image, width, height);
-      const prefix = "data:image/jpeg;base64,";
+      const base64 = toBase64(image, width || image.naturalWidth, height || image.naturalHeight);
 
       res.json({
         status: 'ok',
-        data: `${prefix}${base64}`
+        data: base64
       })
     } catch (e) {
       console.log(e);
@@ -50,70 +47,38 @@ const getCoverImage = (app) => {
   });
 };
 
-// return buffer
-function loadImage(url) {
-  return new Promise((resolve, reject) => {
-    https.get(url, (res) => {
-      const data = [];
-
-      res.on('data', (chunk) => {
-        data.push(chunk);
-      });
-
-      res.on('end', () => {
-        resolve(Buffer.concat(data));
-      });
-
-      res.on('error', (e) => {
-        reject(e)
-      })
-    });
-  })
-}
-
 function toBase64(image, width, height) {
-  return new Promise((resolve, reject) => {
-    const imageSize = sizeOf(image);
+  let canvas = createCanvas(width, height);
+  const ctx = canvas.getContext('2d');
+  const sourceWidth = image.naturalWidth;
+  const sourceHeight = image.naturalHeight;
+  const sourceWidthStretched = sourceWidth * height / sourceHeight;
 
-    const sourceWidth = imageSize.width;
-    const sourceHeight = imageSize.height;
-    const targetWidth = width || sourceWidth;
-    const targetHeight = height || sourceHeight;
-    const sourceWidthStretched = sourceWidth * height / sourceHeight;
+  if (sourceWidthStretched >= width) {
+    const offsetXPercentage = (sourceWidthStretched - width) / 2 / sourceWidthStretched;
+    ctx.drawImage(
+      image,
+      offsetXPercentage * sourceWidth,
+      0,
+      sourceWidth - 2 * offsetXPercentage * sourceWidth,
+      sourceHeight,
+      0, 0, width, height);
+  } else {
+    const sourceHeightStretched = sourceHeight * width / sourceWidth;
+    const offsetYPercentage = (sourceHeightStretched - height) / 2 / sourceHeightStretched;
+    ctx.drawImage(
+      image,
+      0,
+      offsetYPercentage * sourceHeight,
+      sourceWidth,
+      sourceHeight - 2 * offsetYPercentage * sourceHeight,
+      0, 0, width, height);
+  }
 
-    let sx = 0;
-    let sy = 0;
-    let sw = 0;
-    let sh = 0;
+  const base64 = canvas.toDataURL('image/jpeg', 0.7);
+  canvas = null;
 
-    if (sourceWidthStretched >= targetWidth) {
-      const offsetXPercentage = (sourceWidthStretched - targetWidth) / 2 / sourceWidthStretched;
-      sx = offsetXPercentage * sourceWidth;
-      sw = sourceWidth - 2 * offsetXPercentage * sourceWidth;
-      sh = sourceHeight;
-    } else {
-      const sourceHeightStretched = sourceHeight * targetWidth / sourceWidth;
-      const offsetYPercentage = (sourceHeightStretched - targetHeight) / 2 / sourceHeightStretched;
-      sy = offsetYPercentage * sourceHeight;
-      sw = sourceWidth;
-      sh = sourceHeight - 2 * offsetYPercentage * sourceHeight;
-    }
-
-    const option = {left: sx, top: sy, width: sw, height: sh};
-    Object.keys(option).forEach(key => option[key] = Math.round(option[key]));
-
-    sharp(image)
-      .extract(option)
-      .resize(targetWidth, targetHeight)
-      .jpeg()
-      // default 80 quality for jpeg
-      .toBuffer((err, buffer) => {
-        if (err) {
-          reject(err);
-        }
-        resolve(buffer.toString('base64'))
-      });
-  });
+  return base64
 }
 
 const getOriginalImages = () => {
