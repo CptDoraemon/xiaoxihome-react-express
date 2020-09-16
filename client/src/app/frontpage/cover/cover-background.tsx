@@ -37,14 +37,6 @@ const CoverBackground: React.FC<CoverBackgroundProps> =
 
   return (
     <>
-      {/*{*/}
-      {/*  !imageLoaded &&*/}
-      {/*    <div className={classes.textWrapper}>*/}
-      {/*      <h1>*/}
-      {/*        XiaoxiHome.com*/}
-      {/*      </h1>*/}
-      {/*    </div>*/}
-      {/*}*/}
       {
         imageLoaded &&
         <img src={srcUrl} alt={'cover image'} style={coverImageStyle}/>

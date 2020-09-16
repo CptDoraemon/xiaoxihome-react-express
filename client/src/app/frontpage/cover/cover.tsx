@@ -8,60 +8,7 @@ import CoverTitle from "./cover-title";
 import useCoverAnimations from "./use-cover-animations";
 import CoverLoader from "./cover-loader";
 import CoverBackground from "./cover-background";
-
-/**
- * if visited first time, return 1
- * else return a number in range [1, 3]
- * used to determine image file name
- */
-function initImageOrder() {
-    const isReturningViewer = window.localStorage.getItem('isReturningViewer') === 'true';
-    let imageOrder;
-    const imageCount = 3;
-    if (isReturningViewer) {
-        imageOrder = (Date.now() % imageCount) + 1;
-    } else {
-        window.localStorage.setItem('isReturningViewer', 'true');
-        imageOrder = 1;
-    }
-    return imageOrder;
-}
-
-function loadImage (src: string) {
-    return new Promise((resolve, reject) => {
-        const image = new Image();
-        image.onload = () => resolve(image);
-        image.onerror = err => reject(err);
-        image.src = src;
-    });
-}
-
-const useLoadCoverImage = (animationDuration: number) => {
-    const [isCoverLoaded, setIsCoverLoaded] = useState(false);
-    const [isLoaderShown, setIsLoaderShown] = useState(true);
-
-    const coverImageUrl = useMemo(() => {
-        const imageOrder = initImageOrder();
-        return window.innerWidth <= 800
-            ? `https://xiaoxihome.s3.us-east-2.amazonaws.com/galleryphoto/cover/cover-${imageOrder}-mobile.jpg`
-            : `https://xiaoxihome.s3.us-east-2.amazonaws.com/galleryphoto/cover/cover-${imageOrder}-5k.jpg`;
-    }, []);
-
-    useEffect(() => {
-        loadImage(coverImageUrl)
-            .then(() => {
-                setIsCoverLoaded(true);
-                setTimeout(() => setIsLoaderShown(false), animationDuration * 1.5)
-            })
-            .catch((err) => console.log(err));
-    }, []);
-
-    return {
-        isCoverLoaded,
-        isLoaderShown,
-        coverImageUrl: isCoverLoaded ? coverImageUrl : ''
-    }
-};
+import useLoadCoverImage from "./use-load-cover-image";
 
 const useFullHeight = () => {
     const [fullHeight, setFullHeight] = useState(0);
@@ -86,14 +33,15 @@ const Cover: React.FC<CoverProps> = ({clickToScrollToAnchor}) => {
     const animationDuration = 1000;
     const classes = useCoverStyles();
     const placeholderRef = useRef<HTMLDivElement>(null);
+    const backgroundContainerRef = useRef<HTMLDivElement>(null);
     const fullHeight = useFullHeight();
     const containerHeight = fullHeight ? `${fullHeight}px` : '100vh';
     const isProgressBar = useCoverAnimations(placeholderRef, containerID, backgroundImageID, titleID, progressBarID);
     const {
-        isCoverLoaded,
+        src,
         isLoaderShown,
-        coverImageUrl
-    } = useLoadCoverImage(animationDuration);
+    } = useLoadCoverImage(animationDuration, backgroundContainerRef);
+    const isCoverLoaded = src !== '';
 
     return (
         <div
@@ -102,8 +50,8 @@ const Cover: React.FC<CoverProps> = ({clickToScrollToAnchor}) => {
             style={{height: containerHeight}}
         >
             <div className={classes.root} id={containerID} style={{height: containerHeight}}>
-                <div className={classes.background} id={backgroundImageID}>
-                    <CoverBackground srcUrl={coverImageUrl} animationDuration={animationDuration} />
+                <div className={classes.background} id={backgroundImageID} ref={backgroundContainerRef}>
+                    <CoverBackground srcUrl={src} animationDuration={animationDuration} />
                 </div>
                 <div className={classes.title} id={titleID}>
                     <CoverTitle
