@@ -1,7 +1,4 @@
 import {useEffect, useMemo, useState, RefObject} from "react";
-import Pica from 'pica'
-
-const pica = new Pica();
 
 /**
  * if visited first time, return 1
