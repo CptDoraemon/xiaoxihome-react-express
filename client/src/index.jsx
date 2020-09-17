@@ -5,6 +5,7 @@ import 'react-app-polyfill/stable';
 //import 'babel-polyfill';
 
 import React, { Suspense, lazy } from 'react';
+import ReactDOMServer from 'react-dom/server';
 import ReactDOM from 'react-dom';
 import './index.css';
 import './flexbox.css';
@@ -37,7 +38,7 @@ class App extends React.Component {
         return (
             <Router>
                 <ScrollToTop>
-                    <Suspense fallback={<div> </div>} >
+                    {/*<Suspense fallback={<div> </div>} >*/}
                         <Switch>
                             <Route path="/" exact render={(props) => <Frontpage allProjectsInfo={mappedDataForProps.frontpage}/>} />
                             <Route path="/home" exact render={(props) => <Frontpage allProjectsInfo={mappedDataForProps.frontpage}/>} />
@@ -51,12 +52,13 @@ class App extends React.Component {
 
                             <Route render={ () => <Missing404/> } />
                         </Switch>
-                    </Suspense>
+                    {/*</Suspense>*/}
                 </ScrollToTop>
             </Router>
         )
     }
 }
 
+console.log(ReactDOMServer.renderToString(<App />));
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.hydrate(<App />, document.getElementById('root'));
