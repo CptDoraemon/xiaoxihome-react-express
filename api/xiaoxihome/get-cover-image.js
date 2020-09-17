@@ -1,4 +1,6 @@
-const { createCanvas, loadImage } = require('canvas');
+const { createCanvas, Image } = require('canvas');
+// loadImage has memory leak somehow in canvas library
+const https = require('https');
 const cors = require('cors');
 const corsOptions = {
   origin: ['http://localhost:3000'],
@@ -13,7 +15,7 @@ const getCoverImage = (app) => {
   const cachedOriginalImages = getOriginalImages();
 
   app.get('/api/xiaoxihome/get-cover-image', cors(corsOptions), async (req, res) => {
-    logMemoryUsage();
+    // logMemoryUsage();
     try {
       const isReturningViewer = req.query.isReturningViewer === 'true';
       const width = parseInt(req.query.width);
@@ -23,17 +25,22 @@ const getCoverImage = (app) => {
 
       // use cache if image is already cached
       // otherwise request image and set cache
-      let image;
+      let buffer;
       if (cachedOriginalImages[imageOrder]) {
-        image = cachedOriginalImages[imageOrder]
+        buffer = cachedOriginalImages[imageOrder]
       } else {
         const url = getImageUrl(imageOrder);
-        image = await loadImage(url);
-        cachedOriginalImages[imageOrder] = image
+        buffer = await loadImage(url);
+        cachedOriginalImages[imageOrder] = buffer
       }
 
+      // image.src is sync in canvas library
+      let image = new Image();
+      image.src = buffer;
       const base64 = toBase64(image, width || image.naturalWidth, height || image.naturalHeight);
-      logMemoryUsage();
+      image.src = '';
+
+      // logMemoryUsage();
       res.json({
         status: 'ok',
         data: base64
@@ -76,10 +83,7 @@ function toBase64(image, width, height) {
       0, 0, width, height);
   }
 
-  const base64 = canvas.toDataURL('image/jpeg', 0.7);
-  canvas = null;
-
-  return base64
+  return  canvas.toDataURL('image/jpeg', 0.7);
 }
 
 const getOriginalImages = () => {
@@ -121,6 +125,26 @@ function logMemoryUsage() {
   const obj = process.memoryUsage();
   Object.keys(obj).forEach(key => obj[key] = obj[key] / 1024 / 1024);
   console.log(obj)
+}
+
+function loadImage(url) {
+  return new Promise((resolve, reject) => {
+    https.get(url, (res) => {
+      const data = [];
+
+      res.on('data', (chunk) => {
+        data.push(chunk);
+      });
+
+      res.on('end', () => {
+        resolve(Buffer.concat(data));
+      });
+
+      res.on('error', (e) => {
+        reject(e)
+      })
+    });
+  })
 }
 
 module.exports = getCoverImage;
