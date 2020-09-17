@@ -9,7 +9,6 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import './flexbox.css';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import WebFont from'webfontloader';
 
 import ScrollToTop from './component/scrolltotop'
 import Frontpage from './app/frontpage/frontpage';
@@ -32,24 +31,6 @@ class App extends React.Component {
         this.webRouters = mappedDataForProps.routers.web.map((webPageData, index) => {
             return <Route key={`${webPageData.link}`} path={`${webPageData.link}`} render={() => <WebAppProject data={webPageData.data} key={index}/> } />
         });
-    }
-
-    componentDidMount() {
-        const config = {
-            google: {
-                families: [
-                    'Roboto:300,400,500,700',
-                    'Open Sans:400,600,800',
-                    'Sigmar One',
-                ]
-            }
-        };
-
-        import('webfontloader')
-          .then(module => {
-              module.default.load(config)
-          })
-          .catch();
     }
 
     render() {
