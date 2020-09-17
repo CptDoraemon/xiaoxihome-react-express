@@ -1,4 +1,4 @@
-const { createCanvas, Image } = require('canvas');
+const { createCanvas, loadImage } = require('canvas');
 // loadImage has memory leak somehow in canvas library
 const https = require('https');
 const cors = require('cors');
@@ -25,20 +25,16 @@ const getCoverImage = (app) => {
 
       // use cache if image is already cached
       // otherwise request image and set cache
-      let buffer;
+      let image;
       if (cachedOriginalImages[imageOrder]) {
-        buffer = cachedOriginalImages[imageOrder]
+        image = cachedOriginalImages[imageOrder]
       } else {
         const url = getImageUrl(imageOrder);
-        buffer = await loadImage(url);
-        cachedOriginalImages[imageOrder] = buffer
+        image = await loadImage(url);
+        cachedOriginalImages[imageOrder] = image
       }
 
-      // image.src is sync in canvas library
-      let image = new Image();
-      image.src = buffer;
       const base64 = toBase64(image, width || image.naturalWidth, height || image.naturalHeight);
-      image.src = '';
 
       // logMemoryUsage();
       res.json({
@@ -127,7 +123,7 @@ function logMemoryUsage() {
   console.log(obj)
 }
 
-function loadImage(url) {
+function _loadImage(url) {
   return new Promise((resolve, reject) => {
     https.get(url, (res) => {
       const data = [];
