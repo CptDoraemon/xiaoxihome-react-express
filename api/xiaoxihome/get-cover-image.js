@@ -13,6 +13,7 @@ const getCoverImage = (app) => {
   const cachedOriginalImages = getOriginalImages();
 
   app.get('/api/xiaoxihome/get-cover-image', cors(corsOptions), async (req, res) => {
+    logMemoryUsage();
     try {
       const isReturningViewer = req.query.isReturningViewer === 'true';
       const width = parseInt(req.query.width);
@@ -32,7 +33,7 @@ const getCoverImage = (app) => {
       }
 
       const base64 = toBase64(image, width || image.naturalWidth, height || image.naturalHeight);
-
+      logMemoryUsage();
       res.json({
         status: 'ok',
         data: base64
@@ -114,6 +115,12 @@ function initImageOrder(isReturningViewer) {
 
 function getImageUrl(imageIndex) {
   return `https://xiaoxihome.s3.us-east-2.amazonaws.com/galleryphoto/cover/cover-${imageIndex + 1}-original.jpg`
+}
+
+function logMemoryUsage() {
+  const obj = process.memoryUsage();
+  Object.keys(obj).forEach(key => obj[key] = obj[key] / 1024 / 1024);
+  console.log(obj)
 }
 
 module.exports = getCoverImage;
