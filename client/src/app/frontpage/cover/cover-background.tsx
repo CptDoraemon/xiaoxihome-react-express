@@ -23,7 +23,7 @@ const divideScreen = (width: number, height: number): ScreenTile[] => {
   const shorter = Math.min(width, height);
   let count = minTilesInRow;
   while (count < maxTilesInRow) {
-    if (shorter / count < minSize) {
+    if (shorter / (count + 1) < minSize) {
       break
     }
     count++
