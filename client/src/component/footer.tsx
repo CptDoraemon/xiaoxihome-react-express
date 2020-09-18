@@ -33,6 +33,7 @@ interface FooterState {
 class Footer extends React.Component<FooterProps, FooterState> {
 
     allLinks: Array<MultiLinkInfo | LinkInfo> = mappedDataForProps.footer;
+    thisYear = new Date().getFullYear();
 
     constructor(props: FooterProps){
         super(props);
@@ -97,7 +98,7 @@ class Footer extends React.Component<FooterProps, FooterState> {
                     </ul>
                 </nav>
                 <div className='copyright'>
-                    <p>&copy; Xiaoxi 2018-2020</p>
+                    <p>&copy;{` XiaoxiHome 2018-${this.thisYear}`}</p>
                 </div>
             </footer>
         )
