@@ -12,7 +12,7 @@ function getIsReturningViewer() {
 const useLoadCoverImage = (animationDuration: number, imageContainerRef: RefObject<HTMLDivElement>) => {
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
-  const [src, setSrc] = useState('');
+  const [image, setImage] = useState<HTMLImageElement | null>(null);
   const [isLoaderShown, setIsLoaderShown] = useState(true);
 
   useEffect(() => {
@@ -24,7 +24,7 @@ const useLoadCoverImage = (animationDuration: number, imageContainerRef: RefObje
 
   useEffect(() => {
     if (!width || !height) return;
-    if (src !== '') return;
+    if (image) return;
 
     const isReturningViewer = getIsReturningViewer();
     const baseUrl = '/api/xiaoxihome/get-cover-image';
@@ -36,16 +36,21 @@ const useLoadCoverImage = (animationDuration: number, imageContainerRef: RefObje
       .then(res => res.json())
       .then(json => {
         if (json.status === 'ok') {
-          setSrc(json.data);
+          const src = json.data;
+          const image = new Image();
+          image.src = src;
+          image.onload = () => {
+            setImage(image);
+          };
           setTimeout(() => setIsLoaderShown(false), animationDuration * 1.5);
         }
       })
       .catch(e => console.log(e))
 
-  }, [width, height, src]);
+  }, [width, height, image]);
 
   return {
-    src,
+    image,
     isLoaderShown,
   }
 };

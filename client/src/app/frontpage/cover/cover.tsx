@@ -9,6 +9,7 @@ import useCoverAnimations from "./use-cover-animations";
 import CoverLoader from "./cover-loader";
 import CoverBackground from "./cover-background";
 import useLoadCoverImage from "./use-load-cover-image";
+import useDelayedActive from "./use-delayed-active";
 
 const useFullHeight = () => {
     const [fullHeight, setFullHeight] = useState(0);
@@ -38,10 +39,11 @@ const Cover: React.FC<CoverProps> = ({clickToScrollToAnchor}) => {
     const containerHeight = fullHeight ? `${fullHeight}px` : '100vh';
     const isProgressBar = useCoverAnimations(placeholderRef, containerID, backgroundImageID, titleID, progressBarID);
     const {
-        src,
+        image,
         isLoaderShown,
     } = useLoadCoverImage(animationDuration, backgroundContainerRef);
-    const isCoverLoaded = src !== '';
+    const isCoverLoaded = image !== null;
+    const isTitleActive = useDelayedActive(isCoverLoaded, 1000, 0).delayedActiveIn;
 
     return (
         <div
@@ -51,13 +53,13 @@ const Cover: React.FC<CoverProps> = ({clickToScrollToAnchor}) => {
         >
             <div className={classes.root} id={containerID} style={{height: containerHeight}}>
                 <div className={classes.background} id={backgroundImageID} ref={backgroundContainerRef}>
-                    <CoverBackground srcUrl={src} animationDuration={animationDuration} />
+                    <CoverBackground image={image} animationDuration={animationDuration} />
                 </div>
                 <div className={classes.title} id={titleID}>
                     <CoverTitle
                         subtitle={`Hi there, I'm Xiaoxi Yu.`}
                         title={`Welcome to my home, I store my works here.`}
-                        isActive={isCoverLoaded}
+                        isActive={isTitleActive}
                     />
                 </div>
                 <div className={isProgressBar || !isCoverLoaded ? classes.toolbarInactive : classes.toolbarActive}>
