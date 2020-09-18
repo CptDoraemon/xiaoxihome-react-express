@@ -10,6 +10,9 @@ interface ScreenTile {
 }
 
 const divideScreen = (width: number, height: number): ScreenTile[] => {
+  // divide the screen into square tiles
+  // the size of tiles are determined by the shorter edge of the screen
+  // while the number of tiles in a row at the shorter edge is bounded by min and max, I want the number of the tiles is as large as possible, but the size not smaller than 200.
   const tiles = [];
   const minTilesInRow = 2;
   const maxTilesInRow = 4;
@@ -22,20 +25,25 @@ const divideScreen = (width: number, height: number): ScreenTile[] => {
   if (count === maxTilesInRow + 1) count--;
   const tileSize = Math.floor(shorter / count);
 
+  // there might be residuals after the screen is divided into square tiles
+  // pad those residuals into the edge tiles
+  // make sure everything is an integer so that there won't be gaps in canvas
   const xResidual = width % tileSize;
   const yResidual = height % tileSize;
-  const xEdgeAdd = Math.floor(xResidual / 2);
-  const yEdgeAdd = Math.floor(yResidual / 2);
+  const xPaddingFirst = Math.floor(xResidual / 2);
+  const yPaddingFirst = Math.floor(yResidual / 2);
+  const xPaddingLast = xResidual - xPaddingFirst;
+  const yPaddingLast = yResidual - yPaddingFirst;
   const countX = Math.floor(width / tileSize);
   const countY = Math.floor(height / tileSize);
 
   for (let y=0; y<countY; y++) {
     for (let x=0; x<countX; x++) {
       tiles.push({
-        x: x === 0 ? 0 : x * tileSize + xEdgeAdd,
-        y: y === 0 ? 0 : y * tileSize + yEdgeAdd,
-        width: x === 0 || x === countX - 1 ? tileSize + xEdgeAdd : tileSize,
-        height: y === 0 || y === countY - 1 ? tileSize + yEdgeAdd : tileSize,
+        x: x === 0 ? 0 : x * tileSize + xPaddingFirst,
+        y: y === 0 ? 0 : y * tileSize + yPaddingFirst,
+        width: x === 0 ? tileSize + xPaddingFirst : x === countX - 1 ? tileSize + xPaddingLast : tileSize,
+        height: y === 0 ? tileSize + yPaddingFirst : y === countY - 1 ? tileSize + yPaddingLast : tileSize,
       })
     }
   }
