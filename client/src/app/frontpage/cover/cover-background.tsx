@@ -40,7 +40,6 @@ const divideScreen = (width: number, height: number): ScreenTile[] => {
     }
   }
 
-  console.log(tiles);
   return tiles
 };
 
