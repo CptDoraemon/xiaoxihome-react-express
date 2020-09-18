@@ -12,7 +12,7 @@ interface ScreenTile {
 const divideScreen = (width: number, height: number): ScreenTile[] => {
   // divide the screen into square tiles
   // the size of tiles are determined by the shorter edge of the screen
-  // while the number of tiles in a row at the shorter edge is bounded by min and max, I want the number of the tiles is as large as possible, but the size not smaller than 200.
+  // while the number of tiles in a row at the shorter edge is bounded by min and max, I want the number of the tiles to be as large as possible, but the size not smaller than 200.
   const tiles = [];
   const minTilesInRow = 2;
   const maxTilesInRow = 4;
