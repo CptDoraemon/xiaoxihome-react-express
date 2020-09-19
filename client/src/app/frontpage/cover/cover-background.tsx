@@ -115,13 +115,15 @@ const useStyles = makeStyles({
 
 interface CoverBackgroundProps {
   image: HTMLImageElement | null,
-  animationDuration: number
+  maxDelay: number,
+  duration: number
 }
 
 const CoverBackground: React.FC<CoverBackgroundProps> =
   ({
-     image,
-     animationDuration
+    image,
+    maxDelay,
+    duration
   }) => {
   const classes = useStyles();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -134,7 +136,7 @@ const CoverBackground: React.FC<CoverBackgroundProps> =
     const width = rect.width;
     const height = rect.height;
     const tiles = divideScreen(width, height);
-    const animationGap = animationDuration / (tiles[tiles.length - 1].xIndex + tiles[tiles.length - 1].yIndex);
+    const animationGap = maxDelay / (tiles[tiles.length - 1].xIndex + tiles[tiles.length - 1].yIndex);
 
     return tiles.map((obj, i) => (
       <CoverBackgroundTile
@@ -142,10 +144,12 @@ const CoverBackground: React.FC<CoverBackgroundProps> =
         preloadImage={preloadImage}
         key={i}
         delay={(obj.xIndex + obj.yIndex + 1) * animationGap}
+        animationDuration={duration}
         x={obj.x}
         y={obj.y}
         width={obj.width}
-        height={obj.height}/>
+        height={obj.height}
+      />
     ));
   }, [image, preloadImage]);
 

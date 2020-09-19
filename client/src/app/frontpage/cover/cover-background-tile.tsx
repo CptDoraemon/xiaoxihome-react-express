@@ -11,7 +11,6 @@ const drawImageOnCanvas = (canvas: HTMLCanvasElement, width: number, height: num
 
 const useStyles = makeStyles({
   root: {
-    transition: 'transform 1.5s',
     transformStyle: 'preserve-3d',
     backfaceVisibility: 'visible',
     position: 'absolute'
@@ -46,7 +45,8 @@ interface CoverBackgroundTileProps {
   x: number,
   y: number,
   width: number,
-  height: number
+  height: number,
+  animationDuration: number
 }
 
 const CoverBackgroundTile: React.FC<CoverBackgroundTileProps> =
@@ -57,7 +57,8 @@ const CoverBackgroundTile: React.FC<CoverBackgroundTileProps> =
     x,
     y,
     width,
-    height
+    height,
+     animationDuration
    }) => {
     const classes = useStyles();
     const [active, setActive] = useState(false);
@@ -94,7 +95,8 @@ const CoverBackgroundTile: React.FC<CoverBackgroundTileProps> =
           top: y,
           left: x,
           width,
-          height
+          height,
+          transition: `transform ${animationDuration}ms`,
         }}
       >
         <div className={classes.wrapper} style={{width, height}}>

@@ -9,7 +9,7 @@ function getIsReturningViewer() {
   return isReturningViewer;
 }
 
-const useLoadCoverImage = (animationDuration: number, imageContainerRef: RefObject<HTMLDivElement>) => {
+const useLoadCoverImage = (loaderDelayOut: number, imageContainerRef: RefObject<HTMLDivElement>) => {
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
   const [image, setImage] = useState<HTMLImageElement | null>(null);
@@ -42,7 +42,7 @@ const useLoadCoverImage = (animationDuration: number, imageContainerRef: RefObje
           image.onload = () => {
             setImage(image);
           };
-          setTimeout(() => setIsLoaderShown(false), animationDuration * 1.5);
+          setTimeout(() => setIsLoaderShown(false), loaderDelayOut);
         }
       })
       .catch(e => console.log(e))

@@ -3,7 +3,6 @@ import FlyInWrapper from "../../../animations/fly-in-wrapper";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {createStyles} from "@material-ui/core";
 
-const GAP = 100; // the gap between slide up animation
 const MD_SCREEN = '@media only screen and (max-width: 1280px)';
 const SM_SCREEN = '@media only screen and (max-width: 800px)';
 const FONT_SIZES = {
@@ -80,19 +79,25 @@ const useStyles = makeStyles({
 interface CoverTitle {
     isActive: boolean,
     title: string,
-    subtitle: string
+    subtitle: string,
+    maxDuration: number
 }
 
-const CoverTitle: React.FC<CoverTitle> = ({isActive, title, subtitle}) => {
+const CoverTitle: React.FC<CoverTitle> = ({isActive, title, subtitle, maxDuration}) => {
     const classes = useStyles();
     const {
         titleWords,
         subtitleWords,
+        wordsCount
     } = useMemo(() => {
         const titleWords = title.split(' ');
         const subtitleWords = subtitle.split(' ');
-        return {titleWords, subtitleWords}
+        const wordsCount = titleWords.length + subtitleWords.length;
+        return {titleWords, subtitleWords, wordsCount}
     }, [title, subtitle]);
+
+    const animationDuration = maxDuration / 2;
+    const animationGap = maxDuration / 2 / wordsCount;
 
     return (
         <div className={classes.root}>
@@ -100,7 +105,7 @@ const CoverTitle: React.FC<CoverTitle> = ({isActive, title, subtitle}) => {
                 {
                     subtitleWords.map((word, i) => {
                         return (
-                            <FlyInWrapper isActive={isActive} direction={'bottom'} delay={i*GAP} key={i} element='span'>
+                            <FlyInWrapper isActive={isActive} direction={'bottom'} delay={i*animationGap} key={i} element='span' duration={animationDuration}>
                                 { word }
                             </FlyInWrapper>
                         )
@@ -111,7 +116,7 @@ const CoverTitle: React.FC<CoverTitle> = ({isActive, title, subtitle}) => {
                 {
                     titleWords.map((word, i) => {
                         return (
-                            <FlyInWrapper isActive={isActive} direction={'bottom'} delay={i*GAP} key={i} element='span'>
+                            <FlyInWrapper isActive={isActive} direction={'bottom'} delay={i*animationGap} key={i} element='span'>
                                 { word }
                             </FlyInWrapper>
                         )

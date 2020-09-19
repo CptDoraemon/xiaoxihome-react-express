@@ -34,7 +34,8 @@ interface FlyInWrapperProps {
     direction: 'top' | 'right' | 'bottom' | 'left',
     offset?: string,
     className?: string,
-    element?: string
+    element?: string,
+    duration?: number
 }
 
 /**
@@ -42,12 +43,13 @@ interface FlyInWrapperProps {
  * @param delay {number} Unit is ms
  * @param className {string} Will be applied to root element if provided
  */
-const FlyInWrapper: React.FC<FlyInWrapperProps> = ({children, isActive, direction, delay = 0, offset, className, element}) => {
+const FlyInWrapper: React.FC<FlyInWrapperProps> = ({children, isActive, direction, delay = 0, offset, className, element, duration}) => {
     const classes = useStyles();
     /**
      * a little delay between isActive and internal isActiveStyle make sure there will still be animation if isActive is set to be true from the beginning
      */
     const isActiveStyle = useDelayedActive(isActive);
+    const _duration = duration || 1000;
 
     const {
         inactiveStyle,
@@ -63,12 +65,12 @@ const FlyInWrapper: React.FC<FlyInWrapperProps> = ({children, isActive, directio
         const inactiveStyle = {
             opacity: 0,
             transform: TRANSLATES[direction],
-            transition: `transform ${1000}ms, opacity ${1000}ms`
+            transition: `transform ${_duration}ms, opacity ${_duration}ms`
         };
         const activeStyle = {
             opacity: 1,
             transform: 'translate(0, 0)',
-            transition: `transform ${1000}ms ${delay}ms, opacity ${1000}ms ${delay}ms`
+            transition: `transform ${_duration}ms ${delay}ms, opacity ${_duration}ms ${delay}ms`
         };
 
         return {

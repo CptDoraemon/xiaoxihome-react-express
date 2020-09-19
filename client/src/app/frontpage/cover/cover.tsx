@@ -27,11 +27,17 @@ const titleID = 'cover-title';
 const progressBarID = 'cover-progressbar';
 
 interface CoverProps {
-    clickToScrollToAnchor: () => void
+    clickToScrollToAnchor: () => void,
+    setCoverAnimationDone: () => void
 }
 
-const Cover: React.FC<CoverProps> = ({clickToScrollToAnchor}) => {
-    const animationDuration = 1000;
+const animation = {
+    maxDelay: 1000,
+    duration: 1500,
+    total: 2500
+};
+
+const Cover: React.FC<CoverProps> = ({clickToScrollToAnchor, setCoverAnimationDone}) => {
     const classes = useCoverStyles();
     const placeholderRef = useRef<HTMLDivElement>(null);
     const backgroundContainerRef = useRef<HTMLDivElement>(null);
@@ -41,9 +47,16 @@ const Cover: React.FC<CoverProps> = ({clickToScrollToAnchor}) => {
     const {
         image,
         isLoaderShown,
-    } = useLoadCoverImage(animationDuration, backgroundContainerRef);
-    const isCoverLoaded = image !== null;
-    const isTitleActive = useDelayedActive(isCoverLoaded, animationDuration, 0).delayedActiveIn;
+    } = useLoadCoverImage(animation.total, backgroundContainerRef);
+    const isImageLoaded = image !== null;
+    const isTitleActive = useDelayedActive(isImageLoaded, animation.maxDelay, 0).delayedActiveIn;
+    const isScrollDownActive = useDelayedActive(isImageLoaded, animation.total, 0).delayedActiveIn;
+
+    useEffect(() => {
+        if (image) {
+            setTimeout(setCoverAnimationDone, animation.total)
+        }
+    }, [image]);
 
     return (
         <div
@@ -53,16 +66,17 @@ const Cover: React.FC<CoverProps> = ({clickToScrollToAnchor}) => {
         >
             <div className={classes.root} id={containerID} style={{height: containerHeight}}>
                 <div className={classes.background} id={backgroundImageID} ref={backgroundContainerRef}>
-                    <CoverBackground image={image} animationDuration={animationDuration}/>
+                    <CoverBackground image={image} maxDelay={animation.maxDelay} duration={animation.duration}/>
                 </div>
                 <div className={classes.title} id={titleID}>
                     <CoverTitle
                         subtitle={`Hi there, I'm Xiaoxi Yu.`}
                         title={`Welcome to my home, I store my works here.`}
                         isActive={isTitleActive}
+                        maxDuration={animation.duration}
                     />
                 </div>
-                <div className={isProgressBar || !isCoverLoaded ? classes.toolbarInactive : classes.toolbarActive}>
+                <div className={isProgressBar || !isScrollDownActive ? classes.toolbarInactive : classes.toolbarActive}>
                     <div className={classes.mouseIcon}>
                         <MouseIcon onClickMouseIcon={clickToScrollToAnchor}/>
                     </div>
