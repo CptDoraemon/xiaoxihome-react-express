@@ -29,7 +29,7 @@ const useLoadCoverImage = (loaderDelayOut: number, imageContainerRef: RefObject<
     const isReturningViewer = getIsReturningViewer();
     const baseUrl = '/api/xiaoxihome/get-cover-image';
     const url = process.env.REACT_APP_DEBUG === 'true' ?
-      `http://localhost:5000${baseUrl}` :
+      `http://192.168.0.156:5000${baseUrl}` :
       baseUrl;
 
     fetch(`${url}?isReturningViewer=${isReturningViewer}&width=${width}&height=${height}`)

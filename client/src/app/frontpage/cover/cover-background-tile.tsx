@@ -2,6 +2,12 @@ import React, {useEffect, useRef, useState} from "react";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import clsx from 'clsx';
 
+// in order to make flip box to work properly in Firefox, in both desktop AND mobile
+// 1. the element that flips has to be the direct parent of .front and .back, i.e. .wrapper
+// 2. .front does not rotate at the beginning while .back 'rotateX(180deg)'
+// 3. backfaceVisibility: 'hidden' on both .front and .back
+// 4. right order of DOM element (.back is actually on TOP of .front), this one is important for Android Firefox.
+
 const drawImageOnCanvas = (canvas: HTMLCanvasElement, width: number, height: number, x: number, y: number, image: HTMLImageElement) => {
   canvas.width = width;
   canvas.height = height;
@@ -22,11 +28,11 @@ const useStyles = makeStyles({
     transform: 'rotateX(180deg)'
   },
   front: {
-    transform: 'rotateX(180deg)',
     position: 'absolute',
     backfaceVisibility: 'hidden',
   },
   back: {
+    transform: 'rotateX(180deg)',
     position: 'absolute',
     backfaceVisibility: 'hidden',
   }
@@ -69,15 +75,15 @@ const CoverBackgroundTile: React.FC<CoverBackgroundTileProps> =
 
     useEffect(() => {
       setTimeout(() => {
-        if(!frontRef || !frontRef.current || !image) return;
-        drawImageOnCanvas(frontRef.current, width, height, x, y, image)
+        if(!backRef || !backRef.current || !image) return;
+        drawImageOnCanvas(backRef.current, width, height, x, y, image)
       })
     }, [image]);
 
     useEffect(() => {
       setTimeout(() => {
-        if(!backRef || !backRef.current || !preloadImage) return;
-        drawImageOnCanvas(backRef.current, width, height, x, y, preloadImage)
+        if(!frontRef || !frontRef.current || !preloadImage) return;
+        drawImageOnCanvas(frontRef.current, width, height, x, y, preloadImage)
       })
     }, [preloadImage]);
 
