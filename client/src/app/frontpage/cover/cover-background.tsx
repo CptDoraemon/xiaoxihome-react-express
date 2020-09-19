@@ -1,4 +1,4 @@
-import React, {useMemo, useRef} from "react";
+import React, {useEffect, useMemo, useRef, useState} from "react";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import CoverBackgroundTile from "./cover-background-tile";
 
@@ -6,7 +6,9 @@ interface ScreenTile {
   x: number,
   y: number,
   width: number,
-  height: number
+  height: number,
+  xIndex: number,
+  yIndex: number
 }
 
 const divideScreen = (width: number, height: number): ScreenTile[] => {
@@ -49,11 +51,57 @@ const divideScreen = (width: number, height: number): ScreenTile[] => {
         y: y === 0 ? 0 : y * tileSize + yPaddingFirst,
         width: x === 0 ? tileSize + xPaddingFirst : x === countX - 1 ? tileSize + xPaddingLast : tileSize,
         height: y === 0 ? tileSize + yPaddingFirst : y === countY - 1 ? tileSize + yPaddingLast : tileSize,
+        xIndex: x,
+        yIndex: y
       })
     }
   }
 
   return tiles
+};
+
+const useGetPreloadImage = (ref: React.RefObject<HTMLDivElement>) => {
+  const [image, setImage] = useState<HTMLImageElement | null>(null);
+
+  useEffect(() => {
+    if(!ref || !ref.current) return;
+    const canvas = document.createElement('canvas');
+    const rect = ref.current.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const grd = ctx.createLinearGradient(0, 0, 0, height);
+    grd.addColorStop(0, "#0F2027");
+    grd.addColorStop(0.5, "#203A43");
+    grd.addColorStop(1, "#2C5364");
+
+    ctx.fillStyle = grd;
+    ctx.rect(0, 0, width, height);
+    ctx.fill();
+
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = "white";
+    ctx.font = `800 ${Math.floor(Math.min(width, height) / 10)}px -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif`;
+    ctx.fillText('XIAOXIHOME', width / 2, height / 2);
+
+    canvas.toBlob((blob) => {
+      const url = URL.createObjectURL(blob);
+      const image = new Image();
+      image.src = url;
+      image.onload = (() => {
+        setImage(image);
+        URL.revokeObjectURL(url)
+      });
+      canvas.parentNode?.removeChild(canvas)
+    });
+  }, []);
+
+  return image
 };
 
 const useStyles = makeStyles({
@@ -66,7 +114,7 @@ const useStyles = makeStyles({
 });
 
 interface CoverBackgroundProps {
-  image: HTMLImageElement | null
+  image: HTMLImageElement | null,
   animationDuration: number
 }
 
@@ -77,34 +125,33 @@ const CoverBackground: React.FC<CoverBackgroundProps> =
   }) => {
   const classes = useStyles();
   const containerRef = useRef<HTMLDivElement>(null);
-  const imageLoaded = image !== null;
-
+  const preloadImage = useGetPreloadImage(containerRef);
 
   const imageTiles = useMemo(() => {
-    if (!containerRef || !containerRef.current || image === null) return [];
+    if (!containerRef || !containerRef.current) return [];
 
     const rect = containerRef.current.getBoundingClientRect();
     const width = rect.width;
     const height = rect.height;
     const tiles = divideScreen(width, height);
+    const animationGap = animationDuration / (tiles[tiles.length - 1].xIndex + tiles[tiles.length - 1].yIndex);
 
     return tiles.map((obj, i) => (
       <CoverBackgroundTile
         image={image}
+        preloadImage={preloadImage}
         key={i}
-        delay={Math.ceil(Math.random() * 5) * 200}
+        delay={(obj.xIndex + obj.yIndex + 1) * animationGap}
         x={obj.x}
         y={obj.y}
         width={obj.width}
         height={obj.height}/>
     ));
-  }, [image]);
+  }, [image, preloadImage]);
 
   return (
     <div ref={containerRef} className={classes.root}>
-      {
-        imageLoaded && imageTiles
-      }
+      {imageTiles}
     </div>
   )
 };

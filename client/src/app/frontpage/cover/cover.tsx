@@ -43,7 +43,7 @@ const Cover: React.FC<CoverProps> = ({clickToScrollToAnchor}) => {
         isLoaderShown,
     } = useLoadCoverImage(animationDuration, backgroundContainerRef);
     const isCoverLoaded = image !== null;
-    const isTitleActive = useDelayedActive(isCoverLoaded, 1000, 0).delayedActiveIn;
+    const isTitleActive = useDelayedActive(isCoverLoaded, animationDuration, 0).delayedActiveIn;
 
     return (
         <div
@@ -53,7 +53,7 @@ const Cover: React.FC<CoverProps> = ({clickToScrollToAnchor}) => {
         >
             <div className={classes.root} id={containerID} style={{height: containerHeight}}>
                 <div className={classes.background} id={backgroundImageID} ref={backgroundContainerRef}>
-                    <CoverBackground image={image} animationDuration={animationDuration} />
+                    <CoverBackground image={image} animationDuration={animationDuration}/>
                 </div>
                 <div className={classes.title} id={titleID}>
                     <CoverTitle
