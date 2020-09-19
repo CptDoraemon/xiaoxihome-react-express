@@ -12,8 +12,7 @@ const drawImageOnCanvas = (canvas: HTMLCanvasElement, width: number, height: num
 const useStyles = makeStyles({
   root: {
     transformStyle: 'preserve-3d',
-    backfaceVisibility: 'visible',
-    position: 'absolute'
+    position: 'absolute',
   },
   wrapper: {
     position: 'relative'
@@ -27,14 +26,19 @@ const useStyles = makeStyles({
   front: {
     position: 'absolute',
     top: 0,
-    left: 0
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backfaceVisibility: 'hidden',
   },
   back: {
     transform: 'rotateX(180deg)',
-    backgroundColor: 'rgb(37, 41, 45)',
     position: 'absolute',
     top: 0,
-    left: 0
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backfaceVisibility: 'hidden',
   }
 });
 

@@ -1,8 +1,6 @@
-import React, {useEffect, useMemo, useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {MouseIcon} from "../../../component/mouseIcon";
 import {GitHubButton} from "../../webAppProjects";
-import {SpinLoader} from "../../../animations/spin-loader";
-import useIsMobile from "../use-is-mobile";
 import useCoverStyles from "./cover-styles";
 import CoverTitle from "./cover-title";
 import useCoverAnimations from "./use-cover-animations";
@@ -28,7 +26,6 @@ const progressBarID = 'cover-progressbar';
 
 interface CoverProps {
     clickToScrollToAnchor: () => void,
-    setCoverAnimationDone: () => void
 }
 
 const animation = {
@@ -37,7 +34,7 @@ const animation = {
     total: 2500
 };
 
-const Cover: React.FC<CoverProps> = ({clickToScrollToAnchor, setCoverAnimationDone}) => {
+const Cover: React.FC<CoverProps> = ({clickToScrollToAnchor}) => {
     const classes = useCoverStyles();
     const placeholderRef = useRef<HTMLDivElement>(null);
     const backgroundContainerRef = useRef<HTMLDivElement>(null);
@@ -51,12 +48,6 @@ const Cover: React.FC<CoverProps> = ({clickToScrollToAnchor, setCoverAnimationDo
     const isImageLoaded = image !== null;
     const isTitleActive = useDelayedActive(isImageLoaded, animation.maxDelay, 0).delayedActiveIn;
     const isScrollDownActive = useDelayedActive(isImageLoaded, animation.total, 0).delayedActiveIn;
-
-    useEffect(() => {
-        if (image) {
-            setTimeout(setCoverAnimationDone, animation.total)
-        }
-    }, [image]);
 
     return (
         <div
