@@ -11,33 +11,23 @@ const drawImageOnCanvas = (canvas: HTMLCanvasElement, width: number, height: num
 
 const useStyles = makeStyles({
   root: {
-    transformStyle: 'preserve-3d',
     position: 'absolute',
+    perspective: '1000px'
   },
   wrapper: {
-    position: 'relative'
+    position: 'relative',
+    transformStyle: 'preserve-3d'
   },
   active: {
-    transform: 'rotateX(0deg)'
-  },
-  inactive: {
     transform: 'rotateX(180deg)'
   },
   front: {
+    transform: 'rotateX(180deg)',
     position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
     backfaceVisibility: 'hidden',
   },
   back: {
-    transform: 'rotateX(180deg)',
     position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
     backfaceVisibility: 'hidden',
   }
 });
@@ -94,16 +84,20 @@ const CoverBackgroundTile: React.FC<CoverBackgroundTileProps> =
 
     return (
       <div
-        className={clsx(classes.root, active && classes.active, !active && classes.inactive)}
+        className={classes.root}
         style={{
           top: y,
           left: x,
           width,
           height,
-          transition: `transform ${animationDuration}ms`,
         }}
       >
-        <div className={classes.wrapper} style={{width, height}}>
+        <div className={clsx(classes.wrapper, active && classes.active)}
+             style={{
+               width,
+               height,
+               transition: `transform ${animationDuration}ms`
+             }}>
           <canvas
             ref={frontRef}
             className={classes.front}

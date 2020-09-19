@@ -108,8 +108,7 @@ const useStyles = makeStyles({
   root: {
     height: '100%',
     width: '100%',
-    position: 'relative',
-    perspective: 1000
+    position: 'relative'
   }
 });
 
