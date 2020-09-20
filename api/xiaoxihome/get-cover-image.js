@@ -3,9 +3,9 @@ const { createCanvas, loadImage } = require('canvas');
 const https = require('https');
 const cors = require('cors');
 const corsOptions = {
-  origin: ['http://localhost:3000'],
+  origin: '*',
   maxAge: 31536000,
-  methods: 'POST'
+  methods: 'GET'
 };
 
 const IMAGE_COUNT = 3;
@@ -52,31 +52,56 @@ const getCoverImage = (app) => {
 };
 
 function toBase64(image, width, height) {
-  let canvas = createCanvas(width, height);
-  const ctx = canvas.getContext('2d');
+  let targetWidth = width;
+  let targetHeight = height;
   const sourceWidth = image.naturalWidth;
   const sourceHeight = image.naturalHeight;
-  const sourceWidthStretched = sourceWidth * height / sourceHeight;
+  const sourceWHRatio = sourceWidth / sourceHeight;
 
-  if (sourceWidthStretched >= width) {
-    const offsetXPercentage = (sourceWidthStretched - width) / 2 / sourceWidthStretched;
+  // do not enlarge, max size of the canvas is the size of the source image
+  if (width > sourceWidth) {
+    const targetWHRatio = width / height;
+    // use sourceWidth
+    targetWidth = sourceWidth;
+    targetHeight = targetWidth / targetWHRatio;
+    if (targetHeight > sourceHeight) {
+      targetHeight = sourceHeight;
+      targetWidth = targetWHRatio * targetHeight;
+    }
+  } else if (height > sourceHeight) {
+    // use sourceHeight
+    const targetWHRatio = width / height;
+    targetHeight = sourceHeight;
+    targetWidth = targetHeight * targetWHRatio;
+    if (targetWidth > sourceWidth) {
+      targetWidth = sourceWidth;
+      targetHeight = targetWidth / targetWHRatio;
+    }
+  }
+
+  const canvas = createCanvas(targetWidth, targetHeight);
+  const ctx = canvas.getContext('2d');
+  const sourceWidthStretched = sourceWHRatio * targetHeight;
+
+  if (sourceWidthStretched >= targetWidth) {
+    const offsetXPercentage = (sourceWidthStretched - targetWidth) / 2 / sourceWidthStretched;
     ctx.drawImage(
       image,
       offsetXPercentage * sourceWidth,
       0,
       sourceWidth - 2 * offsetXPercentage * sourceWidth,
       sourceHeight,
-      0, 0, width, height);
+      0, 0, targetWidth, targetHeight);
   } else {
-    const sourceHeightStretched = sourceHeight * width / sourceWidth;
-    const offsetYPercentage = (sourceHeightStretched - height) / 2 / sourceHeightStretched;
+    const sourceHeightStretched = sourceHeight * targetWidth / sourceWidth;
+    const offsetYPercentage = (sourceHeightStretched - targetHeight) / 2 / sourceHeightStretched;
     ctx.drawImage(
       image,
       0,
       offsetYPercentage * sourceHeight,
       sourceWidth,
       sourceHeight - 2 * offsetYPercentage * sourceHeight,
-      0, 0, width, height);
+      0, 0, targetWidth, targetHeight);
   }
 
   return  canvas.toDataURL('image/jpeg', 0.7);

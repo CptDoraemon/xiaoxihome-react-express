@@ -39,6 +39,8 @@ const useLoadCoverImage = (loaderDelayOut: number, imageContainerRef: RefObject<
           const src = json.data;
           const image = new Image();
           image.src = src;
+          image.width = width;
+          image.height = height;
           image.onload = () => {
             setImage(image);
           };
