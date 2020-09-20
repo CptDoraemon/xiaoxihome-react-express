@@ -136,6 +136,13 @@ const CoverBackground: React.FC<CoverBackgroundProps> =
     const height = rect.height;
     const tiles = divideScreen(width, height);
     const animationGap = maxDelay / (tiles[tiles.length - 1].xIndex + tiles[tiles.length - 1].yIndex);
+    const scale = image ?
+      Math.abs(width - image.naturalWidth) > 1 ?
+        isNaN(width / image.naturalWidth) ?
+          1 :
+          width / image.naturalWidth
+        : 1
+      : 1;
 
     return tiles.map((obj, i) => (
       <CoverBackgroundTile
@@ -148,6 +155,10 @@ const CoverBackground: React.FC<CoverBackgroundProps> =
         y={obj.y}
         width={obj.width}
         height={obj.height}
+        // server side will resize cover image to the screen size, but do not enlarge
+        // therefore in extreme high res screens, the cover image returned will be smaller than the screen size, however the w/h ratio is preserved
+        // need scale up the cover image in those cases
+        scale={scale}
       />
     ));
   }, [image, preloadImage]);

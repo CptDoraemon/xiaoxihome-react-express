@@ -8,11 +8,21 @@ import clsx from 'clsx';
 // 3. backfaceVisibility: 'hidden' on both .front and .back
 // 4. right order of DOM element (.back is actually on TOP of .front), this one is important for Android Firefox.
 
-const drawImageOnCanvas = (canvas: HTMLCanvasElement, width: number, height: number, x: number, y: number, image: HTMLImageElement) => {
+const drawImageOnCanvas = (canvas: HTMLCanvasElement, width: number, height: number, x: number, y: number, image: HTMLImageElement, scale?: number) => {
   canvas.width = width;
   canvas.height = height;
   const ctx = canvas.getContext('2d');
-  ctx?.drawImage(image, x, y, width, height, 0, 0, canvas.width, canvas.height)
+
+  if (scale && scale !== 1) {
+    ctx?.drawImage(
+      image,
+      Math.floor(x / scale),
+      Math.floor(y / scale),
+      Math.ceil(width / scale),
+      Math.ceil(height / scale), 0, 0, canvas.width, canvas.height)
+  } else {
+    ctx?.drawImage(image, x, y, width, height, 0, 0, canvas.width, canvas.height)
+  }
 };
 
 const useStyles = makeStyles({
@@ -46,7 +56,8 @@ interface CoverBackgroundTileProps {
   y: number,
   width: number,
   height: number,
-  animationDuration: number
+  animationDuration: number,
+  scale: number
 }
 
 const CoverBackgroundTile: React.FC<CoverBackgroundTileProps> =
@@ -58,7 +69,8 @@ const CoverBackgroundTile: React.FC<CoverBackgroundTileProps> =
     y,
     width,
     height,
-     animationDuration
+     animationDuration,
+     scale
    }) => {
     const classes = useStyles();
     const [active, setActive] = useState(false);
@@ -76,7 +88,7 @@ const CoverBackgroundTile: React.FC<CoverBackgroundTileProps> =
     useEffect(() => {
       setTimeout(() => {
         if(!backRef || !backRef.current || !image) return;
-        drawImageOnCanvas(backRef.current, width, height, x, y, image)
+        drawImageOnCanvas(backRef.current, width, height, x, y, image, scale)
       })
     }, [image]);
 
