@@ -139,7 +139,7 @@ function initImageOrder(isReturningViewer) {
 }
 
 function getImageUrl(imageIndex) {
-  return `https://xiaoxihome.s3.us-east-2.amazonaws.com/galleryphoto/cover/cover-${imageIndex + 1}-original.jpg`
+  return `https://xiaoxihome.s3.us-east-2.amazonaws.com/galleryphoto/cover/cover-${imageIndex + 1}-5k.jpg`
 }
 
 function logMemoryUsage() {
