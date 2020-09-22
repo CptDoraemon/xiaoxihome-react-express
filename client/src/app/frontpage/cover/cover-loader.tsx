@@ -34,7 +34,7 @@ interface CoverLoaderProps {
 
 const CoverLoader: React.FC<CoverLoaderProps> = ({active, delayOut, size, margin}) => {
   const classes = useStyles(delayOut);
-  const delayedOutActive = useDelayedActive(active, 0, delayOut);
+  const delayedOutActive = useDelayedActive(active, 0, delayOut).delayedActiveOut;
 
   if (delayedOutActive) {
     return <div className={active ? classes.loaderActive : classes.loaderInactive}><SpinLoader size={size} margin={margin}/></div>
