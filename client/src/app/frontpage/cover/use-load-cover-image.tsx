@@ -9,22 +9,13 @@ function getIsReturningViewer() {
   return isReturningViewer;
 }
 
-const useLoadCoverImage = (loaderDelayOut: number, imageContainerRef: RefObject<HTMLDivElement>) => {
-  const [width, setWidth] = useState(0);
-  const [height, setHeight] = useState(0);
+const useLoadCoverImage = (loaderDelayOut: number, fullWidth: number, fullHeight: number) => {
+  const [isRequestSent, setIsRequestSent] = useState(false);
   const [image, setImage] = useState<HTMLImageElement | null>(null);
   const [isLoaderShown, setIsLoaderShown] = useState(true);
 
   useEffect(() => {
-    if (!imageContainerRef.current) return;
-    const rect = imageContainerRef.current.getBoundingClientRect();
-    setWidth(rect.width);
-    setHeight(rect.height);
-  }, []);
-
-  useEffect(() => {
-    if (!width || !height) return;
-    if (image) return;
+    if (image || isRequestSent) return;
 
     const isReturningViewer = getIsReturningViewer();
     const baseUrl = '/api/xiaoxihome/get-cover-image';
@@ -32,12 +23,13 @@ const useLoadCoverImage = (loaderDelayOut: number, imageContainerRef: RefObject<
       `http://${window.location.hostname}:5000${baseUrl}` :
       baseUrl;
 
-    fetch(`${url}?isReturningViewer=${isReturningViewer}&width=${width}&height=${height}`)
+    setIsRequestSent(true);
+    fetch(`${url}?isReturningViewer=${isReturningViewer}&width=${fullWidth}&height=${fullHeight}`)
       .then(res => res.json())
       .then(json => {
         if (json.status === 'ok') {
           const src = json.data;
-          const image = new Image(width, height);
+          const image = new Image();
           image.src = src;
           image.onload = () => {
             setImage(image);
@@ -47,7 +39,7 @@ const useLoadCoverImage = (loaderDelayOut: number, imageContainerRef: RefObject<
       })
       .catch(e => console.log(e))
 
-  }, [width, height, image]);
+  }, [image]);
 
   return {
     image,

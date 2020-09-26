@@ -30,7 +30,6 @@ const toolbarCommons = createStyles({
 const useCoverStyles = makeStyles({
     root: {
         width: '100%',
-        // height: '100vh',
         position: 'fixed',
         overflow: 'hidden',
         top: 0,
@@ -38,15 +37,10 @@ const useCoverStyles = makeStyles({
     },
     relativeContainer: {
         width: '100%',
-        // height: '100vh',
         position: 'relative',
     },
     background: {
         ...fullscreenWrapper.fullscreenWrapper,
-        '& img': {
-            width: '100%',
-            height: '100%',
-        }
     },
     title: {
         ...fullscreenWrapper.fullscreenWrapper,

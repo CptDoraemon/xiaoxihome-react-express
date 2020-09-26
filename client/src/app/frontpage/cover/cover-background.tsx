@@ -115,14 +115,18 @@ const useStyles = makeStyles({
 interface CoverBackgroundProps {
   image: HTMLImageElement | null,
   maxDelay: number,
-  duration: number
+  duration: number,
+  fullWidth: number,
+  fullHeight: number
 }
 
 const CoverBackground: React.FC<CoverBackgroundProps> =
   ({
     image,
     maxDelay,
-    duration
+    duration,
+     fullWidth,
+     fullHeight
   }) => {
   const classes = useStyles();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -131,16 +135,13 @@ const CoverBackground: React.FC<CoverBackgroundProps> =
   const imageTiles = useMemo(() => {
     if (!containerRef || !containerRef.current) return [];
 
-    const rect = containerRef.current.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    const tiles = divideScreen(width, height);
+    const tiles = divideScreen(fullWidth, fullHeight);
     const animationGap = maxDelay / (tiles[tiles.length - 1].xIndex + tiles[tiles.length - 1].yIndex);
     const scale = image ?
-      Math.abs(width - image.naturalWidth) > 1 ?
-        isNaN(width / image.naturalWidth) ?
+      Math.abs(fullWidth - image.naturalWidth) > 1 ?
+        isNaN(fullWidth / image.naturalWidth) ?
           1 :
-          width / image.naturalWidth
+          fullWidth / image.naturalWidth
         : 1
       : 1;
 

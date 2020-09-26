@@ -42,23 +42,19 @@ interface AllProjectsInfo {
     2: GallerySectionInfo;
 }
 
-interface FrontpageProps {
-    allProjectsInfo: AllProjectsInfo
+interface FrontpageInnerProps {
+    allProjectsInfo: AllProjectsInfo,
+    fullHeight: number,
+    fullWidth: number
 }
 
-const Frontpage: React.FC<FrontpageProps> = ({allProjectsInfo}) => {
+const FrontpageInner: React.FC<FrontpageInnerProps> = ({allProjectsInfo, fullHeight, fullWidth}) => {
     const galleryRef = React.useRef<HTMLDivElement>(null);
     const academicRef = React.useRef<HTMLDivElement>(null);
     const webRef = React.useRef<HTMLDivElement>(null);
-    const [screenWidth, setScreenWidth] = useState(window.innerWidth);
 
     const scrollToWorkRef = () => {
         if (webRef.current) myScrollTo(webRef.current.getBoundingClientRect().top + window.scrollY);
-    };
-    const reloadOnScreenWidthChange = () => {
-        if (screenWidth !== window.innerWidth) {
-            window.location.reload();
-        }
     };
 
     useEffect(() => {
@@ -70,28 +66,56 @@ const Frontpage: React.FC<FrontpageProps> = ({allProjectsInfo}) => {
     }, []);
 
     return (
-        <WithCallBackOnResized callback={reloadOnScreenWidthChange}>
-            <div className='frontpage-main'>
-                <FrontpageHeader data={mappedDataForProps.header}/>
-                <MobileNavBar data={mappedDataForProps.header}/>
-                <Cover clickToScrollToAnchor={scrollToWorkRef}/>
+        <div className='frontpage-main'>
+            <FrontpageHeader data={mappedDataForProps.header}/>
+            <MobileNavBar data={mappedDataForProps.header}/>
+            <Cover clickToScrollToAnchor={scrollToWorkRef} fullHeight={fullHeight} fullWidth={fullWidth}/>
 
+            <ParallaxWrapper className={'frontpage-main'} parallaxStrength={0}>
+                <div className={'academic-and-web'}>
+                    <div ref={webRef}/>
+                    <FrontpageWebSection sectionTitle={allProjectsInfo[1].sectionTitle} tileInfo={allProjectsInfo[1].projects}/>
+                    <div ref={academicRef}/>
+                    <FrontpageAcademicSection sectionTitle={allProjectsInfo[0].sectionTitle} tileInfo={allProjectsInfo[0].projects}/>
+                </div>
+                <div className={'gallery'} ref={galleryRef}>
+                    <FrontpageGallerySection sectionTitle={allProjectsInfo[2].sectionTitle} tileInfo={allProjectsInfo[2].projects}/>
+                </div>
+                <Footer />
+            </ParallaxWrapper>
+        </div>
+    )
+};
 
-                <ParallaxWrapper className={'frontpage-main'} parallaxStrength={0}>
-                    <div className={'academic-and-web'}>
-                        <div ref={webRef}/>
-                        <FrontpageWebSection sectionTitle={allProjectsInfo[1].sectionTitle} tileInfo={allProjectsInfo[1].projects}/>
-                        <div ref={academicRef}/>
-                        <FrontpageAcademicSection sectionTitle={allProjectsInfo[0].sectionTitle} tileInfo={allProjectsInfo[0].projects}/>
-                    </div>
-                    <div className={'gallery'} ref={galleryRef}>
-                        <FrontpageGallerySection sectionTitle={allProjectsInfo[2].sectionTitle} tileInfo={allProjectsInfo[2].projects}/>
-                    </div>
-                    <Footer />
-                </ParallaxWrapper>
+interface FrontpageProps {
+    allProjectsInfo: AllProjectsInfo,
+    fullHeight: number
+}
 
-            </div>
-        </WithCallBackOnResized>
+/**
+ * inject fullHeight and provide reload on resize for actual Frontpage
+ */
+const Frontpage: React.FC<FrontpageProps> = ({allProjectsInfo}) => {
+    const [fullHeight, setFullHeight] = useState<number | null>(null);
+    const [fullWidth, setFullWidth] = useState<number | null>(null);
+
+    const reloadOnScreenWidthChange = () => {
+        if (fullWidth && fullWidth !== window.innerWidth) {
+            window.location.reload();
+        }
+    };
+
+    useEffect(() => {
+        setFullHeight(window.innerHeight);
+        setFullWidth(window.innerWidth)
+    }, []);
+
+    if (fullHeight === null || fullWidth === null) {
+        return <></>
+    } else return (
+      <WithCallBackOnResized callback={reloadOnScreenWidthChange}>
+          <FrontpageInner allProjectsInfo={allProjectsInfo} fullHeight={fullHeight} fullWidth={fullWidth}/>
+      </WithCallBackOnResized>
     )
 };
 
