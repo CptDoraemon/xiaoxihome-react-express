@@ -1,10 +1,9 @@
 ├── src
     ├── animations
-        ├── fly-in.js
-        ├── parallax.css
-        ├── parallax.js
-        ├── spin-loader.css
-        ├── spin-loader.js
+        ├── fly-in-wrapper.tsx
+        ├── get-scroll-percentage.tsx
+        ├── parallax-wrapper.tsx
+        ├── spin-loader.tsx
     ├── app
         ├── about
             ├── aboutPage.css
@@ -16,8 +15,29 @@
             ├── contact.css
             ├── contact.js
             ├── snow-worker.js
-        ├── frontpage.css
-        ├── frontpage.tsx
+        ├── frontpage
+            ├── cover
+                ├── cover-background-tile.tsx
+                ├── cover-background.tsx
+                ├── cover-loader.tsx
+                ├── cover-styles.ts
+                ├── cover-title.tsx
+                ├── cover.tsx
+                ├── use-cover-animations.tsx
+                ├── use-delayed-active.ts
+                ├── use-load-cover-image.tsx
+            ├── frontpage.css
+            ├── frontpage.tsx
+            ├── gallery-tile
+                ├── gallery-tile.tsx
+                ├── thumbnail-to-full-page-transition.tsx
+            ├── section
+                ├── frontpage-project-list-section.tsx
+                ├── section-title.tsx
+            ├── text-tile
+                ├── magnifying-glass.tsx
+                ├── text-tile.tsx
+            ├── use-is-mobile.tsx
         ├── gallery
             ├── gallery.css
             ├── gallery.tsx
@@ -60,7 +80,7 @@
         ├── webAppProjectData.ts
     ├── flexbox.css
     ├── index.css
-    ├── index.js
+    ├── index.jsx
     ├── react-app-env.d.ts
     ├── serviceWorker.js
     ├── tools
