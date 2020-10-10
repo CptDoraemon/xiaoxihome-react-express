@@ -121,6 +121,14 @@ const webAppProjectData: Array<WebAppProject | WebAppProjectCollections> = [
                 `
             },
             {
+                title: 'Account System',
+                demoLink: 'https://account-system-xiaoxi.herokuapp.com/',
+                githubLink: 'https://github.com/CptDoraemon/account-system',
+                description: `
+                    <p>A simple node app that helps me recall how to build functions like register, login, Single sign-on (SSO), and reset password. Libraries used: Node, Express, BCrypt, Passport, Mongoose. (Demo may need up to half minute to wake up)</p>
+                `
+            },
+            {
                 title: 'Parallax component library for React',
                 demoLink: 'https://cptdoraemon.github.io/parallax-container/',
                 githubLink: 'https://github.com/CptDoraemon/parallax-container',
