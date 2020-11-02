@@ -113,6 +113,16 @@ const webAppProjectData: Array<WebAppProject | WebAppProjectCollections> = [
         title: 'Smaller Projects',
         projects: [
             {
+                title: 'V2ex Vue',
+                demoLink: 'https://cptdoraemon.github.io/v2ex-vue/',
+                githubLink: 'https://github.com/CptDoraemon/v2ex-vue',
+                description: `
+                   <p>
+                   A simple client built to work with <a href="https://www.v2ex.com/" target="_blank" rel='noopener noreferrer'>V2ex</a> API.
+                   Built with Vue.js, Vuex, Vue-router, and Ant Design.
+                   </p>`
+            },
+            {
                 title: 'Firework Animation',
                 demoLink: 'https://cptdoraemon.github.io/firework/',
                 githubLink: 'https://github.com/CptDoraemon/firework',
