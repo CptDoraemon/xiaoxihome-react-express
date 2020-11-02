@@ -4,7 +4,7 @@ const axios = require('axios');
 const cloneDeep = require('lodash/cloneDeep');
 const cors = require('cors');
 const corsOptions = {
-  origin: 'localhost:8080',
+  origin: 'http://localhost:8080',
   maxAge: 31536000,
   methods: 'GET'
 };

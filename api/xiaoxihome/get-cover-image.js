@@ -3,7 +3,7 @@ const { createCanvas, loadImage } = require('canvas');
 const https = require('https');
 const cors = require('cors');
 const corsOptions = {
-  origin: 'localhost:3000',
+  origin: 'http://localhost:3000',
   maxAge: 31536000,
   methods: 'GET'
 };
