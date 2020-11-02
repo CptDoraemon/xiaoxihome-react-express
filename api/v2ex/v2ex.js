@@ -4,7 +4,7 @@ const axios = require('axios');
 const cloneDeep = require('lodash/cloneDeep');
 const cors = require('cors');
 const corsOptions = {
-  origin: 'http://localhost:8080',
+  origin: ['http://localhost:8080', 'https://cptdoraemon.github.io/'],
   maxAge: 31536000,
   methods: 'GET'
 };
