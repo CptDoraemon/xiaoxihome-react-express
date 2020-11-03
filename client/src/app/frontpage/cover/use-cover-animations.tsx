@@ -65,7 +65,7 @@ const useCoverAnimations = (targetRef: React.RefObject<any>, containerID: string
             }
         };
 
-        document.addEventListener('scroll', scrollHandler, {passive: true});
+        document.addEventListener('scroll', scrollHandler);
         return () => {
             document.removeEventListener('scroll', scrollHandler);
         }
