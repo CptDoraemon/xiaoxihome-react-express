@@ -54,7 +54,7 @@ const useParallaxEffect = (
             };
 
         scrollHandler();
-        document.addEventListener('scroll', scrollHandler);
+        document.addEventListener('scroll', scrollHandler, {passive: true});
         return () => {
             document.removeEventListener('scroll', scrollHandler);
         };
