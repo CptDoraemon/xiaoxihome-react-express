@@ -1,40 +1,105 @@
 const bodyParser = require('body-parser');
 const mongoose = require ("mongoose");
+const router = require('express').Router();
+const AWS = require('aws-sdk');
 
-function xiaoxihomeFeedback(app) {
-    let feedbackSchema = new mongoose.Schema({
-        name: String,
-        email: String,
-        message: String,
-        date: Date
-    });
-    let Feedback = mongoose.model('Feedback', feedbackSchema);
+AWS.config = new AWS.Config(
+    {
+      accessKeyId: process.env.AWS_ACCESS_ID, secretAccessKey: process.env.AWS_SECRET_KEY, region: 'us-east-2'
+    }
+);
+const ses = new AWS.SES({apiVersion: '2010-12-01'});
 
-    app.post('/contact/submit/', bodyParser.json(), (req, res) => {
-        let name = req.body.name;
-        let email = req.body.email;
-        let message = req.body.message;
-        // input validation
-        if (name.match(/^\s*$/) || email.match(/^\s*$/) || message.match(/^\s*$/) || email.indexOf('@') === -1) {
-            res.json({response: 'Ooops: please check inputs'})
-        } else {
-            let date = new Date();
-            let newFeedback = new Feedback({
-                name: name,
-                email: email,
-                message: message,
-                date: date
-            });
-
-            newFeedback.save((err) => {
-                if (err) {
-                    res.json({response: 'Ooops: ' + err + ', please try again.'});
-                } else {
-                    res.json({response: 'Thank you for your message, I\'ll get back to you soon.'});
-                }
-            })
+const getEmailParam = ({name, email, message, date}) => {
+  return {
+    Destination: {
+      ToAddresses: [
+        process.env.XIAOXIHOME_FEEDBACK_RECIPIENT,
+      ]
+    },
+    Message: {
+      Body: {
+        Html: {
+          Charset: "UTF-8",
+          Data: `
+          <p>Name: ${name}</p>
+          <p>Email: ${email}</p>
+          <p>Message: ${message}</p>
+          <p>Date: ${new Date(date)}</p>
+          `
         }
-    });
-}
+      },
+      Subject: {
+        Charset: "UTF-8",
+        Data: "New feedback from XiaoxiHome"
+      }
+    },
+    Source: "feedback@xiaoxihome.com",
+  }
+};
 
-module.exports = xiaoxihomeFeedback;
+const sendEmail = ({name, email, message, date}) => {
+  return new Promise(resolve => {
+    ses.sendEmail(getEmailParam({name, email, message, date}), function(err, data) {
+      if (err) {
+        console.log(err)
+      }
+      resolve(true)
+    })
+  })
+};
+
+const feedbackSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    min: 1,
+    max: 200,
+    required: true
+  },
+  email: {
+    type: String,
+    min: 1,
+    max: 200,
+    validate: {
+      validator: v => v.indexOf('@') !== -1,
+      message: props => `Invalid ${props.path}`
+    },
+    required: true
+  },
+  message: {
+    type: String,
+    min: 1,
+    max: 2000,
+    required: true
+  },
+  date: Date
+});
+const Feedback = mongoose.model('Feedback', feedbackSchema);
+
+router.post('/', bodyParser.json(), async (req, res) => {
+  try {
+    const {name, email, message} = req.body;
+
+    const date = new Date().toISOString();
+    const feedback = new Feedback({name, email, message, date});
+    await feedback.save();
+    // don't wait for sending email
+    sendEmail({name, email, message, date});
+
+    return res.json({
+      response: 'Thank you for your message, I\'ll get back to you soon.'
+    });
+  } catch (e) {
+    let message = 'Server error, please try again later';
+
+    if (e instanceof mongoose.Error) {
+      if (e.message) {
+        message = e.message
+      }
+    }
+
+    return res.json({response: message});
+  }
+});
+
+module.exports = router;

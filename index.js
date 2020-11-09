@@ -43,7 +43,7 @@ app.get('/', (req, res) => {
         searchCityName(app, cityNameDB);
         weatherAPI(app);
         reverseGeoCodingAPI(app);
-        xiaoxihomeFeedback(app);
+        app.use('/contact/submit', xiaoxihomeFeedback);
         xiaoxihomeAboutpageData(app);
         xiaoxihomeGetCoverImage(app);
         getNewsGraphQL(app, currentNewsCollection);
