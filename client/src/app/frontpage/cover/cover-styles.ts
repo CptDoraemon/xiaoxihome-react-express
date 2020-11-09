@@ -30,10 +30,8 @@ const toolbarCommons = createStyles({
 const useCoverStyles = makeStyles({
     root: {
         width: '100%',
-        position: 'fixed',
+        position: 'relative',
         overflow: 'hidden',
-        top: 0,
-        left: 0,
     },
     relativeContainer: {
         width: '100%',

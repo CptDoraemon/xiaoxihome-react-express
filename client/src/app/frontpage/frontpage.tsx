@@ -71,18 +71,16 @@ const FrontpageInner: React.FC<FrontpageInnerProps> = ({allProjectsInfo, fullHei
             <MobileNavBar data={mappedDataForProps.header}/>
             <Cover clickToScrollToAnchor={scrollToWorkRef} fullHeight={fullHeight} fullWidth={fullWidth}/>
 
-            <ParallaxWrapper className={'frontpage-main'} parallaxStrength={0}>
-                <div className={'academic-and-web'}>
-                    <div ref={webRef}/>
-                    <FrontpageWebSection sectionTitle={allProjectsInfo[1].sectionTitle} tileInfo={allProjectsInfo[1].projects}/>
-                    <div ref={academicRef}/>
-                    <FrontpageAcademicSection sectionTitle={allProjectsInfo[0].sectionTitle} tileInfo={allProjectsInfo[0].projects}/>
-                </div>
-                <div className={'gallery'} ref={galleryRef}>
-                    <FrontpageGallerySection sectionTitle={allProjectsInfo[2].sectionTitle} tileInfo={allProjectsInfo[2].projects}/>
-                </div>
-                <Footer />
-            </ParallaxWrapper>
+            <div className={'academic-and-web'}>
+                <div ref={webRef}/>
+                <FrontpageWebSection sectionTitle={allProjectsInfo[1].sectionTitle} tileInfo={allProjectsInfo[1].projects}/>
+                <div ref={academicRef}/>
+                <FrontpageAcademicSection sectionTitle={allProjectsInfo[0].sectionTitle} tileInfo={allProjectsInfo[0].projects}/>
+            </div>
+            <div className={'gallery'} ref={galleryRef}>
+                <FrontpageGallerySection sectionTitle={allProjectsInfo[2].sectionTitle} tileInfo={allProjectsInfo[2].projects}/>
+            </div>
+            <Footer />
         </div>
     )
 };
