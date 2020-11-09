@@ -3,11 +3,11 @@ const mongoose = require ("mongoose");
 const router = require('express').Router();
 const AWS = require('aws-sdk');
 
-AWS.config = new AWS.Config(
-    {
-      accessKeyId: process.env.AWS_ACCESS_ID, secretAccessKey: process.env.AWS_SECRET_KEY, region: 'us-east-2'
-    }
-);
+AWS.config = new AWS.Config({
+  accessKeyId: process.env.AWS_ACCESS_ID,
+  secretAccessKey: process.env.AWS_SECRET_KEY,
+  region: 'us-east-2'
+});
 const ses = new AWS.SES({apiVersion: '2010-12-01'});
 
 const getEmailParam = ({name, email, message, date}) => {
@@ -25,7 +25,7 @@ const getEmailParam = ({name, email, message, date}) => {
           <p>Name: ${name}</p>
           <p>Email: ${email}</p>
           <p>Message: ${message}</p>
-          <p>Date: ${new Date(date)}</p>
+          <p>Date: ${new Date(date).toLocaleString('en-US', { timeZone: 'America/Toronto' })}</p>
           `
         }
       },
@@ -34,7 +34,7 @@ const getEmailParam = ({name, email, message, date}) => {
         Data: "New feedback from XiaoxiHome"
       }
     },
-    Source: "feedback@xiaoxihome.com",
+    Source: "noreply@xiaoxihome.com",
   }
 };
 
