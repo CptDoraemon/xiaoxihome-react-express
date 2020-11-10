@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import FlyInWrapper from "../../../animations/fly-in-wrapper";
 import TextTile from "../text-tile/text-tile";
 import makeStyles from "@material-ui/core/styles/makeStyles";
@@ -35,7 +35,7 @@ const useFlyInTrigger = (ref: React.RefObject<HTMLDivElement>) => {
     const [isActive, setIsActive] = useState(false);
     const triggerPoint = 0.2;
 
-    const scrollHandler = () => {
+    const scrollHandler = useCallback(() => {
         const scrolled = getScrolledPercentage(ref);
 
         // setState with same value as old won't trigger update
@@ -44,19 +44,19 @@ const useFlyInTrigger = (ref: React.RefObject<HTMLDivElement>) => {
         } else if (scrolled < triggerPoint) {
             setIsActive(false)
         }
-    };
+    }, [ref]);
 
     useEffect(() => {
         document.addEventListener('scroll', scrollHandler);
         return () => {
             document.removeEventListener('scroll', scrollHandler);
         }
-    }, []);
+    }, [scrollHandler]);
 
     useEffect(() => {
         // parallax wrapper needs time to deal with layout
-        setTimeout(() => scrollHandler(), 100);
-    }, []);
+        setTimeout(scrollHandler, 100);
+    }, [scrollHandler]);
 
     return isActive
 };
