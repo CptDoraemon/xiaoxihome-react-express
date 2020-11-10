@@ -4,42 +4,40 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import {createStyles} from "@material-ui/core";
 import useDelayedActive from "./use-delayed-active";
 
-const commonLoaderStyles = (delay: number) => createStyles({
+const commonLoaderStyles = createStyles({
   loader: {
     position: 'absolute',
     bottom: 0,
     right: 0,
-    transition: `opacity ${delay}ms`
   }
 });
 
-const useStyles = (delay: number) =>
-  (makeStyles({
-    loaderActive: {
-      ...commonLoaderStyles(delay).loader,
-      opacity: 1
-    },
-    loaderInactive: {
-      ...commonLoaderStyles(delay).loader,
-      opacity: 0
-    }
-  }))();
+const useStyles = makeStyles({
+  loaderActive: {
+    ...commonLoaderStyles.loader,
+    opacity: 1
+  },
+  loaderInactive: {
+    ...commonLoaderStyles.loader,
+    opacity: 0,
+    transition: `opacity ${500}ms`
+  }
+});
 
 interface CoverLoaderProps {
   active: boolean,
-  delayOut: number,
   size: number,
   margin: number
 }
 
-const CoverLoader: React.FC<CoverLoaderProps> = ({active, delayOut, size, margin}) => {
-  const classes = useStyles(delayOut);
-  const delayedOutActive = useDelayedActive(active, 0, delayOut).delayedActiveOut;
+const CoverLoader: React.FC<CoverLoaderProps> = ({active, size, margin}) => {
+  const classes = useStyles();
+  const isLoaderMounted = useDelayedActive(active, 500);
 
-  if (delayedOutActive) {
+  if (isLoaderMounted) {
     return <div className={active ? classes.loaderActive : classes.loaderInactive}><SpinLoader size={size} margin={margin}/></div>
   } else {
-    return null
+    return <></>
   }
 };
 

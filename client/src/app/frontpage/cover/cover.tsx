@@ -22,13 +22,11 @@ const animation = {
 
 const Cover: React.FC<CoverProps> = ({clickToScrollToAnchor, fullWidth, fullHeight}) => {
     const classes = useCoverStyles();
-    const {
-        image,
-        isLoaderShown,
-    } = useLoadCoverImage(animation.total, fullWidth, fullHeight);
+    const image = useLoadCoverImage(animation.total, fullWidth, fullHeight);
     const isImageLoaded = image !== null;
-    const isTitleActive = useDelayedActive(isImageLoaded, animation.maxDelay, 0).delayedActiveIn;
-    // const isScrollDownActive = useDelayedActive(isImageLoaded, animation.total, 0).delayedActiveIn;
+    const isTitleActive = useDelayedActive(isImageLoaded, animation.maxDelay);
+    const isToolbarActive = useDelayedActive(isImageLoaded, animation.total);
+    const isLoaderActive = useDelayedActive(!isImageLoaded, animation.total);
 
     return (
         <div className={classes.root} style={{height: fullHeight}}>
@@ -43,7 +41,7 @@ const Cover: React.FC<CoverProps> = ({clickToScrollToAnchor, fullWidth, fullHeig
                     maxDuration={animation.duration}
                 />
             </div>
-            <div className={classes.toolbarActive}>
+            <div className={isToolbarActive ? classes.toolbarActive : classes.toolbarInactive}>
                 <div className={classes.mouseIcon}>
                     <MouseIcon onClickMouseIcon={clickToScrollToAnchor}/>
                 </div>
@@ -55,7 +53,7 @@ const Cover: React.FC<CoverProps> = ({clickToScrollToAnchor, fullWidth, fullHeig
 
             {/*    </div>*/}
             {/*}*/}
-            <CoverLoader active={isLoaderShown} delayOut={300} size={25} margin={25}/>
+            <CoverLoader active={isLoaderActive} size={25} margin={25}/>
         </div>
     )
 };
