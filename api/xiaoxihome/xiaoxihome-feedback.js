@@ -52,14 +52,14 @@ const sendEmail = ({name, email, message, date}) => {
 const feedbackSchema = new mongoose.Schema({
   name: {
     type: String,
-    min: 1,
-    max: 200,
+    minlength: 1,
+    maxlength: 200,
     required: true
   },
   email: {
     type: String,
-    min: 1,
-    max: 200,
+    minlength: 1,
+    maxlength: 200,
     validate: {
       validator: v => v.indexOf('@') !== -1,
       message: props => `Invalid ${props.path}`
@@ -68,8 +68,8 @@ const feedbackSchema = new mongoose.Schema({
   },
   message: {
     type: String,
-    min: 1,
-    max: 2000,
+    minlength: 1,
+    maxlength: 2000,
     required: true
   },
   date: Date

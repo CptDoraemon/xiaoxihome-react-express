@@ -3,6 +3,7 @@
     background-image: linear-gradient(to bottom right, rgb(47,86,233),rgb(51,171,249),rgb(92,219,255));
     width: 100vw;
     height: 100vh;
+    overflow: hidden;
 }
 .contact-close-icon{
     position: absolute;
