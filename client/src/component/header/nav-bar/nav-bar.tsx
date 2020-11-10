@@ -2,10 +2,10 @@ import * as React from "react";
 import {DropDownListData, NavBarData} from "./index";
 import './nav-bar.css';
 import List from "./list";
-import {useState} from "react";
+import {useCallback, useState} from "react";
 import DropDownList from "./drop-down-list";
-import useIsMobile from "../../../tools/use-is-mobile";
 import {useEffect} from "react";
+import useIsMobile from "../../../tools/use-is-mobile";
 
 const useCloseDropDownOnClickElseWhere = (close: () => void) => {
     useEffect(() => {
@@ -36,26 +36,16 @@ const NavBar: React.FC<NavBarProps> = (
         maskHeight,
         slideInBackground
     }) => {
-    const [
-        isDropDownListActive,
-        setIsDropDownListActive
-    ] = useState(false);
+    const [isDropDownListActive, setIsDropDownListActive] = useState(false);
+    const [dropDownListData, setDropDownListData] = useState<DropDownListData>([]);
+    const [dropDownListLeft, setDropDownListLeft] = useState(0);
 
-    const [
-        dropDownListData,
-        setDropDownListData
-    ] = useState<DropDownListData>([]);
-
-    const [
-        dropDownListLeft,
-        setDropDownListLeft
-    ] = useState(0);
-
-    const closeDropDown = () => {
+    const closeDropDown = useCallback(() => {
         setIsDropDownListActive(false);
-    };
-    const isMobile = useIsMobile(null, null, closeDropDown);
+    }, []);
+    useCloseDropDownOnClickElseWhere(closeDropDown);
 
+    const isMobile = useIsMobile();
     const toggleDropDownList = (data: DropDownListData, left: number) => {
         setDropDownListData(data);
         if (!isMobile) {
@@ -65,8 +55,6 @@ const NavBar: React.FC<NavBarProps> = (
         }
         setIsDropDownListActive((state) => !state);
     };
-
-    useCloseDropDownOnClickElseWhere(closeDropDown);
 
     return (
         <>

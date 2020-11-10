@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import Cover from "./cover/cover";
 import Footer from "../../component/footer";
 import { myScrollTo } from "../../tools/myScrollTo";
@@ -7,13 +7,12 @@ import  '../../flexbox.css'
 import {setTitle} from "../../tools/set-title";
 import {FrontpageHeader, MobileNavBar} from "../../component/header";
 import mappedDataForProps from "../../data";
-import {WithCallBackOnResized} from "../../tools/use-is-resized";
 import {
     FrontpageAcademicSection,
     FrontpageGallerySection,
     FrontpageWebSection
 } from "./section/frontpage-project-list-section";
-import ParallaxWrapper from "../../animations/parallax-wrapper";
+import useCallbackOnResize from "../../tools/use-callback-on-resize";
 
 interface ProjectInfo {
     link: string;
@@ -53,9 +52,11 @@ const FrontpageInner: React.FC<FrontpageInnerProps> = ({allProjectsInfo, fullHei
     const academicRef = React.useRef<HTMLDivElement>(null);
     const webRef = React.useRef<HTMLDivElement>(null);
 
-    const scrollToWorkRef = () => {
-        if (webRef.current) myScrollTo(webRef.current.getBoundingClientRect().top + window.scrollY);
-    };
+    const scrollToWorkRef = useCallback(() => {
+        if (webRef.current) {
+            myScrollTo(webRef.current.getBoundingClientRect().top + window.scrollY);
+        }
+    }, []);
 
     useEffect(() => {
         setTitle(null, true);
@@ -85,23 +86,23 @@ const FrontpageInner: React.FC<FrontpageInnerProps> = ({allProjectsInfo, fullHei
     )
 };
 
+const useReloadOnResize = () => {
+    const reload = useCallback(() => {
+        window.location.reload()
+    }, []);
+    useCallbackOnResize(reload);
+};
+
 interface FrontpageProps {
     allProjectsInfo: AllProjectsInfo,
     fullHeight: number
 }
 
-/**
- * inject fullHeight and provide reload on resize for actual Frontpage
- */
 const Frontpage: React.FC<FrontpageProps> = ({allProjectsInfo}) => {
     const [fullHeight, setFullHeight] = useState<number | null>(null);
     const [fullWidth, setFullWidth] = useState<number | null>(null);
 
-    const reloadOnScreenWidthChange = () => {
-        if (fullWidth && fullWidth !== window.innerWidth) {
-            window.location.reload();
-        }
-    };
+    useReloadOnResize();
 
     useEffect(() => {
         setFullHeight(window.innerHeight);
@@ -111,9 +112,7 @@ const Frontpage: React.FC<FrontpageProps> = ({allProjectsInfo}) => {
     if (fullHeight === null || fullWidth === null) {
         return <></>
     } else return (
-      <WithCallBackOnResized callback={reloadOnScreenWidthChange}>
-          <FrontpageInner allProjectsInfo={allProjectsInfo} fullHeight={fullHeight} fullWidth={fullWidth}/>
-      </WithCallBackOnResized>
+      <FrontpageInner allProjectsInfo={allProjectsInfo} fullHeight={fullHeight} fullWidth={fullWidth}/>
     )
 };
 
