@@ -20,11 +20,14 @@ router.post('/django-discussion-board', parseRawBody, (req, res) => {
   const hmac = crypto.createHmac('sha256', secret);
   const body = req.rawBody;
   const requestSignature = req.headers['Heroku-Webhook-Hmac-SHA256'];
+  console.log('body: ', body);
+  console.log('requestSignature: ', requestSignature);
   if (requestSignature) {
     return res.status(403).end()
   }
 
   const calculatedSignature = hmac.update(body).digest('base64');
+  console.log('calculatedSignature: ', calculatedSignature);
   if (requestSignature !== calculatedSignature) {
     return res.status(403).end()
   }
