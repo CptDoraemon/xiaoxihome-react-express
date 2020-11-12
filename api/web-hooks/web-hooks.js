@@ -22,7 +22,7 @@ router.post('/django-discussion-board', parseRawBody, (req, res) => {
   const requestSignature = req.get('Heroku-Webhook-Hmac-SHA256');
   console.log('body: ', body);
   console.log('requestSignature: ', requestSignature);
-  if (requestSignature) {
+  if (!requestSignature) {
     return res.status(403).end()
   }
 
