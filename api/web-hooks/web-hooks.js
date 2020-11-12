@@ -34,7 +34,7 @@ router.post('/django-discussion-board', parseRawBody, (req, res) => {
 
   process.nextTick(() => {
     axios
-        .get('https://cptdoraemon.github.io/discussion-board-client/')
+        .get('https://django-api-xiaoxihome.herokuapp.com/api/discussion_board/post/all/')
         .catch()
   });
 
