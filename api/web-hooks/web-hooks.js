@@ -28,8 +28,8 @@ router.post('/django-discussion-board', parseRawBody, (req, res) => {
 
   const calculatedSignature = hmac.update(body).digest('base64');
   console.log('calculatedSignature: ', calculatedSignature);
-  console.log(crypto.timingSafeEqual(requestSignature, calculatedSignature));
-  if (!crypto.timingSafeEqual(requestSignature, calculatedSignature)) {
+  console.log(crypto.timingSafeEqual(Buffer.from(requestSignature), Buffer.from(calculatedSignature)));
+  if (crypto.timingSafeEqual(Buffer.from(requestSignature), Buffer.from(calculatedSignature))) {
     return res.status(403).end()
   }
 
