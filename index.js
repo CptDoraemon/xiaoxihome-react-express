@@ -16,6 +16,7 @@ const getNewsGraphQL = require('./api/news/scheme');
 const searchNews = require('./api/news/search-news/search-news');
 const newsAnalytics = require('./api/news/news-analytics');
 const v2exAPI = require('./api/v2ex/v2ex');
+const webHooks = require('./api/web-hooks/web-hooks');
 
 if (process.env.PORT) {
     app.use((req, res, next) => {
@@ -50,6 +51,7 @@ app.get('/', (req, res) => {
         searchNews(app, newsCollection);
         newsAnalytics(app, newsCollection);
         app.use('/api/v2ex', v2exAPI);
+        app.use('/api/web-hooks', webHooks);
 
         app.get('*', (req, res) => {
             res.sendFile(path.join(__dirname+'/client/build/index.html'));
