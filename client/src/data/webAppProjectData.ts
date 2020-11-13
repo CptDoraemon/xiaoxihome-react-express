@@ -113,6 +113,17 @@ const webAppProjectData: Array<WebAppProject | WebAppProjectCollections> = [
         title: 'Smaller Projects',
         projects: [
             {
+                title: 'BeastAcademy Clone',
+                demoLink: 'https://cptdoraemon.github.io/beast-academy-clone/',
+                githubLink: 'https://github.com/CptDoraemon/beast-academy-clone',
+                description: `
+                   <p>
+                    A clone of <a href="https://beastacademy.com/demo/school" target="_blank" rel='noopener noreferrer'>BeastAcademy School Demo</a> <br/>
+                    Why clone this website? It has so many design features involving irregular shapes, and I was wondering if I can get them right if I was building this website. Then there it is.
+                   </p>
+                `
+            },
+            {
                 title: 'V2ex Vue',
                 demoLink: 'https://cptdoraemon.github.io/v2ex-vue/',
                 githubLink: 'https://github.com/CptDoraemon/v2ex-vue',
