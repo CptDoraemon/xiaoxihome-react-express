@@ -203,7 +203,7 @@ const webAppProjectData: Array<WebAppProject | WebAppProjectCollections> = [
     {
         pageType: PageType.SINGLE,
         title: 'RaycasterJS',
-        demoLink: 'https://raycaster.xiaoxihome.com',
+        demoLink: 'https://xiaoxihomeraycaster.herokuapp.com/',
         githubLink: 'https://github.com/CptDoraemon/raycasterJS',
         description: `
             <p>Raycaster was a very popular game engine in the 80s and 90s, the computer was not powerful enough to handle real time 3D rendering, but players were getting tired of 2D games and wanted to see something new. </p>
